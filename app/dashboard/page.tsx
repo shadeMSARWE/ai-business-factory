@@ -6,8 +6,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/providers/auth-provider";
 import { useTranslation } from "@/hooks/use-translation";
-import { DASHBOARD_TOOLS } from "@/lib/dashboard-tools";
-import { Globe, FileText, User, Link2, MapPin, Store } from "lucide-react";
+import { Globe, FileText, User, Link2, MapPin, Smartphone, Store } from "lucide-react";
 import { AISuggestionsPanel } from "@/components/dashboard/ai-suggestions-panel";
 
 export default function DashboardPage() {
@@ -15,13 +14,11 @@ export default function DashboardPage() {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const handleMobileAppBuilderClick = () => {
-    console.log("Mobile App Builder clicked -> /dashboard/apps");
-    router.push("/dashboard/apps");
+  const handleMobileAppFactoryClick = () => {
+    router.push("/dashboard/mobile-apps");
   };
 
   const handleStoreBuilderClick = () => {
-    console.log("Store Builder clicked -> /dashboard/store");
     router.push("/dashboard/store");
   };
 
@@ -104,19 +101,16 @@ export default function DashboardPage() {
               whileHover={{ scale: 1.02 }}
               role="button"
               tabIndex={0}
-              data-card="mobile-app-builder"
-              data-href="/dashboard/apps"
-              onClick={handleMobileAppBuilderClick}
-              onKeyDown={(e) => e.key === "Enter" && handleMobileAppBuilderClick()}
+              data-card="mobile-app-factory"
+              onClick={handleMobileAppFactoryClick}
+              onKeyDown={(e) => e.key === "Enter" && handleMobileAppFactoryClick()}
               className="rounded-2xl border border-white/10 bg-white/5 p-8 hover:border-violet-500/30 transition-colors cursor-pointer"
             >
-              <svg className="h-12 w-12 text-violet-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-              </svg>
-              <h3 className="text-xl font-semibold text-white mb-2">{t(DASHBOARD_TOOLS.mobileAppBuilder.titleKey)}</h3>
-              <p className="text-slate-400">{DASHBOARD_TOOLS.mobileAppBuilder.description}</p>
+              <Smartphone className="h-12 w-12 text-violet-400 mb-4" />
+              <h3 className="text-xl font-semibold text-white mb-2">Mobile App Factory</h3>
+              <p className="text-slate-400">Create Android and iOS apps using AI.</p>
               <span className="mt-4 inline-flex items-center text-sm text-violet-400 hover:text-violet-300">
-                {t("tools.openTool")}
+                Open Tool
               </span>
             </motion.div>
             <motion.div
@@ -124,14 +118,13 @@ export default function DashboardPage() {
               role="button"
               tabIndex={0}
               data-card="store-builder"
-              data-href="/dashboard/store"
               onClick={handleStoreBuilderClick}
               onKeyDown={(e) => e.key === "Enter" && handleStoreBuilderClick()}
               className="rounded-2xl border border-white/10 bg-white/5 p-8 hover:border-violet-500/30 transition-colors cursor-pointer"
             >
               <Store className="h-12 w-12 text-violet-400 mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">{t(DASHBOARD_TOOLS.storeBuilder.titleKey)}</h3>
-              <p className="text-slate-400">{DASHBOARD_TOOLS.storeBuilder.description}</p>
+              <h3 className="text-xl font-semibold text-white mb-2">{t("tools.storeBuilder")}</h3>
+              <p className="text-slate-400">Generate e-commerce stores with products and checkout.</p>
               <span className="mt-4 inline-flex items-center text-sm text-violet-400 hover:text-violet-300">
                 {t("tools.openTool")}
               </span>

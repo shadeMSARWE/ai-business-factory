@@ -88,6 +88,7 @@
   },
   "nav": {
     "apps": "Apps",
+    "mobileApps": "Mobile Apps",
     "templates": "Templates",
     "pricing": "Pricing",
     "billing": "Billing",

@@ -82,11 +82,11 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     available: true,
     status: "ready",
   },
-  app: {
-    id: "app",
+  mobileApps: {
+    id: "mobileApps",
     name: "Mobile App Factory",
-    description: "Generate Android & iOS apps with AI using React Native and Expo.",
-    path: "/dashboard/apps",
+    description: "Create Android and iOS apps using AI.",
+    path: "/dashboard/mobile-apps",
     available: true,
     status: "ready",
   },
@@ -120,7 +120,7 @@ export const FACTORY_ORDER: FactoryId[] = [
   "ads",
   "socialMedia",
   "landingPage",
-  "app",
+  "mobileApps",
   "store",
   "videoAds",
 ];

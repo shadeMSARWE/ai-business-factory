@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   const supabase = await createClient();
@@ -14,7 +14,7 @@ export async function GET(
   if (!id) return NextResponse.json({ error: "ID required" }, { status: 400 });
 
   const { data: app, error: appError } = await supabase
-    .from("apps")
+    .from("mobile_apps")
     .select("*")
     .eq("id", id)
     .eq("user_id", user.id)
@@ -24,14 +24,11 @@ export async function GET(
     return NextResponse.json({ error: "App not found" }, { status: 404 });
   }
 
-  const [screensRes, buildsRes] = await Promise.all([
-    supabase.from("app_screens").select("*").eq("app_id", id).order("created_at"),
-    supabase.from("app_builds").select("*").eq("app_id", id).order("created_at", { ascending: false }),
-  ]);
+  const { data: builds } = await supabase
+    .from("mobile_app_builds")
+    .select("*")
+    .eq("app_id", id)
+    .order("created_at", { ascending: false });
 
-  return NextResponse.json({
-    app,
-    screens: screensRes.data || [],
-    builds: buildsRes.data || [],
-  });
+  return NextResponse.json({ app, builds: builds || [] });
 }

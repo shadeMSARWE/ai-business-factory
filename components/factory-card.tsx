@@ -30,7 +30,7 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   ads: Megaphone,
   socialMedia: Share2,
   landingPage: Layout,
-  app: Sparkles,
+  mobileApps: Sparkles,
   store: Store,
   videoAds: Video,
 };

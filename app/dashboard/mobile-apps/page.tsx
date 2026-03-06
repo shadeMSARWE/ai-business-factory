@@ -7,26 +7,23 @@ import { DashboardNav } from "@/components/dashboard/dashboard-nav";
 import { Logo } from "@/components/logo";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useTranslation } from "@/hooks/use-translation";
 import { ArrowLeft, Smartphone, Plus, Loader2 } from "lucide-react";
 
-interface App {
+interface MobileApp {
   id: string;
   name: string;
-  type: string;
-  platform?: string;
   description: string | null;
+  platform: string;
   status: string;
   created_at: string;
 }
 
-export default function AppsPage() {
-  const { t } = useTranslation();
-  const [apps, setApps] = useState<App[]>([]);
+export default function MobileAppsPage() {
+  const [apps, setApps] = useState<MobileApp[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/apps")
+    fetch("/api/mobile-apps")
       .then((r) => r.json())
       .then((d) => setApps(d.apps || []))
       .catch(() => setApps([]))
@@ -50,13 +47,13 @@ export default function AppsPage() {
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">{t("tools.mobileAppBuilder")}</h1>
-            <p className="text-slate-400">Generate Android & iOS apps with AI.</p>
+            <h1 className="text-3xl font-bold text-white mb-2">Mobile App Factory</h1>
+            <p className="text-slate-400">Create Android and iOS apps using AI.</p>
           </div>
-          <Link href="/dashboard/apps/new">
+          <Link href="/dashboard/mobile-apps/new">
             <Button className="bg-gradient-to-r from-violet-500 to-fuchsia-500">
               <Plus className="h-4 w-4 mr-2" />
-              {t("tools.createNewApp")}
+              Create New App
             </Button>
           </Link>
         </div>
@@ -70,10 +67,10 @@ export default function AppsPage() {
             <CardContent className="py-20 text-center">
               <Smartphone className="h-16 w-16 text-slate-600 mx-auto mb-4" />
               <p className="text-slate-400 text-lg">No apps yet.</p>
-              <p className="text-slate-500 text-sm mt-2">Create your first mobile app with AI.</p>
-              <Link href="/dashboard/apps/new">
+              <p className="text-slate-500 text-sm mt-2">Create your first mobile app.</p>
+              <Link href="/dashboard/mobile-apps/new">
                 <Button className="mt-6 bg-gradient-to-r from-violet-500 to-fuchsia-500">
-                  {t("tools.createNewApp")}
+                  Create New App
                 </Button>
               </Link>
             </CardContent>
@@ -81,7 +78,7 @@ export default function AppsPage() {
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {apps.map((app) => (
-              <Link key={app.id} href={`/dashboard/apps/${app.id}`}>
+              <Link key={app.id} href={`/dashboard/mobile-apps/${app.id}`}>
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -93,7 +90,7 @@ export default function AppsPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-white">{app.name}</h3>
-                      <p className="text-slate-400 text-sm capitalize">{(app.platform || app.type || "mobile").replace("_", " ")}</p>
+                      <p className="text-slate-400 text-sm capitalize">{app.platform}</p>
                     </div>
                   </div>
                   <p className="text-slate-500 text-sm line-clamp-2">{app.description || "No description"}</p>

@@ -32,7 +32,7 @@ const navItems = [
   { href: "/dashboard/leads", labelKey: "Leads", icon: Mail },
   { href: "/dashboard/outreach", labelKey: "Outreach", icon: Send },
   { href: "/dashboard/credits", labelKey: "Credits", icon: Coins },
-  { href: "/dashboard/apps", labelKey: "nav.apps", icon: Smartphone },
+  { href: "/dashboard/mobile-apps", labelKey: "nav.mobileApps", icon: Smartphone },
   { href: "/dashboard/store", labelKey: "tools.storeBuilder", icon: Store },
   { href: "/factory", labelKey: "nav.howItWorks", icon: Factory },
   { href: "/dashboard/websites", labelKey: "my_websites", icon: Globe },
