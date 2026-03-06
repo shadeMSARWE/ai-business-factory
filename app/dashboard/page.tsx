@@ -1,16 +1,29 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/providers/auth-provider";
 import { useTranslation } from "@/hooks/use-translation";
+import { DASHBOARD_TOOLS } from "@/lib/dashboard-tools";
 import { Globe, FileText, User, Link2, MapPin, Store } from "lucide-react";
 import { AISuggestionsPanel } from "@/components/dashboard/ai-suggestions-panel";
 
 export default function DashboardPage() {
   const { user } = useAuth();
   const { t } = useTranslation();
+  const router = useRouter();
+
+  const handleMobileAppBuilderClick = () => {
+    console.log("Mobile App Builder clicked -> /dashboard/apps");
+    router.push("/dashboard/apps");
+  };
+
+  const handleStoreBuilderClick = () => {
+    console.log("Store Builder clicked -> /dashboard/store");
+    router.push("/dashboard/store");
+  };
 
   return (
     <div>
@@ -87,32 +100,42 @@ export default function DashboardPage() {
                 <p className="text-slate-400">Find businesses without websites and generate websites for them automatically.</p>
               </motion.div>
             </Link>
-            <Link href="/dashboard/apps">
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                className="rounded-2xl border border-white/10 bg-white/5 p-8 hover:border-violet-500/30 transition-colors">
-                <svg className="h-12 w-12 text-violet-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                </svg>
-                <h3 className="text-xl font-semibold text-white mb-2">{t("tools.mobileAppBuilder")}</h3>
-                <p className="text-slate-400">Generate Android & iOS apps with AI.</p>
-                <Button variant="ghost" size="sm" className="mt-4 text-violet-400 hover:text-violet-300 p-0 h-auto">
-                  {t("tools.openTool")}
-                </Button>
-              </motion.div>
-            </Link>
-            <Link href="/dashboard/store">
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                className="rounded-2xl border border-white/10 bg-white/5 p-8 hover:border-violet-500/30 transition-colors">
-                <Store className="h-12 w-12 text-violet-400 mb-4" />
-                <h3 className="text-xl font-semibold text-white mb-2">{t("tools.storeBuilder")}</h3>
-                <p className="text-slate-400">Generate e-commerce stores with products and checkout.</p>
-                <Button variant="ghost" size="sm" className="mt-4 text-violet-400 hover:text-violet-300 p-0 h-auto">
-                  {t("tools.openTool")}
-                </Button>
-              </motion.div>
-            </Link>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              role="button"
+              tabIndex={0}
+              data-card="mobile-app-builder"
+              data-href="/dashboard/apps"
+              onClick={handleMobileAppBuilderClick}
+              onKeyDown={(e) => e.key === "Enter" && handleMobileAppBuilderClick()}
+              className="rounded-2xl border border-white/10 bg-white/5 p-8 hover:border-violet-500/30 transition-colors cursor-pointer"
+            >
+              <svg className="h-12 w-12 text-violet-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+              <h3 className="text-xl font-semibold text-white mb-2">{t(DASHBOARD_TOOLS.mobileAppBuilder.titleKey)}</h3>
+              <p className="text-slate-400">{DASHBOARD_TOOLS.mobileAppBuilder.description}</p>
+              <span className="mt-4 inline-flex items-center text-sm text-violet-400 hover:text-violet-300">
+                {t("tools.openTool")}
+              </span>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              role="button"
+              tabIndex={0}
+              data-card="store-builder"
+              data-href="/dashboard/store"
+              onClick={handleStoreBuilderClick}
+              onKeyDown={(e) => e.key === "Enter" && handleStoreBuilderClick()}
+              className="rounded-2xl border border-white/10 bg-white/5 p-8 hover:border-violet-500/30 transition-colors cursor-pointer"
+            >
+              <Store className="h-12 w-12 text-violet-400 mb-4" />
+              <h3 className="text-xl font-semibold text-white mb-2">{t(DASHBOARD_TOOLS.storeBuilder.titleKey)}</h3>
+              <p className="text-slate-400">{DASHBOARD_TOOLS.storeBuilder.description}</p>
+              <span className="mt-4 inline-flex items-center text-sm text-violet-400 hover:text-violet-300">
+                {t("tools.openTool")}
+              </span>
+            </motion.div>
             <motion.div
               whileHover={{ scale: 1.02 }}
               className="rounded-2xl border border-white/10 border-dashed bg-white/5 p-8 opacity-80"
