@@ -106,15 +106,22 @@ export async function downloadWebsiteFromData(data: WebsiteDataForDownload, file
 }
 
 export async function downloadWebsiteAsZip(slug: string): Promise<void> {
+  let d: WebsiteDataForDownload | null = null;
   const site = getWebsiteBySlug(slug);
-  if (!site) {
-    alert("Website not found");
-    return;
+  if (site?.data) {
+    d = site.data as WebsiteDataForDownload;
+  } else {
+    const res = await fetch(`/api/site/${encodeURIComponent(slug)}`);
+    if (res.ok) {
+      const json = await res.json();
+      d = json.data as WebsiteDataForDownload;
+    }
+  }
+  if (!d) {
+    throw new Error("Website not found");
   }
 
-  const d = site.data as WebsiteDataForDownload;
   const html = buildHtmlFromData(d);
-
   const zip = new JSZip();
   zip.file("index.html", html);
 

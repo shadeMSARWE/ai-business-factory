@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "@/hooks/use-translation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { CreditCard, Zap, Loader2, Check } from "lucide-react";
@@ -21,6 +22,7 @@ interface BillingData {
 }
 
 export default function BillingPage() {
+  const { t } = useTranslation();
   const [billing, setBilling] = useState<BillingData | null>(null);
   const [loading, setLoading] = useState(true);
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
@@ -50,7 +52,7 @@ export default function BillingPage() {
     }
   };
 
-  const formatLimit = (n: number) => (n === -1 ? "Unlimited" : n.toString());
+  const formatLimit = (n: number) => (n === -1 ? t("billing.unlimited") : n.toString());
 
   return (
     <div>
@@ -61,9 +63,9 @@ export default function BillingPage() {
         >
           <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-2">
             <CreditCard className="h-8 w-8" />
-            Billing & Usage
+            {t("billing.title")}
           </h1>
-          <p className="text-slate-400 mb-10">Manage your plan and track usage</p>
+          <p className="text-slate-400 mb-10">{t("billing.subtitle")}</p>
 
           {loading ? (
             <div className="flex items-center justify-center py-20">
@@ -75,7 +77,7 @@ export default function BillingPage() {
                 <CardHeader>
                   <h2 className="text-xl font-semibold text-white">Current Plan: {billing.planName}</h2>
                   <p className="text-slate-400 text-sm">
-                    {billing.hasSubscription ? "Active subscription" : "Free tier"}
+                    {billing.hasSubscription ? t("billing.activeSubscription") : t("billing.freeTier")}
                   </p>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -146,7 +148,7 @@ export default function BillingPage() {
                         {isCurrent ? (
                           <div className="flex items-center gap-2 text-violet-400 text-sm">
                             <Check className="h-4 w-4" />
-                            Current plan
+                            {t("billing.currentPlan")}
                           </div>
                         ) : canUpgrade ? (
                           <Button
@@ -157,7 +159,7 @@ export default function BillingPage() {
                             {checkoutLoading === planId ? (
                               <Loader2 className="h-4 w-4 animate-spin" />
                             ) : (
-                              "Upgrade"
+                              t("billing.upgrade")
                             )}
                           </Button>
                         ) : null}

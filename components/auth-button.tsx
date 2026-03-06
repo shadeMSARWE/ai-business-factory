@@ -49,7 +49,7 @@ export function AuthButton() {
   }
 
   if (loading) {
-    return <Button disabled>{t("dashboard")}</Button>;
+    return <div className="h-9 w-20 rounded-md bg-white/10 animate-pulse" />;
   }
 
   if (user) {

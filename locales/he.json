@@ -32,6 +32,26 @@
     "yourSiteUrl": "כתובת האתר שלך",
     "generateAgain": "צור שוב"
   },
+  "preview": {
+    "backToWebsites": "חזרה לאתרים שלי",
+    "backToDashboard": "חזרה ללוח בקרה"
+  },
+  "billing": {
+    "title": "חיוב ושימוש",
+    "subtitle": "נהל את התוכנית שלך ועקוב אחר שימוש",
+    "activeSubscription": "מנוי פעיל",
+    "freeTier": "תוכנית חינם",
+    "upgrade": "שדרוג",
+    "currentPlan": "תוכנית נוכחית",
+    "unlimited": "ללא הגבלה"
+  },
+  "analyticsLabels": {
+    "visitors": "מבקרים",
+    "leads": "לידים",
+    "formSubmissions": "שליחת טפסים",
+    "conversionRate": "שיעור המרה",
+    "recentEvents": "אירועים אחרונים"
+  },
   "published": {
     "loading": "טוען...",
     "notFound": "האתר לא נמצא"

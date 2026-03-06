@@ -22,7 +22,7 @@ export function AISuggestionsPanel() {
       { id: "1", text: "Your website has no analytics yet. Add tracking to see visitor data.", href: "/dashboard/analytics", icon: "analytics" },
       { id: "2", text: "Improve SEO by generating meta descriptions for your pages.", href: "/dashboard/seo-generator", icon: "seo" },
       { id: "3", text: "Add a professional logo using the AI Logo Factory.", href: "/dashboard/logo-generator", icon: "logo" },
-      { id: "4", text: "Publish your site to share it with the world.", href: "/my-sites", icon: "publish" },
+      { id: "4", text: "Publish your site to share it with the world.", href: "/dashboard/websites", icon: "publish" },
     ]);
   }, []);
 

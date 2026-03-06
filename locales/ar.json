@@ -32,6 +32,26 @@
     "yourSiteUrl": "رابط موقعك",
     "generateAgain": "إنشاء مرة أخرى"
   },
+  "preview": {
+    "backToWebsites": "العودة إلى مواقعي",
+    "backToDashboard": "العودة إلى لوحة التحكم"
+  },
+  "billing": {
+    "title": "الفواتير والاستخدام",
+    "subtitle": "إدارة خطتك وتتبع الاستخدام",
+    "activeSubscription": "اشتراك نشط",
+    "freeTier": "الخطة المجانية",
+    "upgrade": "ترقية",
+    "currentPlan": "الخطة الحالية",
+    "unlimited": "غير محدود"
+  },
+  "analyticsLabels": {
+    "visitors": "الزوار",
+    "leads": "العملاء المحتملين",
+    "formSubmissions": "إرسال النماذج",
+    "conversionRate": "معدل التحويل",
+    "recentEvents": "الأحداث الأخيرة"
+  },
   "published": {
     "loading": "جاري التحميل...",
     "notFound": "الموقع غير موجود"

@@ -167,7 +167,7 @@ export default function EditorPage() {
                 Preview
               </Button>
             </Link>
-            {site && <PublishButton websiteId={site.id} variant="outline" size="sm" className="border-white/20" />}
+            {site && <PublishButton slug={site.slug} websiteId={site.id} variant="outline" size="sm" className="border-white/20" />}
             <Button
               onClick={handleSave}
               disabled={saving}

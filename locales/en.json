@@ -38,6 +38,26 @@
     "loading": "Loading...",
     "notFound": "Website not found"
   },
+  "preview": {
+    "backToWebsites": "Back to My Websites",
+    "backToDashboard": "Back to Dashboard"
+  },
+  "billing": {
+    "title": "Billing & Usage",
+    "subtitle": "Manage your plan and track usage",
+    "activeSubscription": "Active subscription",
+    "freeTier": "Free tier",
+    "upgrade": "Upgrade",
+    "currentPlan": "Current plan",
+    "unlimited": "Unlimited"
+  },
+  "analyticsLabels": {
+    "visitors": "Visitors",
+    "leads": "Leads",
+    "formSubmissions": "Form Submissions",
+    "conversionRate": "Conversion Rate",
+    "recentEvents": "Recent Events"
+  },
   "common": {
     "getStarted": "Get Started",
     "login": "Login with Google",

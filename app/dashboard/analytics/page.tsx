@@ -52,10 +52,10 @@ export default function AnalyticsPage() {
   const conversionRate = visitors > 0 ? ((leads / visitors) * 100).toFixed(1) : "0";
 
   const stats = [
-    { label: "Visitors", value: String(visitors), icon: Users, color: "from-violet-500 to-fuchsia-500" },
-    { label: "Leads", value: String(leads), icon: Mail, color: "from-fuchsia-500 to-pink-500" },
-    { label: "Form Submissions", value: String(leads), icon: MousePointer, color: "from-blue-500 to-cyan-500" },
-    { label: "Conversion Rate", value: `${conversionRate}%`, icon: TrendingUp, color: "from-emerald-500 to-teal-500" },
+    { labelKey: "analyticsLabels.visitors", value: String(visitors), icon: Users, color: "from-violet-500 to-fuchsia-500" },
+    { labelKey: "analyticsLabels.leads", value: String(leads), icon: Mail, color: "from-fuchsia-500 to-pink-500" },
+    { labelKey: "analyticsLabels.formSubmissions", value: String(leads), icon: MousePointer, color: "from-blue-500 to-cyan-500" },
+    { labelKey: "analyticsLabels.conversionRate", value: `${conversionRate}%`, icon: TrendingUp, color: "from-emerald-500 to-teal-500" },
   ];
 
   const getSiteName = (html: string) => {
@@ -87,7 +87,7 @@ export default function AnalyticsPage() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {stats.map((stat, i) => (
             <motion.div
-              key={stat.label}
+              key={stat.labelKey}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
@@ -97,7 +97,7 @@ export default function AnalyticsPage() {
                 <stat.icon className="h-6 w-6 text-white" />
               </div>
               <p className="text-3xl font-bold text-white">{stat.value}</p>
-              <p className="text-slate-400">{stat.label}</p>
+              <p className="text-slate-400">{t(stat.labelKey)}</p>
             </motion.div>
           ))}
         </div>
@@ -108,7 +108,7 @@ export default function AnalyticsPage() {
           transition={{ delay: 0.2 }}
           className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 mt-8"
         >
-          <h2 className="text-lg font-semibold text-white mb-6">Recent Events</h2>
+            <h2 className="text-lg font-semibold text-white mb-6">{t("analyticsLabels.recentEvents")}</h2>
           <div className="space-y-3">
             {events.length > 0 ? (
               events.slice(0, 20).map((e, i) => (

@@ -5,22 +5,48 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { DevicePreview } from "@/components/device-preview";
+import { useTranslation } from "@/hooks/use-translation";
 import { getWebsiteById } from "@/lib/storage";
 
 export default function PreviewPage() {
   const params = useParams();
+  const { t } = useTranslation();
   const id = params.id as string;
   const [data, setData] = useState<Record<string, unknown> | null>(null);
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const site = getWebsiteById(id);
-    if (site?.data) setData(site.data as Record<string, unknown>);
+    if (site?.data) {
+      setData(site.data as Record<string, unknown>);
+      setLoading(false);
+      return;
+    }
+    fetch(`/api/sites/${id}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (json?.data) setData(json.data as Record<string, unknown>);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, [id]);
+
+  if (loading && !data) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-violet-950/20 to-slate-950 flex items-center justify-center">
+        <p className="text-slate-400">{t("common.loading")}</p>
+      </div>
+    );
+  }
 
   if (!data) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-violet-950/20 to-slate-950 flex items-center justify-center">
-        <p className="text-slate-400">Loading...</p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-violet-950/20 to-slate-950 flex flex-col items-center justify-center gap-4">
+        <p className="text-slate-400">{t("published.notFound")}</p>
+        <Link href="/dashboard/websites">
+          <Button variant="outline" className="border-white/20">{t("preview.backToWebsites")}</Button>
+        </Link>
       </div>
     );
   }
@@ -43,7 +69,7 @@ export default function PreviewPage() {
       <div className="flex items-center justify-between p-4 border-b border-white/10">
         <Link href="/dashboard">
           <Button variant="outline" className="border-white/20 bg-black/50">
-            ← Back to Dashboard
+            ← {t("preview.backToDashboard")}
           </Button>
         </Link>
       </div>
