@@ -15,6 +15,7 @@ export const CREDIT_COSTS = {
   autoOutreachGenerate: 20,
   autoOutreachMessage: 1,
   autoOutreachSend: 1,
+  appGenerate: 25,
 } as const;
 
 export type CreditAction = keyof typeof CREDIT_COSTS;

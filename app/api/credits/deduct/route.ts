@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { deductCredits, hasEnoughCredits } from "@/lib/credits-service";
 import type { CreditAction } from "@/lib/credits";
 
-const VALID_ACTIONS: CreditAction[] = ["website", "logo", "seo", "ads", "businessFinderSearch", "businessFinderBulk50", "businessFinderBulk100", "businessFinderBulk500", "businessWebsite", "autoOutreachSearch", "autoOutreachGenerate", "autoOutreachMessage", "autoOutreachSend"];
+const VALID_ACTIONS: CreditAction[] = ["website", "logo", "seo", "ads", "businessFinderSearch", "businessFinderBulk50", "businessFinderBulk100", "businessFinderBulk500", "businessWebsite", "autoOutreachSearch", "autoOutreachGenerate", "autoOutreachMessage", "autoOutreachSend", "appGenerate"];
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient();

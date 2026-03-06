@@ -84,11 +84,11 @@ export const FACTORIES: Record<string, FactoryConfig> = {
   },
   app: {
     id: "app",
-    name: "AI App Factory",
-    description: "Generate mobile apps (React Native / Expo).",
-    path: "/dashboard/app",
-    available: false,
-    status: "new",
+    name: "Mobile App Factory",
+    description: "Generate Android & iOS apps with AI using React Native and Expo.",
+    path: "/dashboard/apps",
+    available: true,
+    status: "ready",
   },
   store: {
     id: "store",

@@ -87,6 +87,17 @@ export default function DashboardPage() {
                 <p className="text-slate-400">Find businesses without websites and generate websites for them automatically.</p>
               </motion.div>
             </Link>
+            <Link href="/dashboard/apps">
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="rounded-2xl border border-white/10 bg-white/5 p-8 hover:border-violet-500/30 transition-colors">
+                <svg className="h-12 w-12 text-violet-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                <h3 className="text-xl font-semibold text-white mb-2">Mobile App Builder</h3>
+                <p className="text-slate-400">Generate Android & iOS apps with AI.</p>
+              </motion.div>
+            </Link>
             <motion.div
               whileHover={{ scale: 1.02 }}
               className="rounded-2xl border border-white/10 border-dashed bg-white/5 p-8 opacity-80"
