@@ -4,9 +4,14 @@ export interface Lead {
   id: string;
   name: string;
   email: string;
-  message: string;
+  message?: string;
   slug: string;
-  timestamp: string;
+  timestamp?: string;
+  status?: string;
+  notes?: string;
+  follow_up_at?: string;
+  last_contacted_at?: string;
+  created_at?: string;
 }
 
 export function getLeads(): Lead[] {
@@ -19,7 +24,25 @@ export function getLeads(): Lead[] {
   }
 }
 
-export function addLead(lead: Omit<Lead, "id" | "timestamp">): Lead {
+export async function addLead(lead: Omit<Lead, "id" | "timestamp">): Promise<Lead> {
+  try {
+    const res = await fetch("/api/leads", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        slug: lead.slug,
+        name: lead.name,
+        email: lead.email,
+        message: lead.message || "",
+      }),
+    });
+    if (res.ok) {
+      const { lead: saved } = await res.json();
+      return saved as Lead;
+    }
+  } catch {
+    // fallback to localStorage
+  }
   const leads = getLeads();
   const newLead: Lead = {
     ...lead,

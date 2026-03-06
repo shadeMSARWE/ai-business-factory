@@ -42,6 +42,7 @@ function buildFromTemplate(
     services,
     testimonials,
     galleryImages,
+    extraSections: template.extraSections || [],
     contactInfo: {
       address: "See our location",
       phone: "",

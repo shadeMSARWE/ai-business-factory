@@ -38,6 +38,8 @@ export function detectBusinessType(prompt: string): BusinessType {
   return bestMatch;
 }
 
+export type SectionType = "menu" | "reservation" | "practice_areas" | "case_studies" | "services_grid" | "appointment" | "membership" | "class_schedule" | "default";
+
 export const TEMPLATE_DEFAULTS: Record<
   BusinessType,
   {
@@ -46,6 +48,7 @@ export const TEMPLATE_DEFAULTS: Record<
     aboutTitle: string;
     services: { title: string; description: string }[];
     testimonials: { name: string; text: string; role: string }[];
+    extraSections?: { type: SectionType; title: string }[];
   }
 > = {
   restaurant: {
@@ -61,6 +64,10 @@ export const TEMPLATE_DEFAULTS: Record<
       { name: "Sarah M.", text: "Best food in town! The pasta was incredible.", role: "Regular" },
       { name: "Mike D.", text: "Great atmosphere and friendly staff.", role: "Customer" },
     ],
+    extraSections: [
+      { type: "menu", title: "Our Menu" },
+      { type: "reservation", title: "Reserve a Table" },
+    ],
   },
   dentist: {
     heroTitle: "Your Smile, Our Priority",
@@ -74,6 +81,10 @@ export const TEMPLATE_DEFAULTS: Record<
     testimonials: [
       { name: "Lisa K.", text: "Finally found a dentist I trust. Highly recommend!", role: "Patient" },
       { name: "John P.", text: "Painless and professional. Great experience.", role: "Patient" },
+    ],
+    extraSections: [
+      { type: "services_grid", title: "Our Services" },
+      { type: "appointment", title: "Book an Appointment" },
     ],
   },
   salon: {
@@ -145,6 +156,10 @@ export const TEMPLATE_DEFAULTS: Record<
       { name: "Robert H.", text: "Got the settlement I deserved. Professional and caring.", role: "Client" },
       { name: "Susan K.", text: "Navigated my divorce with compassion. Highly recommend.", role: "Client" },
     ],
+    extraSections: [
+      { type: "practice_areas", title: "Practice Areas" },
+      { type: "case_studies", title: "Case Studies" },
+    ],
   },
   gym: {
     heroTitle: "Transform Your Body",
@@ -158,6 +173,10 @@ export const TEMPLATE_DEFAULTS: Record<
     testimonials: [
       { name: "Alex F.", text: "Best gym in town. Clean and motivating atmosphere.", role: "Member" },
       { name: "Nina P.", text: "Lost 20 lbs in 3 months. Incredible results!", role: "Member" },
+    ],
+    extraSections: [
+      { type: "membership", title: "Membership Plans" },
+      { type: "class_schedule", title: "Class Schedule" },
     ],
   },
 };

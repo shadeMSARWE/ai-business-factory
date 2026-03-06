@@ -135,6 +135,9 @@ async function saveToBusinessLeads(
       country: country || null,
       place_id: r.place_id,
       website_generated: false,
+      rating: r.rating ?? null,
+      category: "business",
+      lead_score: 70,
     } as Record<string, unknown>);
   }
 }

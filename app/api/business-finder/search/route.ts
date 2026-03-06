@@ -10,6 +10,9 @@ export interface BusinessPlace {
   rating: number | null;
   website: string | null;
   place_id: string;
+  reviews_count?: number;
+  category?: string;
+  lead_score?: number;
 }
 
 function extractCityFromAddress(addr: string): string {
@@ -23,26 +26,30 @@ export async function POST(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const hasCredits = await hasEnoughCredits(user.id, "businessFinderSearch");
-  if (!hasCredits) {
-    return NextResponse.json(
-      { error: "credits_exceeded", message: "Insufficient credits. Search costs 5 credits." },
-      { status: 403 }
-    );
-  }
-
   const body = await request.json();
   const businessType = (body?.businessType || "").trim();
   const city = (body?.city || "").trim();
   const country = (body?.country || "").trim();
+  const limitRaw = body?.limit ?? 20;
+  const limit = Math.min(Math.max(parseInt(String(limitRaw), 10) || 20, 1), 500);
+
   if (!businessType || !city || !country) {
     return NextResponse.json({ error: "businessType, city, and country are required" }, { status: 400 });
+  }
+
+  const creditAction = limit <= 20 ? "businessFinderSearch" : limit <= 50 ? "businessFinderBulk50" : limit <= 100 ? "businessFinderBulk100" : "businessFinderBulk500";
+  const hasCredits = await hasEnoughCredits(user.id, creditAction);
+  if (!hasCredits) {
+    return NextResponse.json(
+      { error: "credits_exceeded", message: `Insufficient credits. Search costs ${limit <= 20 ? 5 : limit <= 50 ? 10 : limit <= 100 ? 15 : 25} credits.` },
+      { status: 403 }
+    );
   }
 
   const query = `${businessType} in ${city} ${country}`;
 
   if (!GOOGLE_MAPS_API_KEY) {
-    await deductCredits(user.id, "businessFinderSearch");
+    await deductCredits(user.id, creditAction);
     return NextResponse.json({
       results: getMockResults(city),
       source: "mock",
@@ -59,12 +66,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: textData.error_message || "Places API error" }, { status: 500 });
     }
 
-    const places = (textData.results || []).slice(0, 20);
+    const places = (textData.results || []).slice(0, limit);
     const results: BusinessPlace[] = [];
+    const seen = new Set<string>();
 
     for (const place of places) {
+      if (seen.has(place.place_id)) continue;
+      seen.add(place.place_id);
+
       const detailsRes = await fetch(
-        `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,website,international_phone_number,rating&key=${GOOGLE_MAPS_API_KEY}`
+        `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,website,international_phone_number,rating,user_ratings_total,types&key=${GOOGLE_MAPS_API_KEY}`
       );
       const detailsData = await detailsRes.json();
       const d = detailsData.result;
@@ -74,17 +85,29 @@ export async function POST(request: NextRequest) {
       const website = d.website || null;
       if (website && website.trim() !== "") continue;
 
+      const rating = d.rating ?? null;
+      const reviewsCount = d.user_ratings_total ?? 0;
+      const category = (d.types || [])[0] || businessType;
+
+      let leadScore = 50;
+      if (!website || website.trim() === "") leadScore += 30;
+      if (rating != null && rating < 4) leadScore += 10;
+      if (reviewsCount < 10) leadScore += 10;
+
       results.push({
         name: d.name || place.name,
         address: d.formatted_address || place.formatted_address || "",
         phone: d.international_phone_number || "",
-        rating: d.rating ?? null,
+        rating,
         website: null,
         place_id: place.place_id,
+        reviews_count: reviewsCount,
+        category,
+        lead_score: Math.min(leadScore, 100),
       });
     }
 
-    await deductCredits(user.id, "businessFinderSearch");
+    await deductCredits(user.id, creditAction);
 
     return NextResponse.json({ results, source: "google" });
   } catch (e) {

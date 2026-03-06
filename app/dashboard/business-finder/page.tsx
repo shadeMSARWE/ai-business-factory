@@ -29,6 +29,8 @@ interface BusinessPlace {
   rating: number | null;
   website: string | null;
   place_id: string;
+  lead_score?: number;
+  category?: string;
 }
 
 export default function BusinessFinderPage() {
@@ -38,6 +40,7 @@ export default function BusinessFinderPage() {
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
   const [radius, setRadius] = useState("");
+  const [searchLimit, setSearchLimit] = useState(20);
   const [results, setResults] = useState<BusinessPlace[]>([]);
   const [loading, setLoading] = useState(false);
   const [generatingId, setGeneratingId] = useState<string | null>(null);
@@ -61,6 +64,7 @@ export default function BusinessFinderPage() {
           city: city.trim(),
           country: country.trim(),
           radius: radius.trim() || undefined,
+          limit: searchLimit,
         }),
       });
       const data = await res.json();
@@ -140,7 +144,9 @@ export default function BusinessFinderPage() {
               <Search className="h-5 w-5" />
               Search
             </CardTitle>
-            <p className="text-slate-400 text-sm">Search costs 5 credits.</p>
+            <p className="text-slate-400 text-sm">
+              Search costs {searchLimit <= 20 ? 5 : searchLimit <= 50 ? 10 : searchLimit <= 100 ? 15 : 25} credits.
+            </p>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-4">
@@ -180,6 +186,19 @@ export default function BusinessFinderPage() {
                   className="mt-2 bg-white/5 border-white/20"
                 />
               </div>
+              <div>
+                <Label className="text-slate-400">Results limit</Label>
+                <select
+                  value={searchLimit}
+                  onChange={(e) => setSearchLimit(Number(e.target.value))}
+                  className="mt-2 w-full px-4 py-2 rounded-lg bg-white/5 border border-white/20 text-white"
+                >
+                  <option value={20}>20 (5 credits)</option>
+                  <option value={50}>50 (10 credits)</option>
+                  <option value={100}>100 (15 credits)</option>
+                  <option value={500}>500 (25 credits)</option>
+                </select>
+              </div>
             </div>
             <Button
               onClick={handleSearch}
@@ -191,7 +210,7 @@ export default function BusinessFinderPage() {
               ) : (
                 <>
                   <Search className="h-4 w-4 mr-2" />
-                  Search (5 credits)
+                  Search ({searchLimit <= 20 ? 5 : searchLimit <= 50 ? 10 : searchLimit <= 100 ? 15 : 25} credits)
                 </>
               )}
             </Button>
@@ -217,12 +236,19 @@ export default function BusinessFinderPage() {
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div>
                         <h3 className="font-semibold text-white text-lg">{r.name}</h3>
-                        {r.rating != null && (
-                          <p className="text-amber-400 text-sm flex items-center gap-1 mt-0.5">
-                            <Star className="h-4 w-4 fill-current" />
-                            {r.rating}
-                          </p>
-                        )}
+                        <div className="flex items-center gap-2 mt-0.5">
+                          {r.rating != null && (
+                            <p className="text-amber-400 text-sm flex items-center gap-1">
+                              <Star className="h-4 w-4 fill-current" />
+                              {r.rating}
+                            </p>
+                          )}
+                          {r.lead_score != null && (
+                            <span className="text-xs bg-violet-500/20 text-violet-400 px-1.5 py-0.5 rounded">
+                              Score: {r.lead_score}
+                            </span>
+                          )}
+                        </div>
                         <div className="flex items-center gap-2 mt-1 text-slate-400 text-sm">
                           <MapPin className="h-4 w-4 flex-shrink-0" />
                           {r.address}

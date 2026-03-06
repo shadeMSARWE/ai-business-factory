@@ -175,13 +175,13 @@ export function PublishedSite({ data, slug = "" }: { data: WebsiteData; slug?: s
 function ContactForm({ slug }: { slug: string }) {
   const [status, setStatus] = useState<"idle" | "sent">("idle");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const name = (form.elements.namedItem("name") as HTMLInputElement)?.value || "";
     const email = (form.elements.namedItem("email") as HTMLInputElement)?.value || "";
     const message = (form.elements.namedItem("message") as HTMLTextAreaElement)?.value || "";
-    addLead({ name, email, message, slug });
+    await addLead({ name, email, message, slug });
     setStatus("sent");
     form.reset();
   };

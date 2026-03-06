@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { CreditCard, Zap, Loader2, Check, Coins } from "lucide-react";
+import { CreditCard, Zap, Loader2, Check, Coins, Package } from "lucide-react";
 import { PayPalSubscribe } from "@/components/paypal-subscribe";
 import { CREDIT_PLANS } from "@/lib/credits";
 
@@ -18,6 +18,35 @@ interface BillingData {
   canUseCredits: boolean;
   creditsLow: boolean;
   creditsExhausted: boolean;
+}
+
+function CreditPacksSection() {
+  const [packs, setPacks] = useState<{ id: string; credits: number; price_usd: number }[]>([]);
+  useEffect(() => {
+    fetch("/api/credit-packs")
+      .then((r) => r.json())
+      .then((d) => setPacks(d.packs || []))
+      .catch(() => setPacks([]));
+  }, []);
+  if (packs.length === 0) return null;
+  return (
+    <div className="grid sm:grid-cols-3 gap-4 mb-10">
+      {packs.map((p) => (
+        <Card key={p.id} className="border-white/10 bg-white/5 hover:border-violet-500/30 transition-colors">
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-2 mb-2">
+              <Package className="h-5 w-5 text-violet-400" />
+              <span className="text-white font-semibold">{p.credits} credits</span>
+            </div>
+            <p className="text-2xl font-bold text-white mb-4">${Number(p.price_usd).toFixed(2)}</p>
+            <Button variant="outline" className="w-full border-white/20" disabled>
+              Coming soon
+            </Button>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
 }
 
 const PLAN_PRICES: Record<string, number> = {
@@ -120,7 +149,10 @@ export default function BillingPage() {
               </CardContent>
             </Card>
 
-            <h2 className="text-xl font-semibold text-white mb-6">Available Plans</h2>
+            <h2 className="text-xl font-semibold text-white mb-6">Credit top-ups</h2>
+            <CreditPacksSection />
+
+            <h2 className="text-xl font-semibold text-white mb-6 mt-12">Available Plans</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {(["free", "pro", "business", "agency"] as const).map((planId) => {
                 const plan = CREDIT_PLANS[planId];
