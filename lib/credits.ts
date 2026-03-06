@@ -12,12 +12,23 @@ export type CreditAction = keyof typeof CREDIT_COSTS;
 
 export const CREDIT_PLANS = {
   free: { credits: 50, name: "Free" },
-  pro: { credits: 500, name: "Pro" },
-  business: { credits: 2000, name: "Business" },
-  agency: { credits: 5000, name: "Agency" },
+  pro: { credits: 100, name: "Starter" },
+  business: { credits: 500, name: "Pro" },
+  agency: { credits: 2000, name: "Business" },
 } as const;
 
 export type CreditPlanId = keyof typeof CREDIT_PLANS;
+
+export const SITES_LIMIT: Record<CreditPlanId, number> = {
+  free: 1,
+  pro: 3,
+  business: 10,
+  agency: -1,
+};
+
+export function getSitesLimit(planId: CreditPlanId): number {
+  return SITES_LIMIT[planId] ?? 1;
+}
 
 export function getCreditCost(action: CreditAction): number {
   return CREDIT_COSTS[action] ?? 0;

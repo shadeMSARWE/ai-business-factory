@@ -5,7 +5,7 @@
 - Node.js 18+
 - Vercel account (for deployment)
 - Supabase account (for auth + database)
-- Optional: OpenAI, Unsplash, Google Maps, Stripe API keys
+- Optional: OpenAI, Unsplash, Google Maps, PayPal API keys
 
 ---
 
@@ -24,10 +24,14 @@ NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
 SUPABASE_SERVICE_ROLE_KEY=eyJ...
 
-# Stripe (optional, for subscriptions)
-STRIPE_SECRET_KEY=
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
-STRIPE_WEBHOOK_SECRET=
+# PayPal (subscriptions)
+PAYPAL_CLIENT_ID=
+PAYPAL_CLIENT_SECRET=
+PAYPAL_PRO_PLAN_ID=
+PAYPAL_BUSINESS_PLAN_ID=
+PAYPAL_AGENCY_PLAN_ID=
+PAYPAL_WEBHOOK_SECRET=
+PAYPAL_WEBHOOK_ID=
 ```
 
 ---
@@ -88,14 +92,14 @@ Add all variables from `.env.example` in Vercel Project Settings → Environment
 
 ---
 
-## 4. Stripe (Subscriptions)
+## 4. PayPal (Subscriptions)
 
-1. Create Stripe account
-2. Get API keys from Dashboard
-3. Create products and prices: Pro ($19/mo), Business ($39/mo), Agency ($99/mo)
-4. Copy Price IDs to env: `STRIPE_PRO_PRICE_ID`, `STRIPE_BUSINESS_PRICE_ID`, `STRIPE_AGENCY_PRICE_ID`
-5. Set up webhook: `https://yourdomain.com/api/stripe/webhook`
-6. Add `STRIPE_WEBHOOK_SECRET` to env
+1. Create PayPal Developer account at [developer.paypal.com](https://developer.paypal.com)
+2. Create app and get Client ID + Secret
+3. Create subscription plans: Starter ($19/mo), Pro ($39/mo), Business ($90/mo)
+4. Copy Plan IDs to env: `PAYPAL_PRO_PLAN_ID`, `PAYPAL_BUSINESS_PLAN_ID`, `PAYPAL_AGENCY_PLAN_ID`
+5. Set up webhook: `https://yourdomain.com/api/paypal/webhook`
+6. Add `PAYPAL_WEBHOOK_SECRET` and `PAYPAL_WEBHOOK_ID` to env
 
 ---
 
@@ -112,6 +116,8 @@ Add all variables from `.env.example` in Vercel Project Settings → Environment
     /sites
     /sites/[id]
     /sites/save
+    /paypal/create-subscription
+    /paypal/webhook
     /auth/callback
   /dashboard
   /login
@@ -136,7 +142,7 @@ Add all variables from `.env.example` in Vercel Project Settings → Environment
 | `projects` | User projects (name, industry) |
 | `generated_sites` | HTML/CSS/JS, slug, meta |
 | `sites` | User-generated websites (prompt, html, slug, user_id) — **required for save flow** |
-| `subscriptions` | Stripe subscription state |
+| `subscriptions` | PayPal subscription state |
 
 ---
 
@@ -148,7 +154,7 @@ Add all variables from `.env.example` in Vercel Project Settings → Environment
 | OpenAI | Not configured | Mock content |
 | Unsplash | Not configured | Fallback images |
 | Google Maps | Not configured | Mock business data |
-| Stripe | Not configured | No subscriptions |
+| PayPal | Not configured | No subscriptions |
 
 ---
 

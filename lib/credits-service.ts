@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { getCreditCost, getPlanCredits, type CreditAction, type CreditPlanId } from "./credits";
+import { getCreditCost, getPlanCredits, CREDIT_PLANS, type CreditAction, type CreditPlanId } from "./credits";
 
 const periodStart = () => new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().slice(0, 10);
 
@@ -27,7 +27,7 @@ export async function getUserCredits(userId: string): Promise<UserCredits | null
 
   const planId = (subRes.data?.plan as CreditPlanId) || "free";
   const planCredits = getPlanCredits(planId);
-  const planName = planId.charAt(0).toUpperCase() + planId.slice(1);
+  const planName = CREDIT_PLANS[planId]?.name ?? planId.charAt(0).toUpperCase() + planId.slice(1);
 
   let credits = usageRes.data?.credits ?? 0;
   let creditsUsed = usageRes.data?.credits_used ?? 0;

@@ -24,7 +24,7 @@ const PLAN_PRICES: Record<string, number> = {
   free: 0,
   pro: 19,
   business: 39,
-  agency: 99,
+  agency: 90,
 };
 
 export default function BillingPage() {

@@ -24,7 +24,7 @@ AI-powered website builder that generates complete multi-page websites from a si
 - Next.js 14 (App Router)
 - React, TailwindCSS, Shadcn UI, Framer Motion
 - Supabase (Auth + PostgreSQL)
-- Stripe (subscriptions, optional)
+- PayPal (subscriptions)
 - Vercel Analytics
 
 ## Getting Started
@@ -47,7 +47,7 @@ Create a `.env.local` file in the project root (copy from `.env.example`). Add y
 | `GOOGLE_MAPS_API_KEY` | Business Finder (Places API) | Mock business data |
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL | No auth, localStorage only |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon key | No auth |
-| `STRIPE_*` | Subscription payments | No payments |
+| `PAYPAL_*` | Subscription payments | No subscriptions |
 
 ### How to add API keys
 

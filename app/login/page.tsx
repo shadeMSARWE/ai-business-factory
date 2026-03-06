@@ -36,10 +36,12 @@ function LoginContent() {
     setGoogleLoading(true);
     setError("");
     try {
+      const redirect = searchParams.get("redirect") || "/dashboard";
+      const next = redirect.startsWith("/") ? redirect : "/dashboard";
       const { error: err } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback?next=/dashboard`,
+          redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
         },
       });
       if (err) {
@@ -64,7 +66,8 @@ function LoginContent() {
         setError(err.message);
         return;
       }
-      router.push("/dashboard");
+      const redirect = searchParams.get("redirect") || "/dashboard";
+      router.push(redirect.startsWith("/") ? redirect : `/dashboard`);
       router.refresh();
     } catch {
       setError(t("common.error"));

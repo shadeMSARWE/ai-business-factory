@@ -1,26 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { paypalConfig, getPaypalBaseUrl, validatePaypalConfig } from "@/lib/paypal-config";
 
 /**
  * PayPal subscription creation.
- * Add PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET to .env.local when ready.
  * See: https://developer.paypal.com/docs/subscriptions/
  */
 export async function POST(request: NextRequest) {
+  try {
+    validatePaypalConfig();
+  } catch {
+    return NextResponse.json({
+      error: "Missing PayPal environment configuration",
+    }, { status: 503 });
+  }
+
   const supabase = await createClient();
   if (!supabase) return NextResponse.json({ error: "Not configured" }, { status: 503 });
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-  const clientId = process.env.PAYPAL_CLIENT_ID;
-  const clientSecret = process.env.PAYPAL_CLIENT_SECRET;
-
-  if (!clientId || !clientSecret) {
-    return NextResponse.json({
-      error: "PayPal not configured",
-      message: "Add PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET to enable subscriptions.",
-    }, { status: 503 });
-  }
 
   const body = await request.json();
   const { planId } = body;
@@ -28,12 +26,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
   }
 
+  const baseUrl = getPaypalBaseUrl();
   try {
-    const authRes = await fetch("https://api-m.sandbox.paypal.com/v1/oauth2/token", {
+    const authRes = await fetch(`${baseUrl}/v1/oauth2/token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString("base64")}`,
+        Authorization: `Basic ${Buffer.from(`${paypalConfig.clientId}:${paypalConfig.secret}`).toString("base64")}`,
       },
       body: "grant_type=client_credentials",
     });
@@ -43,17 +42,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "PayPal auth failed" }, { status: 500 });
     }
 
-    const planIds: Record<string, string> = {
-      pro: process.env.PAYPAL_PRO_PLAN_ID || "",
-      business: process.env.PAYPAL_BUSINESS_PLAN_ID || "",
-      agency: process.env.PAYPAL_AGENCY_PLAN_ID || "",
-    };
-    const paypalPlanId = planIds[planId];
+    const paypalPlanId = paypalConfig.plans[planId as keyof typeof paypalConfig.plans];
     if (!paypalPlanId) {
       return NextResponse.json({ error: `Plan ${planId} not configured` }, { status: 400 });
     }
 
-    const subRes = await fetch("https://api-m.sandbox.paypal.com/v1/billing/subscriptions", {
+    const subRes = await fetch(`${baseUrl}/v1/billing/subscriptions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -65,7 +59,7 @@ export async function POST(request: NextRequest) {
         application_context: {
           brand_name: "InstantBizSite AI",
           return_url: `${request.nextUrl.origin}/dashboard/billing?success=true`,
-          cancel_url: `${request.nextUrl.origin}/dashboard/billing?canceled=true`,
+          cancel_url: `${request.nextUrl.origin}/pricing?canceled=true`,
         },
       }),
     });

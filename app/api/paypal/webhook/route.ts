@@ -1,20 +1,80 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminClient } from "@/lib/supabase/admin";
 import { CREDIT_PLANS } from "@/lib/credits";
+import { paypalConfig, validatePaypalConfig, getPaypalBaseUrl } from "@/lib/paypal-config";
 
 /**
  * PayPal webhook handler.
- * Add PAYPAL_WEBHOOK_SECRET to .env.local.
  * Configure webhook in PayPal Dashboard: https://developer.paypal.com/dashboard/
  * Events: BILLING.SUBSCRIPTION.ACTIVATED, BILLING.SUBSCRIPTION.CANCELLED
  */
+async function verifyWebhookSignature(
+  body: string,
+  headers: Headers,
+  webhookId: string
+): Promise<boolean> {
+  const transmissionId = headers.get("paypal-transmission-id");
+  const transmissionTime = headers.get("paypal-transmission-time");
+  const certUrl = headers.get("paypal-cert-url");
+  const authAlgo = headers.get("paypal-auth-algo") || "SHA256withRSA";
+  const transmissionSig = headers.get("paypal-transmission-sig");
+
+  if (!transmissionId || !transmissionTime || !certUrl || !transmissionSig) {
+    return false;
+  }
+
+  const authRes = await fetch(`${getPaypalBaseUrl()}/v1/oauth2/token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: `Basic ${Buffer.from(`${paypalConfig.clientId}:${paypalConfig.secret}`).toString("base64")}`,
+    },
+    body: "grant_type=client_credentials",
+  });
+  const authData = await authRes.json();
+  const accessToken = authData.access_token;
+  if (!accessToken) return false;
+
+  let webhookEvent: unknown;
+  try {
+    webhookEvent = JSON.parse(body);
+  } catch {
+    return false;
+  }
+
+  const verifyRes = await fetch(`${getPaypalBaseUrl()}/v1/notifications/verify-webhook-signature`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
+      auth_algo: authAlgo,
+      cert_url: certUrl,
+      transmission_id: transmissionId,
+      transmission_sig: transmissionSig,
+      transmission_time: transmissionTime,
+      webhook_id: webhookId,
+      webhook_event: webhookEvent,
+    }),
+  });
+  const verifyData = await verifyRes.json();
+  return verifyData.verification_status === "SUCCESS";
+}
+
 export async function POST(request: NextRequest) {
-  const webhookSecret = process.env.PAYPAL_WEBHOOK_SECRET;
-  if (!webhookSecret) {
-    return NextResponse.json({ error: "Webhook not configured" }, { status: 503 });
+  try {
+    validatePaypalConfig();
+  } catch {
+    return NextResponse.json({ error: "Missing PayPal environment configuration" }, { status: 503 });
   }
 
   const body = await request.text();
+  const webhookId = process.env.PAYPAL_WEBHOOK_ID || "";
+  if (webhookId && !(await verifyWebhookSignature(body, request.headers, webhookId))) {
+    return NextResponse.json({ error: "Invalid webhook signature" }, { status: 401 });
+  }
+
   const supabase = getAdminClient();
   if (!supabase) return NextResponse.json({ error: "Database not configured" }, { status: 503 });
 
@@ -27,9 +87,9 @@ export async function POST(request: NextRequest) {
       const subId = event.resource?.id;
       const paypalPlanId = event.resource?.plan_id || "";
       const planMap: Record<string, string> = {
-        [process.env.PAYPAL_PRO_PLAN_ID || ""]: "pro",
-        [process.env.PAYPAL_BUSINESS_PLAN_ID || ""]: "business",
-        [process.env.PAYPAL_AGENCY_PLAN_ID || ""]: "agency",
+        [paypalConfig.plans.pro]: "pro",
+        [paypalConfig.plans.business]: "business",
+        [paypalConfig.plans.agency]: "agency",
       };
       const planId = planMap[paypalPlanId] || "pro";
       if (!customId || !subId) {
