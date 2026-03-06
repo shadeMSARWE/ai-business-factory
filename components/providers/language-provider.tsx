@@ -1,7 +1,25 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback } from "react";
-import { Locale, getTranslations, isRtl } from "@/lib/i18n";
+import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import { Locale, getTranslations, isRtl, locales, defaultLocale } from "@/lib/i18n";
+
+const LOCALE_STORAGE_KEY = "instantbizsite_locale";
+
+function getStoredLocale(): Locale {
+  if (typeof window === "undefined") return defaultLocale;
+  try {
+    const stored = localStorage.getItem(LOCALE_STORAGE_KEY);
+    if (stored && locales.includes(stored as Locale)) return stored as Locale;
+  } catch {}
+  return defaultLocale;
+}
+
+function applyLocale(locale: Locale) {
+  if (typeof document !== "undefined") {
+    document.documentElement.lang = locale;
+    document.documentElement.dir = isRtl(locale) ? "rtl" : "ltr";
+  }
+}
 
 interface LanguageContextType {
   locale: Locale;
@@ -13,17 +31,23 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("en");
-  const translations = getTranslations(locale);
+  const [locale, setLocaleState] = useState<Locale>(defaultLocale);
+
+  useEffect(() => {
+    const stored = getStoredLocale();
+    setLocaleState(stored);
+    applyLocale(stored);
+  }, []);
 
   const setLocale = useCallback((newLocale: Locale) => {
     setLocaleState(newLocale);
-    if (typeof document !== "undefined") {
-      document.documentElement.lang = newLocale;
-      document.documentElement.dir = isRtl(newLocale) ? "rtl" : "ltr";
-    }
+    applyLocale(newLocale);
+    try {
+      localStorage.setItem(LOCALE_STORAGE_KEY, newLocale);
+    } catch {}
   }, []);
 
+  const translations = getTranslations(locale);
   const t = useCallback(
     (key: string): string => {
       const keys = key.split(".");
@@ -37,7 +61,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       }
       return typeof value === "string" ? value : key;
     },
-    [translations]
+    [locale]
   );
 
   return (

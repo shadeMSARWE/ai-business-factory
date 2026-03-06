@@ -21,40 +21,25 @@ export function Header() {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Logo showSubtitle />
 
-        <nav className="hidden md:flex items-center gap-6">
-          <Link
-            href="/dashboard/templates"
-            className="text-sm text-muted-foreground hover:text-foreground transition"
-          >
-            Templates
+        <nav className={`hidden md:flex items-center gap-6 ${isRtl ? "flex-row-reverse" : ""}`}>
+          <Link href="/dashboard/templates" className="text-sm text-muted-foreground hover:text-foreground transition">
+            {t("nav.templates")}
           </Link>
-          <Link
-            href="/pricing"
-            className="text-sm text-muted-foreground hover:text-foreground transition"
-          >
-            Pricing
+          <Link href="/pricing" className="text-sm text-muted-foreground hover:text-foreground transition">
+            {t("nav.pricing")}
           </Link>
-          <Link
-            href="/dashboard"
-            className="text-sm text-muted-foreground hover:text-foreground transition"
-          >
+          <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground transition">
             {t("common.dashboard")}
           </Link>
-          <Link
-            href="/factory"
-            className="text-sm text-muted-foreground hover:text-foreground transition"
-          >
-            How It Works
+          <Link href="/factory" className="text-sm text-muted-foreground hover:text-foreground transition">
+            {t("nav.howItWorks")}
           </Link>
-          <Link
-            href="/contact"
-            className="text-sm text-muted-foreground hover:text-foreground transition"
-          >
-            Contact
+          <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition">
+            {t("nav.contact")}
           </Link>
 
-          <div className="flex items-center gap-2">
-            <Globe className="h-4 w-4 text-muted-foreground" />
+          <div className={`flex items-center gap-2 ${isRtl ? "flex-row-reverse" : ""}`}>
+            <Globe className="h-4 w-4 text-muted-foreground flex-shrink-0" />
             <select
               value={locale}
               onChange={(e) => setLocale(e.target.value as Locale)}

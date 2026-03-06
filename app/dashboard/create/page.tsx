@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { saveWebsite } from "@/lib/storage";
+import { useAuth } from "@/components/providers/auth-provider";
+import { useLanguage } from "@/components/providers/language-provider";
 import type { GeneratedWebsite } from "@/components/website-generator";
 import { Logo } from "@/components/logo";
 import { ArrowLeft } from "lucide-react";
@@ -18,6 +20,8 @@ import { ArrowLeft } from "lucide-react";
 function CreateContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { user } = useAuth();
+  const { t } = useLanguage();
   const template = searchParams.get("template");
   const mode = searchParams.get("mode");
   const business = searchParams.get("business");
@@ -39,18 +43,31 @@ function CreateContent() {
     setSlug(name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!generatedData) return;
     setSaving(true);
     try {
-      const site = saveWebsite({
-        slug: slug || "website",
-        name: (typeof (generatedData as { businessName?: string }).businessName === "string" ? (generatedData as { businessName: string }).businessName : "My Website"),
-        data: generatedData as Record<string, unknown>,
-      });
+      const name = typeof (generatedData as { businessName?: string }).businessName === "string"
+        ? (generatedData as { businessName: string }).businessName
+        : "My Website";
+      const slugVal = slug || "website";
+
+      if (user) {
+        const res = await fetch("/api/save-site", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ slug: slugVal, name, data: generatedData }),
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.error || "Failed to save");
+        }
+      }
+
+      const site = saveWebsite({ slug: slugVal, name, data: generatedData as Record<string, unknown> });
       router.push(`/editor/${site.id}`);
     } catch (e) {
-      alert(e instanceof Error ? e.message : "Failed to save");
+      alert(e instanceof Error ? e.message : t("common.error"));
     } finally {
       setSaving(false);
     }
@@ -68,7 +85,7 @@ function CreateContent() {
       <main className="container mx-auto px-6 py-12">
         <Link href="/dashboard" className="inline-flex items-center text-slate-400 hover:text-white mb-8">
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Dashboard
+          {t("common.back")} to {t("common.dashboard")}
         </Link>
 
         <motion.div
@@ -76,9 +93,7 @@ function CreateContent() {
           animate={{ opacity: 1, y: 0 }}
           className="max-w-4xl mx-auto"
         >
-          <h1 className="text-3xl font-bold text-white mb-8">
-            Create Website
-          </h1>
+          <h1 className="text-3xl font-bold text-white mb-8">{t("common.createWebsite")}</h1>
 
           {!generatedData ? (
             <div className="space-y-8">
@@ -87,7 +102,7 @@ function CreateContent() {
           ) : (
             <div className="space-y-8">
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                <Label className="text-white">Your site URL</Label>
+                <Label className="text-white">{t("dashboard.yourSiteUrl")}</Label>
                 <div className="flex gap-2 mt-2">
                   <span className="flex items-center text-slate-400">/s/</span>
                   <Input
@@ -108,14 +123,14 @@ function CreateContent() {
                   disabled={saving}
                   className="bg-gradient-to-r from-violet-500 to-fuchsia-500"
                 >
-                  {saving ? "Saving..." : "Save & Edit"}
+                  {saving ? t("common.loading") : `${t("common.save")} & ${t("common.edit")}`}
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => setGeneratedData(null)}
                   className="border-white/20"
                 >
-                  Generate Again
+                  {t("dashboard.generateAgain")}
                 </Button>
               </div>
             </div>
