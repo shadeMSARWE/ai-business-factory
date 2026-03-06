@@ -1,0 +1,49 @@
+{
+  "common": {
+    "getStarted": "התחל עכשיו",
+    "login": "התחבר",
+    "signup": "הירשם",
+    "logout": "התנתק",
+    "dashboard": "לוח בקרה",
+    "myWebsites": "האתרים שלי",
+    "createWebsite": "צור אתר",
+    "preview": "תצוגה מקדימה",
+    "edit": "ערוך",
+    "publish": "פרסם",
+    "delete": "מחק",
+    "save": "שמור",
+    "cancel": "בטל",
+    "loading": "טוען..."
+  },
+  "hero": {
+    "title": "צור אתרים מרהיבים בשניות",
+    "subtitle": "בונה אתרים מבוסס AI לכל עסק. פשוט תאר את העסק שלך וצפה בקסם.",
+    "placeholder": "צור אתר מודרני למסעדת פיצה בתל אביב",
+    "cta": "צור את האתר שלי"
+  },
+  "features": {
+    "aiGenerator": "מחולל אתרים ב-AI",
+    "aiGeneratorDesc": "תאר את העסק שלך וקבל אתר רב-דפי מלא באופן מיידי",
+    "visualEditor": "עורך ויזואלי",
+    "visualEditorDesc": "ערוך טקסט, תמונות וצבעים עם עורך הגרירה והשחרור",
+    "publish": "פרסום בלחיצה אחת",
+    "publishDesc": "פרסם לתת-דומיין המותאם שלך בשניות",
+    "analytics": "אנליטיקה מובנית",
+    "analyticsDesc": "עקוב אחר מבקרים, לידים ושליחות טפסים"
+  },
+  "dashboard": {
+    "title": "האתרים שלי",
+    "empty": "אין עדיין אתרים. צור את הראשון שלך!",
+    "visitors": "מבקרים",
+    "leads": "לידים",
+    "submissions": "שליחות טפסים"
+  },
+  "tools": {
+    "title": "כלי עסקים ב-AI",
+    "logoGenerator": "מחולל לוגואים",
+    "adGenerator": "מחולל פרסומות",
+    "seoGenerator": "מחולל טקסט SEO",
+    "leadFinder": "מחפש לידים עסקיים",
+    "storeBuilder": "בונה חנויות"
+  }
+}

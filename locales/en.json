@@ -1,0 +1,49 @@
+{
+  "common": {
+    "getStarted": "Get Started",
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "dashboard": "Dashboard",
+    "myWebsites": "My Websites",
+    "createWebsite": "Create Website",
+    "preview": "Preview",
+    "edit": "Edit",
+    "publish": "Publish",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading..."
+  },
+  "hero": {
+    "title": "Create Stunning Websites in Seconds",
+    "subtitle": "AI-powered website builder for any business. Just describe your business and watch the magic happen.",
+    "placeholder": "Create a modern website for a pizza restaurant in Tel Aviv",
+    "cta": "Generate My Website"
+  },
+  "features": {
+    "aiGenerator": "AI Website Generator",
+    "aiGeneratorDesc": "Describe your business and get a complete multi-page website instantly",
+    "visualEditor": "Visual Editor",
+    "visualEditorDesc": "Edit text, images, and colors with our intuitive drag-and-drop editor",
+    "publish": "One-Click Publish",
+    "publishDesc": "Publish to your custom subdomain in seconds",
+    "analytics": "Built-in Analytics",
+    "analyticsDesc": "Track visitors, leads, and form submissions"
+  },
+  "dashboard": {
+    "title": "My Websites",
+    "empty": "No websites yet. Create your first one!",
+    "visitors": "Visitors",
+    "leads": "Leads",
+    "submissions": "Form Submissions"
+  },
+  "tools": {
+    "title": "AI Business Tools",
+    "logoGenerator": "Logo Generator",
+    "adGenerator": "Ad Generator",
+    "seoGenerator": "SEO Text Generator",
+    "leadFinder": "Business Lead Finder",
+    "storeBuilder": "Store Builder"
+  }
+}
