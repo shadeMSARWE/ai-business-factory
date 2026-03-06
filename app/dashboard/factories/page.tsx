@@ -1,66 +1,95 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Globe, Palette, Search, Megaphone, Store, Sparkles, Layout, MapPin } from "lucide-react";
-import { FACTORIES } from "@/lib/factories";
+import { FactoryCore } from "@/components/factory-core";
+import { FactoryCard } from "@/components/factory-card";
+import { FactoryPerformancePanel } from "@/components/factory-performance-panel";
+import { FACTORIES, FACTORY_ORDER } from "@/lib/factories";
 
-const icons: Record<string, React.ComponentType<{ className?: string }>> = {
-  website: Globe,
-  logo: Palette,
-  seo: Search,
-  ads: Megaphone,
-  businessFinder: MapPin,
-  templates: Layout,
-  store: Store,
-  app: Sparkles,
-  video: Sparkles,
-};
+const POPULAR_IDS = ["website", "businessFinder", "videoAds"];
 
 export default function FactoriesPage() {
-  return (
-    <div>
-        <h1 className="text-3xl font-bold text-white mb-2">AI Factory Modules</h1>
-        <p className="text-slate-400 mb-10">Modular AI tools for your business</p>
+  const popularFactories = POPULAR_IDS.map((id) => FACTORIES[id]).filter(Boolean);
+  const allFactories = FACTORY_ORDER.map((id) => FACTORIES[id]).filter(Boolean);
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {Object.entries(FACTORIES).map(([id, factory], i) => {
-            const Icon = icons[id] || Sparkles;
-            return (
-              <motion.div
-                key={id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-              >
-                <Link href={factory.available ? factory.path : "#"}>
-                  <Card
-                    className={`h-full border-white/10 bg-white/5 transition-colors ${
-                      factory.available ? "hover:border-violet-500/30 cursor-pointer" : "opacity-70 cursor-not-allowed"
-                    }`}
-                  >
-                    <CardContent className="pt-6">
-                      <Icon className="h-12 w-12 text-violet-400 mb-4" />
-                      <h3 className="text-xl font-semibold text-white mb-2">{factory.name}</h3>
-                      <p className="text-slate-400 text-sm mb-4">
-                        {factory.available ? "Available" : "Coming soon"}
-                      </p>
-                      {factory.available ? (
-                        <Button size="sm" className="bg-violet-500/20 text-violet-300 hover:bg-violet-500/30">
-                          Open
-                        </Button>
-                      ) : (
-                        <span className="text-xs text-slate-500">Coming soon</span>
-                      )}
-                    </CardContent>
-                  </Card>
-                </Link>
-              </motion.div>
-            );
-          })}
+  return (
+    <div className="min-h-screen">
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="mb-12"
+      >
+        <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
+          AI Business Factory
+        </h1>
+        <p className="text-slate-400 text-lg max-w-2xl">
+          Build, grow and automate businesses using AI factories.
+        </p>
+      </motion.div>
+
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* Main content */}
+        <div className="flex-1 min-w-0">
+          {/* Center: Factory Core + surrounding cards */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="relative mb-16"
+          >
+            {/* Core section with radial glow */}
+            <div className="relative flex justify-center py-12 md:py-16">
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-[600px] h-[200px] md:w-[800px] md:h-[300px] bg-gradient-radial from-violet-500/10 via-transparent to-transparent rounded-full" />
+              </div>
+              <FactoryCore />
+            </div>
+
+            {/* Factory modules grid - arranged around core */}
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {allFactories.map((factory, i) => (
+                <FactoryCard
+                  key={factory.id}
+                  factory={factory}
+                  index={i}
+                  isConnected={true}
+                />
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Popular factories section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+              <span className="w-1 h-6 rounded-full bg-gradient-to-b from-violet-500 to-fuchsia-500" />
+              Popular Factories
+            </h2>
+            <div className="grid md:grid-cols-3 gap-4">
+              {popularFactories.map((factory, i) => (
+                <FactoryCard
+                  key={factory.id}
+                  factory={factory}
+                  index={i}
+                  isConnected={false}
+                />
+              ))}
+            </div>
+          </motion.div>
         </div>
+
+        {/* Sidebar: Performance panel */}
+        <aside className="lg:w-64 flex-shrink-0">
+          <div className="lg:sticky lg:top-24">
+            <FactoryPerformancePanel />
+          </div>
+        </aside>
+      </div>
     </div>
   );
 }
