@@ -6,6 +6,7 @@ import { AuthProvider } from "@/components/providers/auth-provider";
 import { ToastProvider } from "@/components/providers/toast-provider";
 import { LocaleInitScript } from "@/components/locale-init-script";
 import { Analytics } from "@vercel/analytics/react";
+import { OnboardingWizard } from "@/components/onboarding-wizard";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +26,10 @@ export default function RootLayout({
         <LocaleInitScript />
         <LanguageProvider>
           <AuthProvider>
-            <ToastProvider>{children}</ToastProvider>
+            <ToastProvider>
+              {children}
+              <OnboardingWizard />
+            </ToastProvider>
           </AuthProvider>
         </LanguageProvider>
         <Analytics />

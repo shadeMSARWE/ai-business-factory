@@ -14,10 +14,13 @@ import {
   Palette,
   Megaphone,
   Search,
+  CreditCard,
 } from "lucide-react";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/dashboard/billing", label: "Billing", icon: CreditCard },
+  { href: "/dashboard/factories", label: "Factories", icon: Factory },
   { href: "/dashboard/logo-generator", label: "Logo", icon: Palette },
   { href: "/dashboard/ad-generator", label: "Ads", icon: Megaphone },
   { href: "/dashboard/seo-generator", label: "SEO", icon: Search },

@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { Header } from "@/components/header";
 import { Button } from "@/components/ui/button";
+import { DevicePreview } from "@/components/device-preview";
 import { getWebsiteById } from "@/lib/storage";
 
 export default function PreviewPage() {
@@ -39,8 +39,8 @@ export default function PreviewPage() {
   const heroImage = d.galleryImages?.[0] || "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800";
 
   return (
-    <div className="min-h-screen bg-slate-950">
-      <div className="fixed top-4 left-4 right-4 z-50 flex justify-between">
+    <div className="min-h-screen bg-slate-950 flex flex-col">
+      <div className="flex items-center justify-between p-4 border-b border-white/10">
         <Link href="/dashboard">
           <Button variant="outline" className="border-white/20 bg-black/50">
             ← Back to Dashboard
@@ -48,8 +48,9 @@ export default function PreviewPage() {
         </Link>
       </div>
 
-      <div className="pt-16">
-        <iframe
+      <div className="flex-1 min-h-0">
+        <DevicePreview>
+          <iframe
           srcDoc={`
 <!DOCTYPE html>
 <html>
@@ -94,9 +95,10 @@ body{font-family:system-ui,sans-serif;line-height:1.6;color:#333}
 </html>
           `}
           title="Preview"
-          className="w-full min-h-screen border-0"
+          className="w-full min-h-[600px] border-0 rounded-lg"
           sandbox="allow-same-origin"
         />
+        </DevicePreview>
       </div>
     </div>
   );

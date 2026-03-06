@@ -8,6 +8,7 @@ import { useTranslation } from "@/hooks/use-translation";
 import { Logo } from "@/components/logo";
 import { DashboardNav } from "@/components/dashboard/dashboard-nav";
 import { Globe, FileText, User, Link2 } from "lucide-react";
+import { AISuggestionsPanel } from "@/components/dashboard/ai-suggestions-panel";
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -19,7 +20,7 @@ export default function DashboardPage() {
         <div className="container mx-auto flex h-16 items-center justify-between px-6">
           <Logo showSubtitle />
           <DashboardNav />
-          <Link href="/dashboard/create">
+          <Link href="/builder">
             <Button className="bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600">
               {t("create_website")}
             </Button>
@@ -40,11 +41,11 @@ export default function DashboardPage() {
             {t("hero.subtitle")}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/dashboard/create">
-              <Button size="lg" className="h-12 px-8 text-lg bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600">
-                {t("create_website")}
-              </Button>
-            </Link>
+          <Link href="/builder">
+            <Button size="lg" className="h-12 px-8 text-lg bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600">
+              {t("create_website")}
+            </Button>
+          </Link>
             <Link href="/my-sites">
               <Button size="lg" variant="outline" className="h-12 px-8 text-lg border-violet-500/50 text-violet-300 hover:bg-violet-500/10">
                 {t("my_websites")}
@@ -59,8 +60,13 @@ export default function DashboardPage() {
         </motion.section>
 
         <section className="py-16 border-t border-white/5">
+          <div className="grid lg:grid-cols-4 gap-6 mb-8">
+            <div className="lg:col-span-1">
+              <AISuggestionsPanel />
+            </div>
+          </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Link href="/dashboard/create">
+            <Link href="/builder">
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 className="rounded-2xl border border-white/10 bg-white/5 p-8 hover:border-violet-500/30 transition-colors">

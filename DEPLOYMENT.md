@@ -88,15 +88,14 @@ Add all variables from `.env.example` in Vercel Project Settings → Environment
 
 ---
 
-## 4. Stripe (Optional)
-
-For subscription payments:
+## 4. Stripe (Subscriptions)
 
 1. Create Stripe account
 2. Get API keys from Dashboard
-3. Create products: Free, Pro, Agency
-4. Set up webhook: `https://yourdomain.com/api/webhooks/stripe`
-5. Add `STRIPE_WEBHOOK_SECRET` to env
+3. Create products and prices: Pro ($19/mo), Business ($39/mo), Agency ($99/mo)
+4. Copy Price IDs to env: `STRIPE_PRO_PRICE_ID`, `STRIPE_BUSINESS_PRICE_ID`, `STRIPE_AGENCY_PRICE_ID`
+5. Set up webhook: `https://yourdomain.com/api/stripe/webhook`
+6. Add `STRIPE_WEBHOOK_SECRET` to env
 
 ---
 
