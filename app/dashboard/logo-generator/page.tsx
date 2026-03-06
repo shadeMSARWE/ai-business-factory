@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useCredits } from "@/components/providers/credits-provider";
+import { useCreditsAction } from "@/hooks/use-credits-action";
+import { CreditsExhaustedModal } from "@/components/credits-exhausted-modal";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -103,21 +106,31 @@ function LogoPreview({ logo }: { logo: { icon: string; text: string; primary: st
 }
 
 export default function LogoGeneratorPage() {
+  const { billing, refetch } = useCredits();
+  const { deductAndRun, showModal, setShowModal } = useCreditsAction("logo");
   const [name, setName] = useState("");
   const [type, setType] = useState("Restaurant");
   const [colorPref, setColorPref] = useState("");
   const [logos, setLogos] = useState<ReturnType<typeof generateLogos>>([]);
   const [selectedId, setSelectedId] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const creditsExhausted = billing?.creditsExhausted ?? false;
 
   const handleGenerate = () => {
     if (!name.trim()) return;
-    setLoading(true);
-    setTimeout(() => {
-      setLogos(generateLogos(name.trim(), type, colorPref));
-      setSelectedId("logo-0");
-      setLoading(false);
-    }, 600);
+    if (creditsExhausted) {
+      setShowModal(true);
+      return;
+    }
+    deductAndRun(async () => {
+      setLoading(true);
+      setTimeout(() => {
+        setLogos(generateLogos(name.trim(), type, colorPref));
+        setSelectedId("logo-0");
+        setLoading(false);
+        refetch();
+      }, 600);
+    });
   };
 
   const handleDownload = (index: number) => {
@@ -197,7 +210,7 @@ export default function LogoGeneratorPage() {
           </div>
           <Button
             onClick={handleGenerate}
-            disabled={loading || !name.trim()}
+            disabled={loading || !name.trim() || creditsExhausted}
             className="mt-6 bg-gradient-to-r from-violet-500 to-fuchsia-500"
           >
             {loading ? (
@@ -254,6 +267,7 @@ export default function LogoGeneratorPage() {
           </motion.div>
         )}
       </main>
+      <CreditsExhaustedModal open={showModal} onOpenChange={setShowModal} />
     </div>
   );
 }

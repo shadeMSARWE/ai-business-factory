@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/components/providers/language-provider";
+import { useCredits } from "@/components/providers/credits-provider";
 import { Loader2 } from "lucide-react";
 import { GenerationLoader } from "./generation-loader";
 
@@ -29,12 +31,19 @@ export function WebsiteGenerator({
   initialPrompt?: string;
 }) {
   const { t } = useLanguage();
+  const router = useRouter();
+  const { billing, refetch } = useCredits();
   const [prompt, setPrompt] = useState(initialPrompt);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const creditsExhausted = billing?.creditsExhausted ?? false;
 
   const handleGenerate = async () => {
     if (!prompt.trim()) return;
+    if (creditsExhausted) {
+      router.push("/dashboard/billing");
+      return;
+    }
     setLoading(true);
     setError("");
     try {
@@ -45,7 +54,14 @@ export function WebsiteGenerator({
         body: JSON.stringify({ prompt: prompt.trim() }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to generate");
+      if (!res.ok) {
+        if (data.error === "credits_exceeded") {
+          router.push("/dashboard/billing");
+          return;
+        }
+        throw new Error(data.error || data.message || "Failed to generate");
+      }
+      await refetch();
       onGenerated(data, prompt.trim());
       const elapsed = Date.now() - start;
       if (elapsed < 500) {
@@ -80,7 +96,7 @@ export function WebsiteGenerator({
             />
             <Button
               onClick={handleGenerate}
-              disabled={loading}
+              disabled={loading || creditsExhausted}
               className="h-14 px-8 bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600"
             >
               {loading ? (

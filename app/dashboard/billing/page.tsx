@@ -5,27 +5,33 @@ import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { CreditCard, Zap, Loader2, Check } from "lucide-react";
-import { PLANS } from "@/lib/stripe";
+import { CreditCard, Zap, Loader2, Check, Coins } from "lucide-react";
+import { PayPalSubscribe } from "@/components/paypal-subscribe";
+import { CREDIT_PLANS } from "@/lib/credits";
 
 interface BillingData {
   planId: string;
   planName: string;
-  sitesCount: number;
-  sitesLimit: number;
-  generationsCount: number;
-  generationsLimit: number;
-  canCreateSite: boolean;
-  canGenerate: boolean;
-  status: string;
-  hasSubscription: boolean;
+  credits: number;
+  creditsUsed: number;
+  creditsLimit: number;
+  canUseCredits: boolean;
+  creditsLow: boolean;
+  creditsExhausted: boolean;
 }
+
+const PLAN_PRICES: Record<string, number> = {
+  free: 0,
+  pro: 19,
+  business: 39,
+  agency: 99,
+};
 
 export default function BillingPage() {
   const { t } = useTranslation();
   const [billing, setBilling] = useState<BillingData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
+  const [upgradeLoading, setUpgradeLoading] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/billing")
@@ -36,112 +42,118 @@ export default function BillingPage() {
   }, []);
 
   const handleUpgrade = async (planId: string) => {
-    setCheckoutLoading(planId);
+    setUpgradeLoading(planId);
     try {
-      const res = await fetch("/api/stripe/create-checkout-session", {
+      const res = await fetch("/api/paypal/create-subscription", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ planId }),
       });
       const data = await res.json();
       if (data.url) window.location.href = data.url;
-      else throw new Error(data.error || "Failed");
+      else throw new Error(data.error || data.message || "Failed");
     } catch (e) {
       console.error(e);
-      setCheckoutLoading(null);
+      setUpgradeLoading(null);
     }
   };
 
-  const formatLimit = (n: number) => (n === -1 ? t("billing.unlimited") : n.toString());
+  const usagePercent = billing
+    ? billing.creditsLimit > 0
+      ? Math.min(100, (billing.creditsUsed / billing.creditsLimit) * 100)
+      : 0
+    : 0;
 
   return (
     <div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-4xl"
-        >
-          <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-2">
-            <CreditCard className="h-8 w-8" />
-            {t("billing.title")}
-          </h1>
-          <p className="text-slate-400 mb-10">{t("billing.subtitle")}</p>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-5xl"
+      >
+        <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-2">
+          <CreditCard className="h-8 w-8" />
+          {t("billing.title")}
+        </h1>
+        <p className="text-slate-400 mb-10">{t("billing.subtitle")}</p>
 
-          {loading ? (
-            <div className="flex items-center justify-center py-20">
-              <Loader2 className="h-10 w-10 animate-spin text-violet-400" />
-            </div>
-          ) : billing ? (
-            <>
-              <Card className="border-white/10 bg-white/5 mb-10">
-                <CardHeader>
-                  <h2 className="text-xl font-semibold text-white">Current Plan: {billing.planName}</h2>
-                  <p className="text-slate-400 text-sm">
-                    {billing.hasSubscription ? t("billing.activeSubscription") : t("billing.freeTier")}
-                  </p>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <p className="text-sm text-slate-500 mb-1">Websites</p>
-                      <p className="text-2xl font-bold text-white">
-                        {billing.sitesCount} / {formatLimit(billing.sitesLimit)}
-                      </p>
-                      <div className="mt-2 h-2 bg-white/10 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-violet-500 rounded-full transition-all"
-                          style={{
-                            width: `${billing.sitesLimit === -1 ? 100 : Math.min(100, (billing.sitesCount / billing.sitesLimit) * 100)}%`,
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-sm text-slate-500 mb-1">AI Generations (this month)</p>
-                      <p className="text-2xl font-bold text-white">
-                        {billing.generationsCount} / {formatLimit(billing.generationsLimit)}
-                      </p>
-                      <div className="mt-2 h-2 bg-white/10 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-fuchsia-500 rounded-full transition-all"
-                          style={{
-                            width: `${billing.generationsLimit === -1 ? 100 : Math.min(100, (billing.generationsCount / billing.generationsLimit) * 100)}%`,
-                          }}
-                        />
-                      </div>
-                    </div>
+        {loading ? (
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="h-10 w-10 animate-spin text-violet-400" />
+          </div>
+        ) : billing ? (
+          <>
+            <Card className="border-white/10 bg-white/5 mb-10 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 via-transparent to-fuchsia-500/5 pointer-events-none" />
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-xl font-semibold text-white flex items-center gap-2">
+                      <Coins className="h-5 w-5 text-amber-400" />
+                      Plan: {billing.planName}
+                    </h2>
+                    <p className="text-slate-400 text-sm mt-1">
+                      {billing.planId === "free" ? "Free tier" : "Active subscription"}
+                    </p>
                   </div>
-                  {!billing.canCreateSite && (
-                    <p className="text-amber-400 text-sm">You&apos;ve reached your website limit. Upgrade to create more.</p>
-                  )}
-                  {!billing.canGenerate && (
-                    <p className="text-amber-400 text-sm">You&apos;ve reached your AI generation limit for this month.</p>
-                  )}
-                </CardContent>
-              </Card>
+                  <div className="text-right">
+                    <p className="text-3xl font-bold text-white">{billing.credits}</p>
+                    <p className="text-slate-400 text-sm">credits remaining</p>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <div className="flex justify-between text-sm mb-2">
+                    <span className="text-slate-400">Credits used</span>
+                    <span className="text-white font-medium">{billing.creditsUsed} / {billing.creditsLimit}</span>
+                  </div>
+                  <div className="h-3 bg-white/10 rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${usagePercent}%` }}
+                      transition={{ duration: 0.6, ease: "easeOut" }}
+                      className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full"
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-              <h2 className="text-xl font-semibold text-white mb-6">Available Plans</h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {(["free", "pro", "business", "agency"] as const).map((planId) => {
-                  const plan = PLANS[planId];
-                  const isCurrent = billing.planId === planId;
-                  const canUpgrade = planId !== "free" && plan.priceId && !isCurrent;
-                  return (
+            <h2 className="text-xl font-semibold text-white mb-6">Available Plans</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {(["free", "pro", "business", "agency"] as const).map((planId) => {
+                const plan = CREDIT_PLANS[planId];
+                const planCredits = plan.credits;
+                const price = PLAN_PRICES[planId] ?? 0;
+                const isCurrent = billing.planId === planId;
+                const canUpgrade = planId !== "free" && !isCurrent;
+                return (
+                  <motion.div
+                    key={planId}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: planId === "free" ? 0 : 0.1 * ["free", "pro", "business", "agency"].indexOf(planId) }}
+                  >
                     <Card
-                      key={planId}
-                      className={`border-white/10 bg-white/5 ${
-                        isCurrent ? "ring-2 ring-violet-500/50" : ""
+                      className={`border-white/10 bg-white/5 transition-all ${
+                        isCurrent ? "ring-2 ring-violet-500/50 shadow-lg shadow-violet-500/10" : "hover:border-violet-500/30"
                       }`}
                     >
                       <CardHeader>
                         <h3 className="text-lg font-semibold text-white">{plan.name}</h3>
                         <div className="mt-2">
-                          <span className="text-2xl font-bold text-white">${plan.priceMonthly}</span>
+                          <span className="text-2xl font-bold text-white">${price}</span>
                           <span className="text-slate-400 text-sm">/month</span>
                         </div>
                         <ul className="mt-4 space-y-2 text-sm text-slate-300">
-                          <li>{formatLimit(plan.sitesLimit)} websites</li>
-                          <li>{formatLimit(plan.generationsLimit)} AI generations</li>
+                          <li className="flex items-center gap-2">
+                            <Zap className="h-4 w-4 text-violet-400" />
+                            {planCredits} credits
+                          </li>
+                          {planId !== "free" && (
+                            <li className="text-slate-500 text-xs">Resets monthly</li>
+                          )}
                         </ul>
                       </CardHeader>
                       <CardContent>
@@ -151,32 +163,30 @@ export default function BillingPage() {
                             {t("billing.currentPlan")}
                           </div>
                         ) : canUpgrade ? (
-                          <Button
-                            onClick={() => handleUpgrade(planId)}
-                            disabled={!!checkoutLoading}
-                            className="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500"
-                          >
-                            {checkoutLoading === planId ? (
-                              <Loader2 className="h-4 w-4 animate-spin" />
-                            ) : (
-                              t("billing.upgrade")
-                            )}
-                          </Button>
+                          <PayPalSubscribe
+                            planId={planId}
+                            planName={plan.name}
+                            credits={planCredits}
+                            price={price}
+                            loading={upgradeLoading === planId}
+                            onUpgrade={handleUpgrade}
+                          />
                         ) : null}
                       </CardContent>
                     </Card>
-                  );
-                })}
-              </div>
+                  </motion.div>
+                );
+              })}
+            </div>
 
-              <p className="text-slate-500 text-sm mt-8">
-                Add STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, and plan price IDs (STRIPE_PRO_PRICE_ID, etc.) to enable subscriptions.
-              </p>
-            </>
-          ) : (
-            <p className="text-slate-400">Failed to load billing data.</p>
-          )}
-        </motion.div>
+            <p className="text-slate-500 text-sm mt-8">
+              Add PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, and plan IDs (PAYPAL_PRO_PLAN_ID, etc.) to enable subscriptions.
+            </p>
+          </>
+        ) : (
+          <p className="text-slate-400">Failed to load billing data.</p>
+        )}
+      </motion.div>
     </div>
   );
 }

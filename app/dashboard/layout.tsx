@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
+import { CreditsProvider } from "@/components/providers/credits-provider";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -13,8 +14,10 @@ export default async function DashboardLayout({ children }: { children: React.Re
     }
   }
   return (
-    <DashboardShell>
-      {children}
-    </DashboardShell>
+    <CreditsProvider>
+      <DashboardShell>
+        {children}
+      </DashboardShell>
+    </CreditsProvider>
   );
 }

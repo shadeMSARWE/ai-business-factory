@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useCredits } from "@/components/providers/credits-provider";
+import { useCreditsAction } from "@/hooks/use-credits-action";
+import { CreditsExhaustedModal } from "@/components/credits-exhausted-modal";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,20 +29,30 @@ function generateSEO(name: string, type: string, city: string) {
 }
 
 export default function SEOGeneratorPage() {
+  const { billing, refetch } = useCredits();
+  const { deductAndRun, showModal, setShowModal } = useCreditsAction("seo");
   const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [city, setCity] = useState("");
   const [result, setResult] = useState<ReturnType<typeof generateSEO> | null>(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
+  const creditsExhausted = billing?.creditsExhausted ?? false;
 
   const handleGenerate = () => {
     if (!name.trim() || !type.trim() || !city.trim()) return;
-    setLoading(true);
-    setTimeout(() => {
-      setResult(generateSEO(name.trim(), type.trim(), city.trim()));
-      setLoading(false);
-    }, 600);
+    if (creditsExhausted) {
+      setShowModal(true);
+      return;
+    }
+    deductAndRun(async () => {
+      setLoading(true);
+      setTimeout(() => {
+        setResult(generateSEO(name.trim(), type.trim(), city.trim()));
+        setLoading(false);
+        refetch();
+      }, 600);
+    });
   };
 
   const copyField = (value: string, field: string) => {
@@ -98,7 +111,7 @@ export default function SEOGeneratorPage() {
           </div>
           <Button
             onClick={handleGenerate}
-            disabled={loading || !name.trim() || !type.trim() || !city.trim()}
+            disabled={loading || !name.trim() || !type.trim() || !city.trim() || creditsExhausted}
             className="mt-6 bg-gradient-to-r from-violet-500 to-fuchsia-500"
           >
             {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Sparkles className="h-4 w-4 mr-2" />}
@@ -157,6 +170,7 @@ export default function SEOGeneratorPage() {
           </motion.div>
         )}
       </main>
+      <CreditsExhaustedModal open={showModal} onOpenChange={setShowModal} />
     </div>
   );
 }

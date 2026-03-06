@@ -5,14 +5,19 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/logo";
 import { DashboardSidebar } from "@/components/dashboard/dashboard-sidebar";
 import { useTranslation } from "@/hooks/use-translation";
+import { useCredits } from "@/components/providers/credits-provider";
+import { CreditsWarningBanner } from "@/components/credits-warning-banner";
 
 export function DashboardShell({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation();
+  const { billing } = useCredits();
+  const showBanner = billing?.creditsLow && !billing?.creditsExhausted;
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] flex">
       <DashboardSidebar />
       <div className="flex-1 flex flex-col min-w-0">
+        {showBanner && <CreditsWarningBanner />}
         <header className="sticky top-0 z-40 border-b border-white/10 bg-[#0a0a0f]/80 backdrop-blur-xl px-6 py-4">
           <div className="flex items-center justify-between">
             <Logo showSubtitle />

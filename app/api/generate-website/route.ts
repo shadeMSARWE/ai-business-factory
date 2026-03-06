@@ -4,7 +4,7 @@ import { rateLimit } from "@/lib/rate-limit";
 import { detectBusinessType, TEMPLATE_DEFAULTS } from "@/lib/business-types";
 import { fetchUnsplashImages } from "@/lib/image-queries";
 import { OPENAI_API_KEY, UNSPLASH_ACCESS_KEY } from "@/lib/env";
-import { getUserPlanAndUsage } from "@/lib/billing";
+import { hasEnoughCredits, deductCredits } from "@/lib/credits-service";
 
 const AI_PROMPT = `Return ONLY valid JSON, no markdown. Structure:
 {"business_name":"string","tagline":"string","description":"string (2-3 sentences)","services":[{"title":"string","description":"string"}],"testimonials":[{"name":"string","text":"string","role":"string"}],"contact_text":"string"}
@@ -63,9 +63,9 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient();
     const { data: { user } } = supabase ? await supabase.auth.getUser() : { data: { user: null } };
     if (user) {
-      const billing = await getUserPlanAndUsage(user.id);
-      if (!billing?.canGenerate) {
-        return NextResponse.json({ error: "AI generation limit reached for this month. Upgrade your plan." }, { status: 403 });
+      const hasCredits = await hasEnoughCredits(user.id, "website");
+      if (!hasCredits) {
+        return NextResponse.json({ error: "credits_exceeded", message: "Insufficient credits. Upgrade your plan." }, { status: 403 });
       }
     }
 
@@ -105,8 +105,8 @@ export async function POST(request: NextRequest) {
 
     const result = buildFromTemplate(prompt, aiContent, businessType, galleryImages);
 
-    if (supabase && user) {
-      await supabase.rpc("increment_usage", { p_user_id: user.id, p_sites_delta: 0, p_generations_delta: 1 });
+    if (user) {
+      await deductCredits(user.id, "website");
     }
 
     return NextResponse.json(result);

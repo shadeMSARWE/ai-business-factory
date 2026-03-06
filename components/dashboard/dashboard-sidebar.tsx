@@ -10,8 +10,10 @@ import {
   CreditCard,
   Settings,
   Factory,
+  Coins,
 } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
+import { useCredits } from "@/components/providers/credits-provider";
 
 const navItems = [
   { href: "/dashboard", labelKey: "dashboard", icon: LayoutDashboard },
@@ -26,10 +28,11 @@ const navItems = [
 export function DashboardSidebar() {
   const pathname = usePathname();
   const { t } = useTranslation();
+  const { billing } = useCredits();
 
   return (
-    <aside className="w-56 flex-shrink-0 border-r border-white/10 bg-[#0a0a0f]/50 p-4">
-      <nav className="space-y-1">
+    <aside className="w-56 flex-shrink-0 border-r border-white/10 bg-[#0a0a0f]/50 p-4 flex flex-col">
+      <nav className="space-y-1 flex-1">
         {navItems.map((item) => {
           const isActive =
             pathname === item.href ||
@@ -50,6 +53,14 @@ export function DashboardSidebar() {
           );
         })}
       </nav>
+      {billing && (
+        <Link href="/dashboard/billing" className="mt-4 p-3 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+          <div className="flex items-center gap-2 text-slate-400 text-sm">
+            <Coins className="h-4 w-4 text-amber-400" />
+            <span>{billing.credits} credits</span>
+          </div>
+        </Link>
+      )}
     </aside>
   );
 }

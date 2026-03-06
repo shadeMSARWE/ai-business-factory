@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { detectBusinessType, TEMPLATE_DEFAULTS } from "@/lib/business-types";
 import { fetchUnsplashImages } from "@/lib/image-queries";
 import { OPENAI_API_KEY, UNSPLASH_ACCESS_KEY } from "@/lib/env";
-import { getUserPlanAndUsage } from "@/lib/billing";
+import { hasEnoughCredits, deductCredits } from "@/lib/credits-service";
 import type { WebsiteSection } from "@/lib/builder/section-types";
 
 const AI_PROMPT = `Return ONLY valid JSON, no markdown. Structure:
@@ -26,10 +26,10 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = supabase ? await supabase.auth.getUser() : { data: { user: null } };
   if (user) {
-    const billing = await getUserPlanAndUsage(user.id);
-    if (!billing?.canGenerate) {
+    const hasCredits = await hasEnoughCredits(user.id, "website");
+    if (!hasCredits) {
       return new Response(
-        JSON.stringify({ error: "AI generation limit reached for this month. Upgrade your plan." }),
+        JSON.stringify({ error: "credits_exceeded", message: "Insufficient credits. Upgrade your plan." }),
         { status: 403 }
       );
     }
@@ -192,8 +192,8 @@ export async function POST(request: NextRequest) {
 
         send("complete", { data: flatData, sections });
 
-        if (supabase && user) {
-          await supabase.rpc("increment_usage", { p_user_id: user.id, p_sites_delta: 0, p_generations_delta: 1 });
+        if (user) {
+          await deductCredits(user.id, "website");
         }
       } catch (e) {
         console.error("Stream error:", e);

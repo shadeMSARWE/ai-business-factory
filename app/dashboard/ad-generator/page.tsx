@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useCredits } from "@/components/providers/credits-provider";
+import { useCreditsAction } from "@/hooks/use-credits-action";
+import { CreditsExhaustedModal } from "@/components/credits-exhausted-modal";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -48,6 +51,8 @@ function generateAds(
 }
 
 export default function AdGeneratorPage() {
+  const { billing, refetch } = useCredits();
+  const { deductAndRun, showModal, setShowModal } = useCreditsAction("ads");
   const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [city, setCity] = useState("");
@@ -55,14 +60,22 @@ export default function AdGeneratorPage() {
   const [ads, setAds] = useState<ReturnType<typeof generateAds>>([]);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
+  const creditsExhausted = billing?.creditsExhausted ?? false;
 
   const handleGenerate = () => {
     if (!name.trim() || !type.trim() || !city.trim()) return;
-    setLoading(true);
-    setTimeout(() => {
-      setAds(generateAds(name.trim(), type.trim(), city.trim(), audience.trim()));
-      setLoading(false);
-    }, 800);
+    if (creditsExhausted) {
+      setShowModal(true);
+      return;
+    }
+    deductAndRun(async () => {
+      setLoading(true);
+      setTimeout(() => {
+        setAds(generateAds(name.trim(), type.trim(), city.trim(), audience.trim()));
+        setLoading(false);
+        refetch();
+      }, 800);
+    });
   };
 
   const copyAd = (ad: { platform: string; headline: string; description: string; cta: string }) => {
@@ -131,7 +144,7 @@ export default function AdGeneratorPage() {
           </div>
           <Button
             onClick={handleGenerate}
-            disabled={loading || !name.trim() || !type.trim() || !city.trim()}
+            disabled={loading || !name.trim() || !type.trim() || !city.trim() || creditsExhausted}
             className="mt-6 bg-gradient-to-r from-violet-500 to-fuchsia-500"
           >
             {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Sparkles className="h-4 w-4 mr-2" />}
@@ -175,6 +188,7 @@ export default function AdGeneratorPage() {
           </motion.div>
         )}
       </main>
+      <CreditsExhaustedModal open={showModal} onOpenChange={setShowModal} />
     </div>
   );
 }
