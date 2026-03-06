@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/providers/auth-provider";
 import { useTranslation } from "@/hooks/use-translation";
-import { Globe, FileText, User, Link2 } from "lucide-react";
+import { Globe, FileText, User, Link2, MapPin } from "lucide-react";
 import { AISuggestionsPanel } from "@/components/dashboard/ai-suggestions-panel";
 
 export default function DashboardPage() {
@@ -76,6 +76,15 @@ export default function DashboardPage() {
                 <User className="h-12 w-12 text-violet-400 mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">{t("account")}</h3>
                 <p className="text-slate-400">{t("dashboardSection.accountDesc")}</p>
+              </motion.div>
+            </Link>
+            <Link href="/dashboard/business-finder">
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="rounded-2xl border border-white/10 bg-white/5 p-8 hover:border-violet-500/30 transition-colors">
+                <MapPin className="h-12 w-12 text-violet-400 mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-2">AI Business Finder</h3>
+                <p className="text-slate-400">Find businesses without websites and generate websites for them automatically.</p>
               </motion.div>
             </Link>
             <motion.div

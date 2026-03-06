@@ -6,6 +6,8 @@ export const CREDIT_COSTS = {
   logo: 5,
   seo: 3,
   ads: 3,
+  businessFinderSearch: 5,
+  businessWebsite: 20,
 } as const;
 
 export type CreditAction = keyof typeof CREDIT_COSTS;
