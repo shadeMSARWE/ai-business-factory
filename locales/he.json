@@ -13,6 +13,27 @@
   "create_website": "צור אתר",
   "account": "חשבון",
   "welcome": "ברוך הבא",
+  "auth": {
+    "orEmail": "או המשך עם אימייל",
+    "loginTitle": "התחבר לחשבונך",
+    "signupTitle": "צור חשבון",
+    "email": "אימייל",
+    "password": "סיסמה",
+    "confirmPassword": "אימות סיסמה",
+    "forgotPassword": "שכחת סיסמה?",
+    "resetPassword": "איפוס סיסמה",
+    "noAccount": "אין לך חשבון?",
+    "hasAccount": "כבר יש לך חשבון?",
+    "checkEmail": "בדוק את האימייל שלך"
+  },
+  "dashboardSection": {
+    "yourSiteUrl": "כתובת האתר שלך",
+    "generateAgain": "צור שוב"
+  },
+  "published": {
+    "loading": "טוען...",
+    "notFound": "האתר לא נמצא"
+  },
   "common": {
     "getStarted": "התחל עכשיו",
     "login": "התחברות עם גוגל",
@@ -28,7 +49,18 @@
     "cancel": "בטל",
     "loading": "טוען...",
     "error": "משהו השתבש",
-    "back": "חזרה"
+    "back": "חזרה",
+    "signup": "הרשמה"
+  },
+  "sites": {
+    "noSites": "אין אתרים עדיין. צור את הראשון!",
+    "manageDesc": "צפה ונהל את האתרים שנוצרו.",
+    "view": "צפה",
+    "edit": "ערוך",
+    "publish": "פרסם",
+    "delete": "מחק",
+    "deleteConfirm": "למחוק את האתר? לא ניתן לבטל.",
+    "pleaseLogin": "התחבר כדי לראות את האתרים שלך."
   },
   "nav": {
     "templates": "תבניות",
@@ -40,8 +72,8 @@
     "viewTemplates": "הצג תבניות"
   },
   "hero": {
-    "title": "בנה אתר ב-5 שניות עם AI",
-    "subtitle": "צור אתרים, מותגים ועסקים באופן מיידי באמצעות AI.",
+    "title": "מפעל העסקים עם AI",
+    "subtitle": "צור אתרים, לוגואים, SEO ופרסומות בשניות. פרסם מיידית. השתמש בדומיין שלך. תמיכה רב-לשונית.",
     "placeholder": "צור אתר מודרני למסעדת פיצה בתל אביב",
     "cta": "צור את האתר שלי"
   },
@@ -58,7 +90,12 @@
     "analytics": "אנליטיקה",
     "analyticsDesc": "עקוב אחר מבקרים ולידים"
   },
-  "home": {
+  "domain": {
+    "title": "דומיין ופרסום",
+    "desc": "חבר את הדומיין שלך. בקרוב.",
+    "comingSoon": "בקרוב"
+  },
+  "homeSection": {
     "featuredTemplates": "תבניות מומלצות",
     "featuredTemplatesDesc": "עיצובים מקצועיים לכל עסק",
     "viewAllTemplates": "צפה בכל התבניות",

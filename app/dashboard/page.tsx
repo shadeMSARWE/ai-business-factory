@@ -7,7 +7,7 @@ import { useAuth } from "@/components/providers/auth-provider";
 import { useTranslation } from "@/hooks/use-translation";
 import { Logo } from "@/components/logo";
 import { DashboardNav } from "@/components/dashboard/dashboard-nav";
-import { Globe, FileText, User } from "lucide-react";
+import { Globe, FileText, User, Link2 } from "lucide-react";
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -37,7 +37,7 @@ export default function DashboardPage() {
             {t("welcome")} {user?.email || "Guest"}
           </h1>
           <p className="text-xl text-slate-400 mb-10 max-w-2xl mx-auto">
-            AI Business Factory — Build websites, brands, and businesses using AI.
+            {t("hero.subtitle")}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/dashboard/create">
@@ -52,21 +52,21 @@ export default function DashboardPage() {
             </Link>
             <Link href="/dashboard/generate-business">
               <Button size="lg" variant="outline" className="h-12 px-8 text-lg border-violet-500/50 text-violet-300 hover:bg-violet-500/10">
-                Generate Business
+                {t("generateBusiness")}
               </Button>
             </Link>
           </div>
         </motion.section>
 
         <section className="py-16 border-t border-white/5">
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Link href="/dashboard/create">
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 className="rounded-2xl border border-white/10 bg-white/5 p-8 hover:border-violet-500/30 transition-colors">
                 <Globe className="h-12 w-12 text-violet-400 mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">{t("create_website")}</h3>
-                <p className="text-slate-400">Generate full business websites using AI.</p>
+                <p className="text-slate-400">{t("features.aiWebsiteBuilderDesc")}</p>
               </motion.div>
             </Link>
             <Link href="/my-sites">
@@ -75,7 +75,7 @@ export default function DashboardPage() {
                 className="rounded-2xl border border-white/10 bg-white/5 p-8 hover:border-violet-500/30 transition-colors">
                 <FileText className="h-12 w-12 text-violet-400 mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">{t("my_websites")}</h3>
-                <p className="text-slate-400">View and manage your generated websites.</p>
+                <p className="text-slate-400">{t("sites.manageDesc")}</p>
               </motion.div>
             </Link>
             <Link href="/dashboard/generate-business">
@@ -84,9 +84,18 @@ export default function DashboardPage() {
                 className="rounded-2xl border border-white/10 bg-white/5 p-8 hover:border-violet-500/30 transition-colors">
                 <User className="h-12 w-12 text-violet-400 mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">{t("account")}</h3>
-                <p className="text-slate-400">Generate complete business with website, logo, and marketing.</p>
+                <p className="text-slate-400">{t("dashboardSection.accountDesc")}</p>
               </motion.div>
             </Link>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="rounded-2xl border border-white/10 border-dashed bg-white/5 p-8 opacity-80"
+            >
+              <Link2 className="h-12 w-12 text-slate-500 mb-4" />
+              <h3 className="text-xl font-semibold text-white mb-2">{t("domain.title")}</h3>
+              <p className="text-slate-400 mb-2">{t("domain.desc")}</p>
+              <span className="text-xs text-violet-400">{t("domain.comingSoon")}</span>
+            </motion.div>
           </div>
         </section>
       </main>

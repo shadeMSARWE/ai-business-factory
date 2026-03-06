@@ -3,15 +3,13 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { DashboardNav } from "@/components/dashboard/dashboard-nav";
-import { getWebsiteById, updateWebsite } from "@/lib/storage";
+import { getWebsiteById, updateWebsite, saveWebsiteWithId } from "@/lib/storage";
 import { PublishButton } from "@/components/publish-button";
-import { ArrowLeft, Save, Eye, Layout, Image, Type, Palette } from "lucide-react";
+import { ArrowLeft, Save, Eye, Layout, Image, Type } from "lucide-react";
 
 interface WebsiteData {
   businessName: string;
@@ -57,18 +55,45 @@ export default function EditorPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("hero");
+  const [sourceDb, setSourceDb] = useState(false);
+  const [slug, setSlug] = useState<string>("");
 
   useEffect(() => {
-    const site = getWebsiteById(id);
-    if (site?.data) {
-      const d = site.data as unknown as Partial<WebsiteData>;
-      setData({
-        ...defaultData,
-        ...d,
-        visibleSections: { ...defaultData.visibleSections, ...d.visibleSections },
-      });
+    async function load() {
+      const local = getWebsiteById(id);
+      if (local?.data) {
+        const d = local.data as unknown as Partial<WebsiteData>;
+        setData({
+          ...defaultData,
+          ...d,
+          visibleSections: { ...defaultData.visibleSections, ...d.visibleSections },
+        });
+        setSlug(local.slug || "");
+        setLoading(false);
+        return;
+      }
+      try {
+        const res = await fetch(`/api/sites/${id}`);
+        if (res.ok) {
+          const json = await res.json();
+          const d = json.data as Partial<WebsiteData>;
+          setData({
+            ...defaultData,
+            ...d,
+            visibleSections: { ...defaultData.visibleSections, ...d.visibleSections },
+          });
+          const slugVal = json.slug || "website";
+          setSlug(slugVal);
+          setSourceDb(true);
+          const name = (d.businessName as string) || "website";
+          saveWebsiteWithId(id, { slug: slugVal, name, data: d as Record<string, unknown> });
+        }
+      } catch {
+        setData(defaultData);
+      }
+      setLoading(false);
     }
-    setLoading(false);
+    load();
   }, [id]);
 
   const update = (path: string, value: unknown) => {
@@ -91,10 +116,21 @@ export default function EditorPage() {
     update("visibleSections", { ...vis, [section]: !vis[section] });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setSaving(true);
     try {
-      updateWebsite(id, { data: data as unknown as Record<string, unknown> });
+      const local = getWebsiteById(id);
+      if (local) {
+        updateWebsite(id, { data: data as unknown as Record<string, unknown> });
+      }
+      if (sourceDb) {
+        const res = await fetch(`/api/sites/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ html: JSON.stringify(data), slug }),
+        });
+        if (!res.ok) throw new Error("Failed to save");
+      }
       router.refresh();
     } catch {
       alert("Failed to save");
@@ -103,7 +139,7 @@ export default function EditorPage() {
     }
   };
 
-  const site = getWebsiteById(id);
+  const site = getWebsiteById(id) || (sourceDb ? { id: id as string, slug: slug || "website" } : null);
 
   if (loading) {
     return (

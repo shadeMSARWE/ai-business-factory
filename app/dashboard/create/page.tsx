@@ -108,7 +108,7 @@ function CreateContent() {
           ) : (
             <div className="space-y-8">
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                <Label className="text-white">{t("dashboard.yourSiteUrl")}</Label>
+                <Label className="text-white">{t("dashboardSection.yourSiteUrl")}</Label>
                 <div className="flex gap-2 mt-2">
                   <span className="flex items-center text-slate-400">/s/</span>
                   <Input
@@ -136,7 +136,7 @@ function CreateContent() {
                   onClick={() => setGeneratedData(null)}
                   className="border-white/20"
                 >
-                  {t("dashboard.generateAgain")}
+                  {t("dashboardSection.generateAgain")}
                 </Button>
               </div>
             </div>

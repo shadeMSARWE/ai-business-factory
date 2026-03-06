@@ -41,13 +41,14 @@ STRIPE_WEBHOOK_SECRET=
 
 ### Database Schema
 
-Run the migration in Supabase SQL Editor:
+Run migrations in Supabase SQL Editor (in order):
+
+1. `supabase/migrations/001_initial.sql` — projects, generated_sites, users
+2. `supabase/migrations/002_sites_table.sql` — **required** for user-generated sites (My Websites, save flow)
 
 ```bash
 # Or use Supabase CLI: supabase db push
 ```
-
-Copy contents of `supabase/migrations/001_initial.sql` and run in SQL Editor.
 
 ### Auth Configuration
 
@@ -57,6 +58,12 @@ In Supabase Dashboard → Authentication → URL Configuration:
 - **Redirect URLs**: Add:
   - `https://yourdomain.com/auth/callback`
   - `http://localhost:3000/auth/callback`
+
+### Google OAuth (recommended)
+
+1. Authentication → Providers → Google → Enable
+2. Create OAuth credentials in Google Cloud Console
+3. Add Client ID and Client Secret to Supabase
 
 ### Email (optional)
 
@@ -103,6 +110,9 @@ For subscription payments:
     /search-businesses
     /save-site
     /site/[slug]
+    /sites
+    /sites/[id]
+    /sites/save
     /auth/callback
   /dashboard
   /login
@@ -126,6 +136,7 @@ For subscription payments:
 | `users` | Synced from auth.users |
 | `projects` | User projects (name, industry) |
 | `generated_sites` | HTML/CSS/JS, slug, meta |
+| `sites` | User-generated websites (prompt, html, slug, user_id) — **required for save flow** |
 | `subscriptions` | Stripe subscription state |
 
 ---

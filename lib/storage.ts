@@ -28,6 +28,20 @@ export function saveWebsite(website: Omit<StoredWebsite, "id" | "createdAt">): S
   return newSite;
 }
 
+export function saveWebsiteWithId(id: string, website: Omit<StoredWebsite, "id" | "createdAt">): StoredWebsite {
+  const sites = getWebsites();
+  const createdAt = new Date().toISOString();
+  const existing = sites.findIndex((s) => s.id === id);
+  const newSite: StoredWebsite = { ...website, id, createdAt };
+  if (existing >= 0) {
+    sites[existing] = { ...newSite, createdAt: sites[existing].createdAt };
+  } else {
+    sites.unshift(newSite);
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(sites));
+  return newSite;
+}
+
 export function updateWebsite(id: string, updates: Partial<StoredWebsite>): StoredWebsite | null {
   const sites = getWebsites();
   const idx = sites.findIndex((s) => s.id === id);

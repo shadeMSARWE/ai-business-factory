@@ -96,36 +96,36 @@ export default function HomePage() {
               className={`flex justify-between items-end mb-12 ${isRtl ? "flex-row-reverse" : ""}`}
             >
               <div className={isRtl ? "text-right" : ""}>
-                <h2 className="text-3xl font-bold text-white mb-2">{t("home.featuredTemplates")}</h2>
-                <p className="text-slate-400">{t("home.featuredTemplatesDesc")}</p>
+                <h2 className="text-3xl font-bold text-white mb-2">{t("homeSection.featuredTemplates")}</h2>
+                <p className="text-slate-400">{t("homeSection.featuredTemplatesDesc")}</p>
               </div>
               <Link href="/dashboard/templates">
                 <Button variant="ghost" className="text-violet-400">
-                  {t("home.viewAllTemplates")}
+                  {t("homeSection.viewAllTemplates")}
                   <ArrowRight className={`h-4 w-4 ${isRtl ? "mr-1 rotate-180" : "ml-1"}`} />
                 </Button>
               </Link>
             </motion.div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featured.map((t, i) => (
+              {featured.map((tmpl, i) => (
                 <motion.div
-                  key={t.id}
+                  key={tmpl.id}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.05 }}
                 >
-                  <Link href={`/dashboard/create?template=${t.id}`}>
+                  <Link href={`/dashboard/create?template=${tmpl.id}`}>
                     <div className="rounded-2xl border border-white/10 bg-white/5 overflow-hidden hover:border-violet-500/30 transition group">
                       <div className="aspect-video relative overflow-hidden">
                         <TemplateImage
-                          template={t}
+                          template={tmpl}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                         <div className="absolute bottom-4 left-4 right-4">
-                          <span className="text-xs text-violet-400">{t.category}</span>
-                          <h3 className="text-lg font-semibold text-white">{t.subcategory}</h3>
+                          <span className="text-xs text-violet-400">{tmpl.category}</span>
+                          <h3 className="text-lg font-semibold text-white">{tmpl.subcategory}</h3>
                         </div>
                       </div>
                     </div>
@@ -145,7 +145,7 @@ export default function HomePage() {
               viewport={{ once: true }}
               className="text-3xl font-bold text-white mb-4"
             >
-              {t("home.simplePricing")}
+              {t("homeSection.simplePricing")}
             </motion.h2>
             <motion.p
               initial={{ opacity: 0 }}
@@ -153,7 +153,7 @@ export default function HomePage() {
               viewport={{ once: true }}
               className="text-slate-400 mb-12 max-w-xl mx-auto"
             >
-              {t("home.simplePricingDesc")}
+              {t("homeSection.simplePricingDesc")}
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -162,7 +162,7 @@ export default function HomePage() {
             >
               <Link href="/pricing">
                 <Button size="lg" className="bg-gradient-to-r from-violet-500 to-fuchsia-500">
-                  {t("home.viewPricing")}
+                  {t("homeSection.viewPricing")}
                 </Button>
               </Link>
             </motion.div>
@@ -177,8 +177,8 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="container mx-auto max-w-3xl rounded-3xl border border-violet-500/30 bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 p-12 md:p-16 text-center backdrop-blur-xl"
           >
-            <h2 className="text-3xl font-bold text-white mb-4">{t("home.startBuilding")}</h2>
-            <p className="text-slate-400 mb-8">{t("home.joinThousands")}</p>
+            <h2 className="text-3xl font-bold text-white mb-4">{t("homeSection.startBuilding")}</h2>
+            <p className="text-slate-400 mb-8">{t("homeSection.joinThousands")}</p>
             <Link href="/dashboard/create">
               <Button size="lg" className="h-12 px-8 text-lg bg-white text-violet-600 hover:bg-slate-100">
                 {t("nav.generateWebsite")}

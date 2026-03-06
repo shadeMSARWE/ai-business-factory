@@ -9,7 +9,7 @@ import { useAuth } from "@/components/providers/auth-provider";
 import { useTranslation } from "@/hooks/use-translation";
 import { Logo } from "@/components/logo";
 import { DashboardNav } from "@/components/dashboard/dashboard-nav";
-import { ArrowLeft, Eye, FileText, Loader2 } from "lucide-react";
+import { ArrowLeft, Eye, FileText, Loader2, Pencil, Trash2, ExternalLink } from "lucide-react";
 
 interface Site {
   id: string;
@@ -68,13 +68,23 @@ export default function MySitesPage() {
     return (
       <div className="min-h-screen bg-[#0a0a0f] flex flex-col items-center justify-center px-6">
         <Logo showSubtitle />
-        <p className="text-slate-400 mt-8">Please log in to view your websites.</p>
-        <Link href="/dashboard" className="mt-6">
-          <Button>{t("dashboard")}</Button>
+        <p className="text-slate-400 mt-8">{t("sites.pleaseLogin")}</p>
+        <Link href="/login" className="mt-6">
+          <Button>{t("common.login")}</Button>
         </Link>
       </div>
     );
   }
+
+  const handleDelete = async (siteId: string) => {
+    if (!confirm(t("sites.deleteConfirm"))) return;
+    try {
+      const res = await fetch(`/api/sites/${siteId}`, { method: "DELETE" });
+      if (res.ok) setSites((prev) => prev.filter((s) => s.id !== siteId));
+    } catch {
+      // ignore
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#0a0a0f]">
@@ -91,7 +101,7 @@ export default function MySitesPage() {
       <main className="container mx-auto px-6 py-12">
         <Link href="/dashboard" className="inline-flex items-center text-slate-400 hover:text-white mb-8">
           <ArrowLeft className="h-4 w-4 mr-2" />
-          {t("common.back")} to {t("dashboard")}
+          {t("common.back")} to {t("common.dashboard")}
         </Link>
 
         <h1 className="text-3xl font-bold text-white mb-8">{t("my_websites")}</h1>
@@ -104,7 +114,7 @@ export default function MySitesPage() {
           <Card className="border-white/10 bg-white/5 max-w-xl">
             <CardContent className="pt-8 pb-8 text-center">
               <FileText className="h-16 w-16 text-slate-500 mx-auto mb-4" />
-              <p className="text-slate-400 mb-6">No websites yet. Create your first one!</p>
+              <p className="text-slate-400 mb-6">{t("sites.noSites")}</p>
               <Link href="/dashboard/create">
                 <Button className="bg-gradient-to-r from-violet-500 to-fuchsia-500">{t("create_website")}</Button>
               </Link>
@@ -128,22 +138,42 @@ export default function MySitesPage() {
                     <p className="text-slate-500 text-xs mb-4">
                       {new Date(site.created_at).toLocaleDateString()}
                     </p>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       <a
                         href={`/s/${getSlug(site)}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                          >
+                      >
                         <Button variant="outline" size="sm" className="border-white/20">
                           <Eye className="h-4 w-4 mr-1" />
-                          View
+                          {t("sites.view")}
                         </Button>
                       </a>
-                      <Link href={`/dashboard/create?business=${encodeURIComponent(getSiteName(site.html))}`}>
+                      <Link href={`/editor/${site.id}`}>
                         <Button size="sm" variant="ghost" className="text-violet-400">
-                          Edit
+                          <Pencil className="h-4 w-4 mr-1" />
+                          {t("sites.edit")}
                         </Button>
                       </Link>
+                      <a
+                        href={`/s/${getSlug(site)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Button size="sm" variant="ghost" className="text-emerald-400">
+                          <ExternalLink className="h-4 w-4 mr-1" />
+                          {t("sites.publish")}
+                        </Button>
+                      </a>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-red-400 hover:text-red-300"
+                        onClick={() => handleDelete(site.id)}
+                      >
+                        <Trash2 className="h-4 w-4 mr-1" />
+                        {t("sites.delete")}
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>

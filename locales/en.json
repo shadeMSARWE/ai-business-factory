@@ -12,7 +12,30 @@
   "my_websites": "My Websites",
   "create_website": "Create Website",
   "account": "Account",
+  "generateBusiness": "Generate Business",
   "welcome": "Welcome",
+  "auth": {
+    "orEmail": "or continue with email",
+    "loginTitle": "Log in to your account",
+    "signupTitle": "Create an account",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset password",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "checkEmail": "Check your email for the reset link"
+  },
+  "dashboardSection": {
+    "yourSiteUrl": "Your site URL",
+    "generateAgain": "Generate Again",
+    "accountDesc": "Generate complete business with website, logo, and marketing."
+  },
+  "published": {
+    "loading": "Loading...",
+    "notFound": "Website not found"
+  },
   "common": {
     "getStarted": "Get Started",
     "login": "Login with Google",
@@ -28,7 +51,18 @@
     "cancel": "Cancel",
     "loading": "Loading...",
     "error": "Something went wrong",
-    "back": "Back"
+    "back": "Back",
+    "signup": "Sign Up"
+  },
+  "sites": {
+    "noSites": "No websites yet. Create your first one!",
+    "manageDesc": "View and manage your generated websites.",
+    "view": "View",
+    "edit": "Edit",
+    "publish": "Publish",
+    "delete": "Delete",
+    "deleteConfirm": "Delete this website? This cannot be undone.",
+    "pleaseLogin": "Please log in to view your websites."
   },
   "nav": {
     "templates": "Templates",
@@ -40,8 +74,8 @@
     "viewTemplates": "View Templates"
   },
   "hero": {
-    "title": "Build a website in 5 seconds with AI",
-    "subtitle": "Create websites, brands, and businesses instantly using AI.",
+    "title": "The AI Business Factory",
+    "subtitle": "Generate complete websites, logos, SEO, and ads in seconds. Publish instantly. Use your own domain. Multi-language ready.",
     "placeholder": "Create a modern website for a pizza restaurant in Tel Aviv",
     "cta": "Generate My Website"
   },
@@ -58,7 +92,12 @@
     "analytics": "Analytics",
     "analyticsDesc": "Track visitors and leads"
   },
-  "home": {
+  "domain": {
+    "title": "Domain & Publishing",
+    "desc": "Connect your custom domain. Coming soon.",
+    "comingSoon": "Coming soon"
+  },
+  "homeSection": {
     "featuredTemplates": "Featured Templates",
     "featuredTemplatesDesc": "Professional designs for any business",
     "viewAllTemplates": "View all templates",
@@ -66,6 +105,9 @@
     "simplePricingDesc": "Start free. Upgrade when you need more.",
     "viewPricing": "View Pricing",
     "startBuilding": "Start building your business today.",
-    "joinThousands": "Join thousands of businesses using InstantBizSite AI"
+    "joinThousands": "Join thousands of businesses using InstantBizSite AI",
+    "publishInstantly": "Publish instantly",
+    "ownDomain": "Use your own domain",
+    "multiLanguage": "Multi-language support"
   }
 }
