@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+import { useTranslation } from "@/hooks/use-translation";
 import {
   LayoutDashboard,
   Factory,
@@ -18,28 +18,31 @@ import {
   Send,
   Coins,
   Smartphone,
+  Store,
 } from "lucide-react";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/dashboard/billing", label: "Billing", icon: CreditCard },
-  { href: "/dashboard/factories", label: "Factories", icon: Factory },
-  { href: "/dashboard/logo-generator", label: "Logo", icon: Palette },
-  { href: "/dashboard/ad-generator", label: "Ads", icon: Megaphone },
-  { href: "/dashboard/seo-generator", label: "SEO", icon: Search },
-  { href: "/dashboard/business-finder", label: "Business Finder", icon: MapPin },
-  { href: "/dashboard/leads", label: "Leads", icon: Mail },
-  { href: "/dashboard/outreach", label: "Outreach", icon: Send },
-  { href: "/dashboard/credits", label: "Credits", icon: Coins },
-  { href: "/dashboard/apps", label: "Apps", icon: Smartphone },
-  { href: "/factory", label: "How It Works", icon: Factory },
-  { href: "/dashboard/websites", label: "My Websites", icon: Globe },
-  { href: "/dashboard/analytics", label: "Analytics", icon: BarChart3 },
-  { href: "/dashboard/templates", label: "Templates", icon: Layout },
+  { href: "/dashboard", labelKey: "dashboard", icon: LayoutDashboard },
+  { href: "/dashboard/billing", labelKey: "nav.billing", icon: CreditCard },
+  { href: "/dashboard/factories", labelKey: "nav.factories", icon: Factory },
+  { href: "/dashboard/logo-generator", labelKey: "Logo", icon: Palette },
+  { href: "/dashboard/ad-generator", labelKey: "Ads", icon: Megaphone },
+  { href: "/dashboard/seo-generator", labelKey: "SEO", icon: Search },
+  { href: "/dashboard/business-finder", labelKey: "Business Finder", icon: MapPin },
+  { href: "/dashboard/leads", labelKey: "Leads", icon: Mail },
+  { href: "/dashboard/outreach", labelKey: "Outreach", icon: Send },
+  { href: "/dashboard/credits", labelKey: "Credits", icon: Coins },
+  { href: "/dashboard/apps", labelKey: "nav.apps", icon: Smartphone },
+  { href: "/dashboard/store", labelKey: "tools.storeBuilder", icon: Store },
+  { href: "/factory", labelKey: "nav.howItWorks", icon: Factory },
+  { href: "/dashboard/websites", labelKey: "my_websites", icon: Globe },
+  { href: "/dashboard/analytics", labelKey: "analytics", icon: BarChart3 },
+  { href: "/dashboard/templates", labelKey: "templates", icon: Layout },
 ];
 
 export function DashboardNav() {
   const pathname = usePathname();
+  const { t } = useTranslation();
 
   return (
     <nav className="flex items-center gap-1">
@@ -55,7 +58,7 @@ export function DashboardNav() {
               }`}
             >
               <item.icon className="h-4 w-4" />
-              {item.label}
+              {t(item.labelKey)}
             </div>
           </Link>
         );

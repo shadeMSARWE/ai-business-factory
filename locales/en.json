@@ -87,6 +87,7 @@
     "pleaseLogin": "Please log in to view your websites."
   },
   "nav": {
+    "apps": "Apps",
     "templates": "Templates",
     "pricing": "Pricing",
     "billing": "Billing",
@@ -128,6 +129,16 @@
     "contact": "Contact",
     "tagline": "Build websites, brands and businesses with AI.",
     "howItWorks": "How it works"
+  },
+  "tools": {
+    "title": "AI Tools",
+    "logoGenerator": "Logo Generator",
+    "adGenerator": "Ad Generator",
+    "seoGenerator": "SEO Generator",
+    "storeBuilder": "Store Builder",
+    "mobileAppBuilder": "Mobile App Builder",
+    "createNewApp": "Create New App",
+    "openTool": "Open Tool"
   },
   "homeSection": {
     "featuredTemplates": "Featured Templates",

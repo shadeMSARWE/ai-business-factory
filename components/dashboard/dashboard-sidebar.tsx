@@ -11,6 +11,8 @@ import {
   Settings,
   Factory,
   Coins,
+  Smartphone,
+  Store,
 } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
 import { useCredits } from "@/components/providers/credits-provider";
@@ -20,6 +22,8 @@ const navItems = [
   { href: "/dashboard/websites", labelKey: "my_websites", icon: Globe },
   { href: "/dashboard/templates", labelKey: "templates", icon: Layout },
   { href: "/dashboard/factories", labelKey: "nav.factories", icon: Factory },
+  { href: "/dashboard/apps", labelKey: "nav.apps", icon: Smartphone },
+  { href: "/dashboard/store", labelKey: "tools.storeBuilder", icon: Store },
   { href: "/dashboard/analytics", labelKey: "analytics", icon: BarChart3 },
   { href: "/dashboard/billing", labelKey: "nav.billing", icon: CreditCard },
   { href: "/dashboard/settings", labelKey: "settings", icon: Settings },

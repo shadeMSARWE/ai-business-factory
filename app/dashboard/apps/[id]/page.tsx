@@ -21,6 +21,7 @@ interface App {
   id: string;
   name: string;
   type: string;
+  platform?: string;
   description: string | null;
   status: string;
 }
@@ -115,7 +116,7 @@ export default function AppDetailPage() {
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-10">
           <div>
             <h1 className="text-3xl font-bold text-white mb-2">{app.name}</h1>
-            <p className="text-slate-400 capitalize">{app.type.replace("_", " ")}</p>
+            <p className="text-slate-400 capitalize">{(app.platform || app.type || "mobile").replace("_", " ")}</p>
             {app.description && (
               <p className="text-slate-500 mt-2">{app.description}</p>
             )}

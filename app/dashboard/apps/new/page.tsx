@@ -14,20 +14,17 @@ import { useCredits } from "@/components/providers/credits-provider";
 import { CreditsExhaustedModal } from "@/components/credits-exhausted-modal";
 import { ArrowLeft, Sparkles, Loader2 } from "lucide-react";
 
-const APP_TYPES = [
-  { value: "restaurant", label: "Restaurant" },
-  { value: "ecommerce", label: "Ecommerce" },
-  { value: "gym", label: "Gym" },
-  { value: "salon", label: "Salon" },
-  { value: "education", label: "Education" },
-  { value: "content_app", label: "Content App" },
+const APP_PLATFORMS = [
+  { value: "android", label: "Android" },
+  { value: "ios", label: "iOS" },
+  { value: "both", label: "Both" },
 ];
 
 export default function NewAppPage() {
   const router = useRouter();
   const { billing, refetch } = useCredits();
   const [name, setName] = useState("");
-  const [type, setType] = useState("restaurant");
+  const [platform, setPlatform] = useState("both");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -46,7 +43,7 @@ export default function NewAppPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: name.trim(),
-          type,
+          platform,
           description: description.trim() || undefined,
         }),
       });
@@ -103,13 +100,13 @@ export default function NewAppPage() {
             <div>
               <Label className="text-slate-400">App type</Label>
               <select
-                value={type}
-                onChange={(e) => setType(e.target.value)}
+                value={platform}
+                onChange={(e) => setPlatform(e.target.value)}
                 className="mt-2 w-full px-4 py-2 rounded-lg bg-white/5 border border-white/20 text-white"
               >
-                {APP_TYPES.map((t) => (
-                  <option key={t.value} value={t.value}>
-                    {t.label}
+                {APP_PLATFORMS.map((p) => (
+                  <option key={p.value} value={p.value}>
+                    {p.label}
                   </option>
                 ))}
               </select>

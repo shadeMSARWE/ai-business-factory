@@ -85,6 +85,7 @@
     "pleaseLogin": "سجّل الدخول لعرض مواقعك."
   },
   "nav": {
+    "apps": "التطبيقات",
     "templates": "القوالب",
     "pricing": "الأسعار",
     "billing": "الفواتير",
@@ -126,6 +127,16 @@
     "contact": "اتصل بنا",
     "tagline": "أنشئ مواقع وعلامات تجارية وأعمالًا بالذكاء الاصطناعي.",
     "howItWorks": "كيف يعمل"
+  },
+  "tools": {
+    "title": "أدوات الذكاء الاصطناعي",
+    "logoGenerator": "منشئ الشعارات",
+    "adGenerator": "منشئ الإعلانات",
+    "seoGenerator": "منشئ SEO",
+    "storeBuilder": "منشئ المتجر",
+    "mobileAppBuilder": "منشئ التطبيقات",
+    "createNewApp": "إنشاء تطبيق جديد",
+    "openTool": "فتح الأداة"
   },
   "homeSection": {
     "featuredTemplates": "القوالب المميزة",

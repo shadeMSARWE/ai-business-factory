@@ -7,18 +7,21 @@ import { DashboardNav } from "@/components/dashboard/dashboard-nav";
 import { Logo } from "@/components/logo";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/hooks/use-translation";
 import { ArrowLeft, Smartphone, Plus, Loader2 } from "lucide-react";
 
 interface App {
   id: string;
   name: string;
   type: string;
+  platform?: string;
   description: string | null;
   status: string;
   created_at: string;
 }
 
 export default function AppsPage() {
+  const { t } = useTranslation();
   const [apps, setApps] = useState<App[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -47,13 +50,13 @@ export default function AppsPage() {
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">Mobile App Builder</h1>
+            <h1 className="text-3xl font-bold text-white mb-2">{t("tools.mobileAppBuilder")}</h1>
             <p className="text-slate-400">Generate Android & iOS apps with AI.</p>
           </div>
           <Link href="/dashboard/apps/new">
             <Button className="bg-gradient-to-r from-violet-500 to-fuchsia-500">
               <Plus className="h-4 w-4 mr-2" />
-              Create App
+              {t("tools.createNewApp")}
             </Button>
           </Link>
         </div>
@@ -70,7 +73,7 @@ export default function AppsPage() {
               <p className="text-slate-500 text-sm mt-2">Create your first mobile app with AI.</p>
               <Link href="/dashboard/apps/new">
                 <Button className="mt-6 bg-gradient-to-r from-violet-500 to-fuchsia-500">
-                  Create App
+                  {t("tools.createNewApp")}
                 </Button>
               </Link>
             </CardContent>
@@ -90,7 +93,7 @@ export default function AppsPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-white">{app.name}</h3>
-                      <p className="text-slate-400 text-sm capitalize">{app.type.replace("_", " ")}</p>
+                      <p className="text-slate-400 text-sm capitalize">{(app.platform || app.type || "mobile").replace("_", " ")}</p>
                     </div>
                   </div>
                   <p className="text-slate-500 text-sm line-clamp-2">{app.description || "No description"}</p>

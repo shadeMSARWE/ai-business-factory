@@ -85,6 +85,7 @@
     "pleaseLogin": "התחבר כדי לראות את האתרים שלך."
   },
   "nav": {
+    "apps": "אפליקציות",
     "templates": "תבניות",
     "pricing": "מחירים",
     "billing": "חיוב",
@@ -126,6 +127,16 @@
     "contact": "צור קשר",
     "tagline": "בנה אתרים, מותגים ועסקים עם AI.",
     "howItWorks": "איך זה עובד"
+  },
+  "tools": {
+    "title": "כלי AI",
+    "logoGenerator": "מחולל לוגואים",
+    "adGenerator": "מחולל פרסומות",
+    "seoGenerator": "מחולל SEO",
+    "storeBuilder": "בונה חנויות",
+    "mobileAppBuilder": "בונה אפליקציות",
+    "createNewApp": "צור אפליקציה חדשה",
+    "openTool": "פתח כלי"
   },
   "homeSection": {
     "featuredTemplates": "תבניות מומלצות",

@@ -5,7 +5,7 @@ import { deductCredits } from "@/lib/credits-service";
 import { OPENAI_API_KEY } from "@/lib/env";
 import { rateLimit } from "@/lib/rate-limit";
 
-const APP_TYPES = ["restaurant", "ecommerce", "gym", "salon", "education", "content_app"] as const;
+const APP_PLATFORMS = ["android", "ios", "both"] as const;
 
 const SCREEN_NAMES = ["HomeScreen", "LoginScreen", "RegisterScreen", "ProfileScreen", "SettingsScreen"];
 
@@ -55,14 +55,14 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
   const name = (body?.name || "").trim();
-  const type = (body?.type || "restaurant").trim().toLowerCase();
+  const platform = (body?.platform || "both").trim().toLowerCase();
   const description = (body?.description || "").trim();
 
   if (!name) {
     return NextResponse.json({ error: "App name is required" }, { status: 400 });
   }
-  if (!APP_TYPES.includes(type as (typeof APP_TYPES)[number])) {
-    return NextResponse.json({ error: "Invalid app type" }, { status: 400 });
+  if (!APP_PLATFORMS.includes(platform as (typeof APP_PLATFORMS)[number])) {
+    return NextResponse.json({ error: "Invalid app platform" }, { status: 400 });
   }
 
   const { data: app, error: appError } = await supabase
@@ -70,7 +70,8 @@ export async function POST(request: NextRequest) {
     .insert({
       user_id: user.id,
       name,
-      type,
+      type: "mobile",
+      platform,
       description: description || null,
       status: "generating",
     })
@@ -95,7 +96,7 @@ export async function POST(request: NextRequest) {
             { role: "system", content: AI_PROMPT },
             {
               role: "user",
-              content: `Create ${screenName} for a ${type} app named "${name}". ${description ? `Description: ${description}` : ""} Use React Native and Expo.`,
+              content: `Create ${screenName} for a mobile app named "${name}". ${description ? `Description: ${description}` : ""} Use React Native and Expo.`,
             },
           ],
           temperature: 0.7,
@@ -104,7 +105,7 @@ export async function POST(request: NextRequest) {
         let code = completion.choices[0]?.message?.content?.trim() || "";
         code = code.replace(/^```(?:jsx?|javascript)?\n?|\n?```$/g, "").trim();
         if (!code.includes("export default")) {
-          code = generatePlaceholderScreen(screenName, type, name);
+          code = generatePlaceholderScreen(screenName, "mobile", name);
         }
         screens.push({ name: screenName, component_code: code });
       }
@@ -113,7 +114,7 @@ export async function POST(request: NextRequest) {
       for (const screenName of SCREEN_NAMES) {
         screens.push({
           name: screenName,
-          component_code: generatePlaceholderScreen(screenName, type, name),
+          component_code: generatePlaceholderScreen(screenName, "mobile", name),
         });
       }
     }
@@ -121,7 +122,7 @@ export async function POST(request: NextRequest) {
     for (const screenName of SCREEN_NAMES) {
       screens.push({
         name: screenName,
-        component_code: generatePlaceholderScreen(screenName, type, name),
+        component_code: generatePlaceholderScreen(screenName, "mobile", name),
       });
     }
   }
