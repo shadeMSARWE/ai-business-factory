@@ -24,6 +24,7 @@ const STATUS_OPTIONS = [
   { value: "replied", label: "Replied" },
   { value: "interested", label: "Interested" },
   { value: "converted", label: "Converted" },
+  { value: "closed", label: "Closed" },
 ];
 
 interface Lead {

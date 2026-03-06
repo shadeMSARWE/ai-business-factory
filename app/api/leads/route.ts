@@ -11,6 +11,10 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const status = searchParams.get("status");
   const slug = searchParams.get("slug");
+  const city = searchParams.get("city");
+  const category = searchParams.get("category");
+  const leadScoreMin = searchParams.get("lead_score_min");
+  const search = searchParams.get("search");
 
   let query = supabase
     .from("leads")
@@ -20,13 +24,27 @@ export async function GET(request: NextRequest) {
 
   if (status && status !== "all") query = query.eq("status", status);
   if (slug && slug !== "all") query = query.eq("slug", slug);
+  if (city && city !== "all") query = query.eq("city", city);
+  if (category && category !== "all") query = query.eq("category", category);
+  if (leadScoreMin) query = query.gte("lead_score", parseInt(leadScoreMin, 10));
 
-  const { data, error } = await query;
+  const { data: rawData, error } = await query;
+  let data = rawData || [];
+
+  if (search && search.trim()) {
+    const q = search.toLowerCase().trim();
+    data = data.filter(
+      (l: { name?: string; email?: string; message?: string }) =>
+        (l.name || "").toLowerCase().includes(q) ||
+        (l.email || "").toLowerCase().includes(q) ||
+        (l.message || "").toLowerCase().includes(q)
+    );
+  }
   if (error) {
     console.error("Leads fetch error:", error);
     return NextResponse.json({ error: "Failed to fetch leads" }, { status: 500 });
   }
-  return NextResponse.json({ leads: data || [] });
+  return NextResponse.json({ leads: data });
 }
 
 export async function POST(request: NextRequest) {

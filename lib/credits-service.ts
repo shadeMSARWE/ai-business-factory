@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { getCreditCost, getPlanCredits, CREDIT_PLANS, type CreditAction, type CreditPlanId } from "./credits";
 
 const periodStart = () => new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().slice(0, 10);
@@ -63,20 +64,46 @@ export async function getUserCredits(userId: string): Promise<UserCredits | null
   };
 }
 
-export async function deductCredits(userId: string, action: CreditAction): Promise<boolean> {
+export async function deductCredits(userId: string, action: CreditAction, description?: string): Promise<boolean> {
   const supabase = await createClient();
   if (!supabase) return false;
+  return deductCreditsWithClient(supabase, userId, action, description);
+}
 
+export async function deductCreditsWithClient(
+  supabase: SupabaseClient,
+  userId: string,
+  action: CreditAction,
+  description?: string
+): Promise<boolean> {
   const cost = getCreditCost(action);
   const { data, error } = await supabase.rpc("deduct_credits", {
     p_user_id: userId,
     p_amount: cost,
+    p_action: action,
+    p_description: description || `${action}: ${cost} credits`,
   });
-
   return !error && data === true;
 }
 
 export async function hasEnoughCredits(userId: string, action: CreditAction): Promise<boolean> {
   const uc = await getUserCredits(userId);
   return uc ? uc.canUseCredits(action) : false;
+}
+
+export async function hasEnoughCreditsWithClient(
+  supabase: SupabaseClient,
+  userId: string,
+  action: CreditAction
+): Promise<boolean> {
+  const cost = getCreditCost(action);
+  const periodStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().slice(0, 10);
+  const { data } = await supabase
+    .from("usage")
+    .select("credits")
+    .eq("user_id", userId)
+    .eq("period_start", periodStart)
+    .maybeSingle();
+  const credits = data?.credits ?? 0;
+  return credits >= cost;
 }

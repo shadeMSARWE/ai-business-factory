@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function trackAutoOutreachEvent(
   userId: string,
-  eventType: "business_search" | "demo_generated" | "offer_generated" | "outreach_sent",
+  eventType: "business_search" | "demo_generated" | "offer_generated" | "outreach_sent" | "outreach_failed" | "outreach_opened" | "outreach_replied",
   eventData?: Record<string, unknown>
 ) {
   const supabase = await createClient();

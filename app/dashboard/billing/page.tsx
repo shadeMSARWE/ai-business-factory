@@ -20,6 +20,34 @@ interface BillingData {
   creditsExhausted: boolean;
 }
 
+function BillingHistorySection() {
+  const [history, setHistory] = useState<{ id: string; type: string; amount: number | null; credits: number | null; description: string; status: string; created_at: string }[]>([]);
+  useEffect(() => {
+    fetch("/api/billing-history")
+      .then((r) => r.json())
+      .then((d) => setHistory(d.history || []))
+      .catch(() => setHistory([]));
+  }, []);
+  if (history.length === 0) return null;
+  return (
+    <div className="mt-10">
+      <h2 className="text-xl font-semibold text-white mb-4">Billing history</h2>
+      <div className="space-y-2">
+        {history.slice(0, 10).map((h) => (
+          <div key={h.id} className="flex justify-between py-2 border-b border-white/5 text-sm">
+            <span className="text-slate-400">{h.description || h.type}</span>
+            <span className="text-white">
+              {h.amount != null && `$${h.amount}`}
+              {h.credits != null && ` ${h.credits} credits`}
+            </span>
+            <span className="text-slate-500">{new Date(h.created_at).toLocaleDateString()}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function CreditPacksSection() {
   const [packs, setPacks] = useState<{ id: string; credits: number; price_usd: number }[]>([]);
   useEffect(() => {
@@ -210,6 +238,8 @@ export default function BillingPage() {
                 );
               })}
             </div>
+
+            <BillingHistorySection />
 
             <p className="text-slate-500 text-sm mt-8">
               Add PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, and plan IDs (PAYPAL_PRO_PLAN_ID, etc.) to enable subscriptions.

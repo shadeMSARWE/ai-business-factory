@@ -15,6 +15,8 @@ import {
   Megaphone,
   Search,
   CreditCard,
+  Send,
+  Coins,
 } from "lucide-react";
 
 const navItems = [
@@ -26,6 +28,8 @@ const navItems = [
   { href: "/dashboard/seo-generator", label: "SEO", icon: Search },
   { href: "/dashboard/business-finder", label: "Business Finder", icon: MapPin },
   { href: "/dashboard/leads", label: "Leads", icon: Mail },
+  { href: "/dashboard/outreach", label: "Outreach", icon: Send },
+  { href: "/dashboard/credits", label: "Credits", icon: Coins },
   { href: "/factory", label: "How It Works", icon: Factory },
   { href: "/dashboard/websites", label: "My Websites", icon: Globe },
   { href: "/dashboard/analytics", label: "Analytics", icon: BarChart3 },

@@ -116,10 +116,59 @@ export async function POST(request: NextRequest) {
         credits_used: 0,
       };
       await supabase.from("usage").upsert(usageRow as never, { onConflict: "user_id,period_start" });
+
+      await supabase.from("billing_history").insert({
+        user_id: customId,
+        type: "subscription",
+        amount: null,
+        credits: planCredits,
+        description: `Subscription activated: ${planId}`,
+        paypal_id: subId,
+        status: "completed",
+      } as never);
     } else if (eventType === "BILLING.SUBSCRIPTION.CANCELLED" || eventType === "BILLING.SUBSCRIPTION.EXPIRED") {
       const customId = event.resource?.custom_id;
+      const subId = event.resource?.id;
       if (customId) {
         await supabase.from("subscriptions").update({ status: "cancelled" } as never).eq("user_id", customId);
+        await supabase.from("billing_history").insert({
+          user_id: customId,
+          type: "subscription",
+          amount: null,
+          credits: null,
+          description: "Subscription cancelled",
+          paypal_id: subId,
+          status: "cancelled",
+        } as never);
+      }
+    } else if (eventType === "PAYMENT.SALE.COMPLETED") {
+      const customId = event.resource?.custom;
+      const amount = event.resource?.amount?.total;
+      const paypalId = event.resource?.id;
+      if (customId && amount) {
+        await supabase.from("billing_history").insert({
+          user_id: customId,
+          type: "credit_purchase",
+          amount: parseFloat(amount),
+          credits: null,
+          description: "Payment completed",
+          paypal_id: paypalId,
+          status: "completed",
+        } as never);
+      }
+    } else if (eventType === "PAYMENT.CAPTURE.DENIED" || eventType === "PAYMENT.CAPTURE.REFUNDED") {
+      const customId = event.resource?.custom;
+      const paypalId = event.resource?.id;
+      if (customId) {
+        await supabase.from("billing_history").insert({
+          user_id: customId,
+          type: "payment_failed",
+          amount: null,
+          credits: null,
+          description: eventType.includes("REFUNDED") ? "Payment refunded" : "Payment denied",
+          paypal_id: paypalId,
+          status: "failed",
+        } as never);
       }
     }
 
