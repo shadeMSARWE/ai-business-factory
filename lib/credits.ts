@@ -8,6 +8,10 @@ export const CREDIT_COSTS = {
   ads: 3,
   businessFinderSearch: 5,
   businessWebsite: 20,
+  autoOutreachSearch: 5,
+  autoOutreachGenerate: 20,
+  autoOutreachMessage: 1,
+  autoOutreachSend: 1,
 } as const;
 
 export type CreditAction = keyof typeof CREDIT_COSTS;

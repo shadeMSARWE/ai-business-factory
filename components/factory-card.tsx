@@ -17,11 +17,13 @@ import {
   Zap,
   ExternalLink,
   Eye,
+  Send,
 } from "lucide-react";
 import type { FactoryConfig, FactoryStatus } from "@/lib/factories";
 
 const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   businessFinder: MapPin,
+  autoOutreach: Send,
   website: Globe,
   logo: Palette,
   seo: Search,

@@ -6,7 +6,7 @@ import { FactoryCard } from "@/components/factory-card";
 import { FactoryPerformancePanel } from "@/components/factory-performance-panel";
 import { FACTORIES, FACTORY_ORDER } from "@/lib/factories";
 
-const POPULAR_IDS = ["website", "businessFinder", "videoAds"];
+const POPULAR_IDS = ["website", "businessFinder", "autoOutreach", "videoAds"];
 
 export default function FactoriesPage() {
   const popularFactories = POPULAR_IDS.map((id) => FACTORIES[id]).filter(Boolean);

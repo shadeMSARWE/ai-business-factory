@@ -24,6 +24,15 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     status: "ready",
     popular: true,
   },
+  autoOutreach: {
+    id: "autoOutreach",
+    name: "Auto Outreach AI",
+    description: "Find local businesses, generate demo websites and send automated offers.",
+    path: "/dashboard/auto-outreach",
+    available: true,
+    status: "new",
+    popular: true,
+  },
   website: {
     id: "website",
     name: "AI Website Factory",
@@ -104,6 +113,7 @@ export type FactoryId = keyof typeof FACTORIES;
 
 export const FACTORY_ORDER: FactoryId[] = [
   "businessFinder",
+  "autoOutreach",
   "website",
   "logo",
   "seo",
