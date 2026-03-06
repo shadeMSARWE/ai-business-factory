@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { message, siteData } = body;
+  const { message, siteData, chatHistory = [] } = body;
   if (!message || typeof message !== "string") {
     return NextResponse.json({ error: "Message is required" }, { status: 400 });
   }
@@ -39,6 +39,12 @@ export async function POST(request: NextRequest) {
     });
   }
 
+  const historyMessages = Array.isArray(chatHistory)
+    ? chatHistory.slice(-6).flatMap((h: { role: string; content: string }) => [
+        { role: h.role as "user" | "assistant", content: h.content },
+      ])
+    : [];
+
   try {
     const { default: OpenAI } = await import("openai");
     const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
@@ -46,6 +52,7 @@ export async function POST(request: NextRequest) {
       model: "gpt-4o-mini",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
+        ...historyMessages,
         {
           role: "user",
           content: `Current site: ${JSON.stringify(siteData || {}).slice(0, 2000)}\n\nUser: ${message}`,
