@@ -13,7 +13,7 @@ import {
 import { useAuth } from "@/components/providers/auth-provider";
 import { createClient } from "@/lib/supabase/client";
 import { useTranslation } from "@/hooks/use-translation";
-import { LogOut, LayoutDashboard, User } from "lucide-react";
+import { LogOut, LayoutDashboard, User, CreditCard } from "lucide-react";
 
 export function AuthButton() {
   const { user, loading, signOut } = useAuth();
@@ -74,9 +74,15 @@ export function AuthButton() {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/my-sites" className="flex items-center gap-2 cursor-pointer">
+              <Link href="/dashboard/websites" className="flex items-center gap-2 cursor-pointer">
                 <User className="h-4 w-4" />
                 {t("my_websites")}
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard/billing" className="flex items-center gap-2 cursor-pointer">
+                <CreditCard className="h-4 w-4" />
+                {t("nav.billing")}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleLogout} className="flex items-center gap-2 cursor-pointer text-red-400">
@@ -90,8 +96,15 @@ export function AuthButton() {
   }
 
   return (
-    <Button onClick={handleLoginWithGoogle} className="bg-white text-slate-900 hover:bg-slate-100">
-      {t("login")}
-    </Button>
+    <div className="flex items-center gap-2">
+      <Link href="/signup">
+        <Button variant="ghost" className="text-slate-300 hover:text-white">
+          {t("common.signup")}
+        </Button>
+      </Link>
+      <Button onClick={handleLoginWithGoogle} className="bg-white text-slate-900 hover:bg-slate-100">
+        {t("login")}
+      </Button>
+    </div>
   );
 }

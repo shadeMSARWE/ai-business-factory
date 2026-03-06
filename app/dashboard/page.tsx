@@ -5,8 +5,6 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/providers/auth-provider";
 import { useTranslation } from "@/hooks/use-translation";
-import { Logo } from "@/components/logo";
-import { DashboardNav } from "@/components/dashboard/dashboard-nav";
 import { Globe, FileText, User, Link2 } from "lucide-react";
 import { AISuggestionsPanel } from "@/components/dashboard/ai-suggestions-panel";
 
@@ -15,20 +13,7 @@ export default function DashboardPage() {
   const { t } = useTranslation();
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f]">
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0a0a0f]/80 backdrop-blur-xl">
-        <div className="container mx-auto flex h-16 items-center justify-between px-6">
-          <Logo showSubtitle />
-          <DashboardNav />
-          <Link href="/builder">
-            <Button className="bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600">
-              {t("create_website")}
-            </Button>
-          </Link>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-6 pb-24">
+    <div>
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -46,7 +31,7 @@ export default function DashboardPage() {
               {t("create_website")}
             </Button>
           </Link>
-            <Link href="/my-sites">
+            <Link href="/dashboard/websites">
               <Button size="lg" variant="outline" className="h-12 px-8 text-lg border-violet-500/50 text-violet-300 hover:bg-violet-500/10">
                 {t("my_websites")}
               </Button>
@@ -75,7 +60,7 @@ export default function DashboardPage() {
                 <p className="text-slate-400">{t("features.aiWebsiteBuilderDesc")}</p>
               </motion.div>
             </Link>
-            <Link href="/my-sites">
+            <Link href="/dashboard/websites">
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 className="rounded-2xl border border-white/10 bg-white/5 p-8 hover:border-violet-500/30 transition-colors">
@@ -104,7 +89,6 @@ export default function DashboardPage() {
             </motion.div>
           </div>
         </section>
-      </main>
     </div>
   );
 }

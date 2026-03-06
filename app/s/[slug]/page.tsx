@@ -26,6 +26,11 @@ export default function PublishedSitePage() {
           const json = await res.json();
           setData(json.data);
           trackPageView(slug, "/");
+          fetch("/api/analytics/track", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ event_type: "page_view", slug, event_data: { path: "/" } }),
+          }).catch(() => {});
           setLoading(false);
           return;
         }
@@ -34,6 +39,11 @@ export default function PublishedSitePage() {
       if (local) {
         setData(local.data as Record<string, unknown>);
         trackPageView(slug, "/");
+        fetch("/api/analytics/track", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ event_type: "page_view", slug, event_data: { path: "/" } }),
+        }).catch(() => {});
       }
       setLoading(false);
     }

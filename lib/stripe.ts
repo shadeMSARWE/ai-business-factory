@@ -8,7 +8,7 @@ export const PLANS = {
     priceId: null as string | null,
     priceMonthly: 0,
     sitesLimit: 1,
-    generationsLimit: 10,
+    generationsLimit: 5,
   },
   pro: {
     id: "pro",
@@ -16,7 +16,7 @@ export const PLANS = {
     priceId: process.env.STRIPE_PRO_PRICE_ID || "",
     priceMonthly: 19,
     sitesLimit: 10,
-    generationsLimit: 200,
+    generationsLimit: 100,
   },
   business: {
     id: "business",

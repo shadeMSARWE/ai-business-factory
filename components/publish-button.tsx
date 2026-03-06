@@ -7,24 +7,27 @@ import { ExternalLink } from "lucide-react";
 
 export function PublishButton({
   websiteId,
+  slug: slugProp,
   variant = "outline",
   size = "sm",
   className = "",
 }: {
-  websiteId: string;
+  websiteId?: string;
+  slug?: string;
   variant?: "outline" | "default" | "ghost";
   size?: "sm" | "default" | "lg";
   className?: string;
 }) {
   const showToast = useToast();
-  const site = getWebsiteById(websiteId);
-  if (!site) return null;
+  const site = websiteId ? getWebsiteById(websiteId) : null;
+  const slug = slugProp ?? site?.slug;
+  if (!slug) return null;
 
   const base = typeof window !== "undefined" ? window.location.origin : "";
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open(`${base}/s/${site.slug}`, "_blank");
+    window.open(`${base}/s/${slug}`, "_blank");
     showToast("Website published successfully.");
   };
 

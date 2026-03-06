@@ -31,3 +31,18 @@ export function getNestedValue(obj: Record<string, unknown>, path: string): stri
   }
   return typeof current === "string" ? current : undefined;
 }
+
+/** Server-side translation helper. Use getTranslations(locale) for full object. */
+export function t(locale: Locale, key: string): string {
+  const trans = getTranslations(locale) as Record<string, unknown>;
+  const keys = key.split(".");
+  let value: unknown = trans;
+  for (const k of keys) {
+    if (value && typeof value === "object" && k in (value as object)) {
+      value = (value as Record<string, unknown>)[k];
+    } else {
+      return key;
+    }
+  }
+  return typeof value === "string" ? value : key;
+}

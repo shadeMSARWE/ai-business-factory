@@ -21,14 +21,20 @@ export function Header() {
         <Logo showSubtitle />
 
         <nav className={`hidden md:flex items-center gap-6 ${isRtl ? "flex-row-reverse" : ""}`}>
+          <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition">
+            {t("home")}
+          </Link>
+          <Link href="/dashboard/tools" className="text-sm text-muted-foreground hover:text-foreground transition">
+            {t("nav.tools")}
+          </Link>
+          <Link href="/dashboard/factories" className="text-sm text-muted-foreground hover:text-foreground transition">
+            {t("nav.factories")}
+          </Link>
           <Link href="/dashboard/templates" className="text-sm text-muted-foreground hover:text-foreground transition">
             {t("templates")}
           </Link>
           <Link href="/pricing" className="text-sm text-muted-foreground hover:text-foreground transition">
             {t("pricing")}
-          </Link>
-          <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground transition">
-            {t("dashboard")}
           </Link>
 
           <div className={`flex items-center gap-2 ${isRtl ? "flex-row-reverse" : ""}`}>

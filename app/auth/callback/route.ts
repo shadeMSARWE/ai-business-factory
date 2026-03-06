@@ -5,7 +5,8 @@ import { NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY } from "@/lib/e
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
-  const next = requestUrl.searchParams.get("next") ?? "/dashboard";
+  const nextParam = requestUrl.searchParams.get("next");
+  const next = nextParam && nextParam.startsWith("/") ? nextParam : "/dashboard";
   const origin = requestUrl.origin;
 
   if (!NEXT_PUBLIC_SUPABASE_URL || !NEXT_PUBLIC_SUPABASE_ANON_KEY) {

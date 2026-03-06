@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/components/providers/language-provider";
-import { AuthProvider } from "@/components/providers/auth-provider";
+import { AuthProviderWrapper } from "@/components/auth-provider-wrapper";
 import { ToastProvider } from "@/components/providers/toast-provider";
 import { LocaleInitScript } from "@/components/locale-init-script";
 import { Analytics } from "@vercel/analytics/react";
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description: "AI-powered website builder for any business. Generate complete multi-page websites from a simple text prompt.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -25,12 +25,12 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`}>
         <LocaleInitScript />
         <LanguageProvider>
-          <AuthProvider>
+          <AuthProviderWrapper>
             <ToastProvider>
               {children}
               <OnboardingWizard />
             </ToastProvider>
-          </AuthProvider>
+          </AuthProviderWrapper>
         </LanguageProvider>
         <Analytics />
       </body>

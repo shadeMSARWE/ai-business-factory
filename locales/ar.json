@@ -10,6 +10,8 @@
   "open_dashboard": "فتح لوحة التحكم",
   "everything_you_need": "كل ما تحتاجه",
   "my_websites": "مواقعي",
+  "analytics": "التحليلات",
+  "settings": "الإعدادات",
   "create_website": "إنشاء موقع",
   "account": "الحساب",
   "welcome": "مرحباً",
@@ -65,6 +67,9 @@
   "nav": {
     "templates": "القوالب",
     "pricing": "الأسعار",
+    "billing": "الفواتير",
+    "tools": "الأدوات",
+    "factories": "المصانع",
     "howItWorks": "كيف يعمل",
     "contact": "اتصل بنا",
     "openDashboard": "فتح لوحة التحكم",
@@ -94,6 +99,13 @@
     "title": "النطاق والنشر",
     "desc": "ربط نطاقك المخصص. قريباً.",
     "comingSoon": "قريباً"
+  },
+  "footer": {
+    "product": "المنتج",
+    "company": "الشركة",
+    "contact": "اتصل بنا",
+    "tagline": "أنشئ مواقع وعلامات تجارية وأعمالًا بالذكاء الاصطناعي.",
+    "howItWorks": "كيف يعمل"
   },
   "homeSection": {
     "featuredTemplates": "القوالب المميزة",

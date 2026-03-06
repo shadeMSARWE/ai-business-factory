@@ -2,11 +2,9 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { DashboardNav } from "@/components/dashboard/dashboard-nav";
-import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Globe, Palette, Search, Megaphone, Store, Sparkles } from "lucide-react";
+import { Globe, Palette, Search, Megaphone, Store, Sparkles, Layout, MapPin } from "lucide-react";
 import { FACTORIES } from "@/lib/factories";
 
 const icons: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -14,6 +12,8 @@ const icons: Record<string, React.ComponentType<{ className?: string }>> = {
   logo: Palette,
   seo: Search,
   ads: Megaphone,
+  businessFinder: MapPin,
+  templates: Layout,
   store: Store,
   app: Sparkles,
   video: Sparkles,
@@ -21,23 +21,7 @@ const icons: Record<string, React.ComponentType<{ className?: string }>> = {
 
 export default function FactoriesPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0f]">
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0a0a0f]/80 backdrop-blur-xl">
-        <div className="container mx-auto flex h-16 items-center justify-between px-6">
-          <Logo showSubtitle />
-          <DashboardNav />
-          <Link href="/builder">
-            <Button className="bg-gradient-to-r from-violet-500 to-fuchsia-500">Create Website</Button>
-          </Link>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-6 py-12">
-        <Link href="/dashboard" className="inline-flex items-center text-slate-400 hover:text-white mb-8">
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Dashboard
-        </Link>
-
+    <div>
         <h1 className="text-3xl font-bold text-white mb-2">AI Factory Modules</h1>
         <p className="text-slate-400 mb-10">Modular AI tools for your business</p>
 
@@ -77,7 +61,6 @@ export default function FactoriesPage() {
             );
           })}
         </div>
-      </main>
     </div>
   );
 }

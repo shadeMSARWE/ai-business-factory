@@ -2,36 +2,35 @@
 
 import Link from "next/link";
 import { Logo } from "./logo";
+import { useTranslation } from "@/hooks/use-translation";
 
 export function Footer() {
+  const { t, isRtl } = useTranslation();
   return (
     <footer className="border-t border-white/10 bg-[#0a0a0f]">
-      <div className="container mx-auto px-6 py-16">
+      <div className={`container mx-auto px-6 py-16 ${isRtl ? "text-right" : ""}`}>
         <div className="grid md:grid-cols-4 gap-12">
           <div>
             <Logo showSubtitle />
-            <p className="text-slate-500 text-sm mt-4">
-              Build websites, brands and businesses with AI.
-            </p>
+            <p className="text-slate-500 text-sm mt-4">{t("footer.tagline")}</p>
           </div>
           <div>
-            <h4 className="font-semibold text-white mb-4">Product</h4>
+            <h4 className="font-semibold text-white mb-4">{t("footer.product")}</h4>
             <ul className="space-y-3">
-              <li><Link href="/dashboard" className="text-slate-400 hover:text-white transition">Dashboard</Link></li>
-              <li><Link href="/dashboard/templates" className="text-slate-400 hover:text-white transition">Templates</Link></li>
-              <li><Link href="/pricing" className="text-slate-400 hover:text-white transition">Pricing</Link></li>
-              <li><Link href="/factory" className="text-slate-400 hover:text-white transition">How it works</Link></li>
+              <li><Link href="/dashboard" className="text-slate-400 hover:text-white transition">{t("dashboard")}</Link></li>
+              <li><Link href="/dashboard/templates" className="text-slate-400 hover:text-white transition">{t("templates")}</Link></li>
+              <li><Link href="/pricing" className="text-slate-400 hover:text-white transition">{t("pricing")}</Link></li>
+              <li><Link href="/factory" className="text-slate-400 hover:text-white transition">{t("footer.howItWorks")}</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold text-white mb-4">Company</h4>
+            <h4 className="font-semibold text-white mb-4">{t("footer.company")}</h4>
             <ul className="space-y-3">
-              <li><Link href="/contact" className="text-slate-400 hover:text-white transition">About</Link></li>
-              <li><Link href="/contact" className="text-slate-400 hover:text-white transition">Contact</Link></li>
+              <li><Link href="/contact" className="text-slate-400 hover:text-white transition">{t("nav.contact")}</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold text-white mb-4">Contact</h4>
+            <h4 className="font-semibold text-white mb-4">{t("footer.contact")}</h4>
             <ul className="space-y-3 text-slate-400">
               <li>
                 <a href="mailto:shademsarwe2@gmail.com" className="hover:text-white transition">

@@ -4,15 +4,13 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { DashboardNav } from "@/components/dashboard/dashboard-nav";
-import { Logo } from "@/components/logo";
 import {
   TEMPLATES,
   getCategories,
   getTemplatesByCategory,
 } from "@/lib/templates-data";
 import { TemplateImage } from "@/components/template-image";
-import { ArrowLeft, Eye, Check, Search } from "lucide-react";
+import { Eye, Check, Search } from "lucide-react";
 
 export default function TemplatesPage() {
   const [category, setCategory] = useState<string>("all");
@@ -39,25 +37,7 @@ export default function TemplatesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f]">
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0a0a0f]/80 backdrop-blur-xl">
-        <div className="container mx-auto flex h-16 items-center justify-between px-6">
-          <Logo showSubtitle />
-          <DashboardNav />
-          <Link href="/dashboard/create">
-            <Button className="bg-gradient-to-r from-violet-500 to-fuchsia-500">
-              Create Website
-            </Button>
-          </Link>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-6 py-12">
-        <Link href="/dashboard" className="inline-flex items-center text-slate-400 hover:text-white mb-8">
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Dashboard
-        </Link>
-
+    <div>
         <h1 className="text-3xl font-bold text-white mb-2">Templates Marketplace</h1>
         <p className="text-slate-400 mb-10">
           {TEMPLATES.length} professional templates across 9 categories
@@ -134,7 +114,6 @@ export default function TemplatesPage() {
         {filtered.length === 0 && (
           <p className="text-center text-slate-500 py-16">No templates match your search.</p>
         )}
-      </main>
     </div>
   );
 }

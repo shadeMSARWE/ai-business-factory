@@ -10,6 +10,8 @@
   "open_dashboard": "Open Dashboard",
   "everything_you_need": "Everything you need",
   "my_websites": "My Websites",
+  "analytics": "Analytics",
+  "settings": "Settings",
   "create_website": "Create Website",
   "account": "Account",
   "generateBusiness": "Generate Business",
@@ -67,6 +69,9 @@
   "nav": {
     "templates": "Templates",
     "pricing": "Pricing",
+    "billing": "Billing",
+    "tools": "Tools",
+    "factories": "Factories",
     "howItWorks": "How It Works",
     "contact": "Contact",
     "openDashboard": "Open Dashboard",
@@ -96,6 +101,13 @@
     "title": "Domain & Publishing",
     "desc": "Connect your custom domain. Coming soon.",
     "comingSoon": "Coming soon"
+  },
+  "footer": {
+    "product": "Product",
+    "company": "Company",
+    "contact": "Contact",
+    "tagline": "Build websites, brands and businesses with AI.",
+    "howItWorks": "How it works"
   },
   "homeSection": {
     "featuredTemplates": "Featured Templates",

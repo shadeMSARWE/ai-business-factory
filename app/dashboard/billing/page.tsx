@@ -1,13 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { DashboardNav } from "@/components/dashboard/dashboard-nav";
-import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { ArrowLeft, CreditCard, Zap, Loader2, Check } from "lucide-react";
+import { CreditCard, Zap, Loader2, Check } from "lucide-react";
 import { PLANS } from "@/lib/stripe";
 
 interface BillingData {
@@ -56,23 +53,7 @@ export default function BillingPage() {
   const formatLimit = (n: number) => (n === -1 ? "Unlimited" : n.toString());
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f]">
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0a0a0f]/80 backdrop-blur-xl">
-        <div className="container mx-auto flex h-16 items-center justify-between px-6">
-          <Logo showSubtitle />
-          <DashboardNav />
-          <Link href="/dashboard/create">
-            <Button className="bg-gradient-to-r from-violet-500 to-fuchsia-500">Create Website</Button>
-          </Link>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-6 py-12">
-        <Link href="/dashboard" className="inline-flex items-center text-slate-400 hover:text-white mb-8">
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Dashboard
-        </Link>
-
+    <div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -194,7 +175,6 @@ export default function BillingPage() {
             <p className="text-slate-400">Failed to load billing data.</p>
           )}
         </motion.div>
-      </main>
     </div>
   );
 }

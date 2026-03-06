@@ -10,6 +10,8 @@
   "open_dashboard": "פתח לוח בקרה",
   "everything_you_need": "כל מה שאתה צריך",
   "my_websites": "האתרים שלי",
+  "analytics": "אנליטיקה",
+  "settings": "הגדרות",
   "create_website": "צור אתר",
   "account": "חשבון",
   "welcome": "ברוך הבא",
@@ -65,6 +67,9 @@
   "nav": {
     "templates": "תבניות",
     "pricing": "מחירים",
+    "billing": "חיוב",
+    "tools": "כלים",
+    "factories": "מפעלים",
     "howItWorks": "איך זה עובד",
     "contact": "צור קשר",
     "openDashboard": "פתח לוח בקרה",
@@ -94,6 +99,13 @@
     "title": "דומיין ופרסום",
     "desc": "חבר את הדומיין שלך. בקרוב.",
     "comingSoon": "בקרוב"
+  },
+  "footer": {
+    "product": "מוצר",
+    "company": "חברה",
+    "contact": "צור קשר",
+    "tagline": "בנה אתרים, מותגים ועסקים עם AI.",
+    "howItWorks": "איך זה עובד"
   },
   "homeSection": {
     "featuredTemplates": "תבניות מומלצות",
