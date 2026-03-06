@@ -2,15 +2,14 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { AuthButton } from "@/components/auth-button";
 import { Logo } from "@/components/logo";
-import { useLanguage } from "@/components/providers/language-provider";
+import { useTranslation } from "@/hooks/use-translation";
 import { Locale } from "@/lib/i18n";
 import { Globe } from "lucide-react";
 
 export function Header() {
-  const { t, locale, setLocale, isRtl } = useLanguage();
+  const { t, locale, setLocale, isRtl } = useTranslation();
 
   return (
     <motion.header
@@ -18,24 +17,18 @@ export function Header() {
       animate={{ y: 0, opacity: 1 }}
       className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-white/5 backdrop-blur-xl"
     >
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+      <div className={`container mx-auto flex h-16 items-center justify-between px-4 ${isRtl ? "flex-row-reverse" : ""}`}>
         <Logo showSubtitle />
 
         <nav className={`hidden md:flex items-center gap-6 ${isRtl ? "flex-row-reverse" : ""}`}>
           <Link href="/dashboard/templates" className="text-sm text-muted-foreground hover:text-foreground transition">
-            {t("nav.templates")}
+            {t("templates")}
           </Link>
           <Link href="/pricing" className="text-sm text-muted-foreground hover:text-foreground transition">
-            {t("nav.pricing")}
+            {t("pricing")}
           </Link>
           <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground transition">
-            {t("common.dashboard")}
-          </Link>
-          <Link href="/factory" className="text-sm text-muted-foreground hover:text-foreground transition">
-            {t("nav.howItWorks")}
-          </Link>
-          <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition">
-            {t("nav.contact")}
+            {t("dashboard")}
           </Link>
 
           <div className={`flex items-center gap-2 ${isRtl ? "flex-row-reverse" : ""}`}>
@@ -46,13 +39,13 @@ export function Header() {
               className="bg-transparent border-none text-sm cursor-pointer focus:ring-0"
               dir={isRtl ? "rtl" : "ltr"}
             >
-              <option value="en">English</option>
-              <option value="ar">العربية</option>
-              <option value="he">עברית</option>
+              <option value="en">EN</option>
+              <option value="ar">AR</option>
+              <option value="he">HE</option>
             </select>
           </div>
 
-          <AuthButton dashboardLabel={t("common.dashboard")} />
+          <AuthButton />
         </nav>
       </div>
     </motion.header>

@@ -26,6 +26,7 @@ function CreateContent() {
   const mode = searchParams.get("mode");
   const business = searchParams.get("business");
   const [generatedData, setGeneratedData] = useState<GeneratedWebsite | Record<string, unknown> | null>(null);
+  const [generationPrompt, setGenerationPrompt] = useState("");
   const [slug, setSlug] = useState("");
   const [saving, setSaving] = useState(false);
 
@@ -37,8 +38,9 @@ function CreateContent() {
     ? "Create a complete business with website, logo, and marketing"
     : "";
 
-  const handleGenerated = (data: GeneratedWebsite) => {
+  const handleGenerated = (data: GeneratedWebsite, prompt?: string) => {
     setGeneratedData(data);
+    setGenerationPrompt(prompt || "");
     const name = (data.businessName as string) || "website";
     setSlug(name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""));
   };
@@ -53,10 +55,14 @@ function CreateContent() {
       const slugVal = slug || "website";
 
       if (user) {
-        const res = await fetch("/api/save-site", {
+        const res = await fetch("/api/sites/save", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ slug: slugVal, name, data: generatedData }),
+          body: JSON.stringify({
+            prompt: generationPrompt,
+            html: JSON.stringify(generatedData),
+            slug: slugVal,
+          }),
         });
         if (!res.ok) {
           const err = await res.json().catch(() => ({}));

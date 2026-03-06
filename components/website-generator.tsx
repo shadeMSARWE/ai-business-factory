@@ -25,7 +25,7 @@ export function WebsiteGenerator({
   onGenerated,
   initialPrompt = "",
 }: {
-  onGenerated: (data: GeneratedWebsite) => void;
+  onGenerated: (data: GeneratedWebsite, prompt?: string) => void;
   initialPrompt?: string;
 }) {
   const { t } = useLanguage();
@@ -46,7 +46,7 @@ export function WebsiteGenerator({
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to generate");
-      onGenerated(data);
+      onGenerated(data, prompt.trim());
       const elapsed = Date.now() - start;
       if (elapsed < 500) {
         await new Promise((r) => setTimeout(r, 500 - elapsed));

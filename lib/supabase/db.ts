@@ -119,3 +119,20 @@ export async function getGeneratedSiteBySlug(slug: string): Promise<DbGeneratedS
   if (error) return null;
   return data;
 }
+
+export async function getSiteBySlugFromSites(slug: string): Promise<{ data: Record<string, unknown> } | null> {
+  const supabase = await createClient();
+  if (!supabase) return null;
+  const { data, error } = await supabase
+    .from("sites")
+    .select("html")
+    .eq("slug", slug)
+    .single();
+  if (error || !data?.html) return null;
+  try {
+    const parsed = JSON.parse(data.html);
+    return { data: parsed };
+  } catch {
+    return null;
+  }
+}

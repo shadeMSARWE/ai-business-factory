@@ -9,10 +9,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Sparkles, Palette, Search, Layout, BarChart3, ArrowRight } from "lucide-react";
 import { getFeaturedTemplates } from "@/lib/templates-data";
 import { TemplateImage } from "@/components/template-image";
-import { useLanguage } from "@/components/providers/language-provider";
+import { useTranslation } from "@/hooks/use-translation";
 
 export default function HomePage() {
-  const { t, isRtl } = useLanguage();
+  const { t, isRtl } = useTranslation();
   const featured = getFeaturedTemplates(6);
 
   return (
@@ -31,17 +31,17 @@ export default function HomePage() {
             <div className={`flex flex-wrap justify-center gap-4 ${isRtl ? "flex-row-reverse" : ""}`}>
               <Link href="/dashboard/create">
                 <Button size="lg" className="h-12 px-8 text-lg bg-gradient-to-r from-violet-500 to-fuchsia-500">
-                  {t("nav.generateWebsite")}
+                  {t("generate")}
                 </Button>
               </Link>
               <Link href="/dashboard/templates">
                 <Button size="lg" variant="outline" className="h-12 px-8 text-lg border-white/20">
-                  {t("nav.viewTemplates")}
+                  {t("view_templates")}
                 </Button>
               </Link>
               <Link href="/dashboard">
                 <Button size="lg" variant="ghost" className="h-12 px-8 text-lg text-slate-400 hover:text-white hover:bg-white/5">
-                  {t("nav.openDashboard")}
+                  {t("open_dashboard")}
                 </Button>
               </Link>
             </div>
@@ -56,7 +56,7 @@ export default function HomePage() {
               viewport={{ once: true }}
               className="text-3xl font-bold text-center text-white mb-16"
             >
-              {t("features.everythingYouNeed")}
+              {t("everything_you_need")}
             </motion.h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
               {[
