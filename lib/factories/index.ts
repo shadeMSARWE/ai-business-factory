@@ -3,6 +3,7 @@
  * Each factory is a self-contained module with path, status, and metadata.
  */
 export type FactoryStatus = "ready" | "generating" | "new";
+export type FactoryCategory = "core" | "growth" | "tools";
 
 export interface FactoryConfig {
   id: string;
@@ -12,6 +13,8 @@ export interface FactoryConfig {
   available: boolean;
   status: FactoryStatus;
   popular?: boolean;
+  showOnDashboard?: boolean;
+  category?: FactoryCategory;
 }
 
 export const FACTORIES: Record<string, FactoryConfig> = {
@@ -23,6 +26,8 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     available: true,
     status: "ready",
     popular: true,
+    showOnDashboard: true,
+    category: "core",
   },
   autoOutreach: {
     id: "autoOutreach",
@@ -32,6 +37,8 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     available: true,
     status: "new",
     popular: true,
+    showOnDashboard: true,
+    category: "core",
   },
   website: {
     id: "website",
@@ -41,6 +48,8 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     available: true,
     status: "ready",
     popular: true,
+    showOnDashboard: true,
+    category: "core",
   },
   logo: {
     id: "logo",
@@ -49,6 +58,8 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     path: "/dashboard/logo-generator",
     available: true,
     status: "ready",
+    showOnDashboard: true,
+    category: "growth",
   },
   seo: {
     id: "seo",
@@ -57,6 +68,8 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     path: "/dashboard/seo-generator",
     available: true,
     status: "ready",
+    showOnDashboard: true,
+    category: "growth",
   },
   ads: {
     id: "ads",
@@ -65,6 +78,8 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     path: "/dashboard/ad-generator",
     available: true,
     status: "ready",
+    showOnDashboard: true,
+    category: "growth",
   },
   socialMedia: {
     id: "socialMedia",
@@ -73,6 +88,7 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     path: "/dashboard/social-media",
     available: false,
     status: "new",
+    showOnDashboard: false,
   },
   landingPage: {
     id: "landingPage",
@@ -81,6 +97,8 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     path: "/dashboard/create",
     available: true,
     status: "ready",
+    showOnDashboard: true,
+    category: "tools",
   },
   mobileApps: {
     id: "mobileApps",
@@ -89,6 +107,8 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     path: "/dashboard/mobile-apps",
     available: true,
     status: "ready",
+    showOnDashboard: true,
+    category: "core",
   },
   store: {
     id: "store",
@@ -97,6 +117,8 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     path: "/dashboard/store",
     available: true,
     status: "ready",
+    showOnDashboard: true,
+    category: "core",
   },
   videoAds: {
     id: "videoAds",
@@ -106,6 +128,7 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     available: false,
     status: "new",
     popular: true,
+    showOnDashboard: false,
   },
 };
 
