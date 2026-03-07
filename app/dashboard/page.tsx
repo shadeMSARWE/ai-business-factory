@@ -22,7 +22,7 @@ const CATEGORY_ORDER: FactoryCategory[] = ["core", "growth", "tools"];
 function getDashboardFactories(): FactoryConfig[] {
   return FACTORY_ORDER.map((id) => FACTORIES[id]).filter(
     (factory): factory is FactoryConfig =>
-      !!factory && factory.available && factory.showOnDashboard !== false
+      !!factory && factory.available && !!factory.showOnDashboard
   );
 }
 
