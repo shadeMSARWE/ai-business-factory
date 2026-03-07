@@ -150,6 +150,16 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "tools",
   },
+  viralVideoIdeas: {
+    id: "viralVideoIdeas",
+    name: "Viral Video Ideas Factory",
+    description: "Generate viral video ideas for TikTok, YouTube Shorts, and Reels.",
+    path: "/dashboard/viral-video-ideas",
+    available: true,
+    status: "ready",
+    showOnDashboard: true,
+    category: "growth",
+  },
 };
 
 export type FactoryId = keyof typeof FACTORIES;
@@ -185,4 +195,5 @@ export const FACTORY_ORDER: FactoryId[] = [
   "universalBuilder",
   "videoAds",
   "imageGenerator",
+  "viralVideoIdeas",
 ];

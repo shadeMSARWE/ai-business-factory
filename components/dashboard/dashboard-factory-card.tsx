@@ -36,6 +36,7 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   universalBuilder: Box,
   videoAds: Video,
   imageGenerator: Image,
+  viralVideoIdeas: Video,
 };
 
 const STATUS_CONFIG: Record<FactoryStatus, { label: string; className: string }> = {
