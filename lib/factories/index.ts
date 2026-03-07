@@ -140,6 +140,16 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     popular: true,
     showOnDashboard: false,
   },
+  imageGenerator: {
+    id: "imageGenerator",
+    name: "AI Image Generator",
+    description: "Generate images with AI.",
+    path: "/dashboard/image-generator",
+    available: true,
+    status: "ready",
+    showOnDashboard: true,
+    category: "tools",
+  },
 };
 
 export type FactoryId = keyof typeof FACTORIES;
@@ -157,4 +167,5 @@ export const FACTORY_ORDER: FactoryId[] = [
   "store",
   "universalBuilder",
   "videoAds",
+  "imageGenerator",
 ];
