@@ -17,7 +17,9 @@ import {
   Zap,
   Send,
   Box,
+  Image,
 } from "lucide-react";
+
 import type { FactoryConfig, FactoryStatus } from "@/lib/factories";
 
 const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -33,12 +35,24 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   store: Store,
   universalBuilder: Box,
   videoAds: Video,
+
+  // المصنع الجديد
+  imageGenerator: Image,
 };
 
 const STATUS_CONFIG: Record<FactoryStatus, { label: string; className: string }> = {
-  ready: { label: "Ready", className: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" },
-  generating: { label: "Generating", className: "bg-amber-500/20 text-amber-400 border-amber-500/30" },
-  new: { label: "New", className: "bg-violet-500/20 text-violet-400 border-violet-500/30" },
+  ready: {
+    label: "Ready",
+    className: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+  },
+  generating: {
+    label: "Generating",
+    className: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+  },
+  new: {
+    label: "New",
+    className: "bg-violet-500/20 text-violet-400 border-violet-500/30",
+  },
 };
 
 interface DashboardFactoryCardProps {
@@ -46,8 +60,12 @@ interface DashboardFactoryCardProps {
   index?: number;
 }
 
-export function DashboardFactoryCard({ factory, index = 0 }: DashboardFactoryCardProps) {
+export function DashboardFactoryCard({
+  factory,
+  index = 0,
+}: DashboardFactoryCardProps) {
   const { t } = useTranslation();
+
   const Icon = ICONS[factory.id] || Zap;
   const statusConfig = STATUS_CONFIG[factory.status];
 
@@ -64,14 +82,20 @@ export function DashboardFactoryCard({ factory, index = 0 }: DashboardFactoryCar
           <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 flex items-center justify-center">
             <Icon className="h-6 w-6 text-violet-400" />
           </div>
+
           <span
             className={`text-xs font-medium px-2 py-0.5 rounded-full border ${statusConfig.className}`}
           >
             {statusConfig.label}
           </span>
         </div>
-        <h3 className="text-xl font-semibold text-white mb-2">{factory.name}</h3>
+
+        <h3 className="text-xl font-semibold text-white mb-2">
+          {factory.name}
+        </h3>
+
         <p className="text-slate-400 flex-1">{factory.description}</p>
+
         <span className="mt-4 inline-flex items-center text-sm text-violet-400 hover:text-violet-300">
           {t("tools.openTool")}
         </span>
