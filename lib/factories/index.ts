@@ -120,6 +120,16 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "core",
   },
+  universalBuilder: {
+    id: "universalBuilder",
+    name: "Universal Builder Factory",
+    description: "Generate a base project: SaaS, mobile app, website or AI tool.",
+    path: "/dashboard/universal-builder",
+    available: true,
+    status: "new",
+    showOnDashboard: true,
+    category: "core",
+  },
   videoAds: {
     id: "videoAds",
     name: "AI Video Ads Factory",
@@ -145,5 +155,6 @@ export const FACTORY_ORDER: FactoryId[] = [
   "landingPage",
   "mobileApps",
   "store",
+  "universalBuilder",
   "videoAds",
 ];

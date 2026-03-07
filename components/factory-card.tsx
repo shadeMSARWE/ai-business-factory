@@ -18,6 +18,7 @@ import {
   ExternalLink,
   Eye,
   Send,
+  Box,
 } from "lucide-react";
 import type { FactoryConfig, FactoryStatus } from "@/lib/factories";
 
@@ -32,6 +33,7 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   landingPage: Layout,
   mobileApps: Sparkles,
   store: Store,
+  universalBuilder: Box,
   videoAds: Video,
 };
 
