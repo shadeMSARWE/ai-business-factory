@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/providers/auth-provider";
 import { useTranslation } from "@/hooks/use-translation";
-import { FACTORIES, FACTORY_ORDER } from "@/lib/factories";
+import { getDashboardFactories } from "@/lib/factories";
 import type { FactoryConfig, FactoryCategory } from "@/lib/factories";
 import { DashboardFactoryCard } from "@/components/dashboard/dashboard-factory-card";
 import { AISuggestionsPanel } from "@/components/dashboard/ai-suggestions-panel";
@@ -18,20 +18,6 @@ const CATEGORY_LABELS: Record<FactoryCategory, string> = {
 };
 
 const CATEGORY_ORDER: FactoryCategory[] = ["core", "growth", "tools"];
-
-/* -------------------------------
-   GET FACTORIES FOR DASHBOARD
---------------------------------*/
-function getDashboardFactories(): FactoryConfig[] {
-  return FACTORY_ORDER
-    .map((id) => FACTORIES[id])
-    .filter(
-      (factory): factory is FactoryConfig =>
-        Boolean(factory) &&
-        factory.available === true &&
-        factory.showOnDashboard === true
-    );
-}
 
 /* -------------------------------
    GROUP FACTORIES BY CATEGORY

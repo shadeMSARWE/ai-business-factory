@@ -35,8 +35,6 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   store: Store,
   universalBuilder: Box,
   videoAds: Video,
-
-  // المصنع الجديد
   imageGenerator: Image,
 };
 

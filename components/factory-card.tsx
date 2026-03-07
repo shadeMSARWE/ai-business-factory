@@ -19,6 +19,7 @@ import {
   Eye,
   Send,
   Box,
+  Image,
 } from "lucide-react";
 import type { FactoryConfig, FactoryStatus } from "@/lib/factories";
 
@@ -35,6 +36,7 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   store: Store,
   universalBuilder: Box,
   videoAds: Video,
+  imageGenerator: Image,
 };
 
 const STATUS_CONFIG: Record<FactoryStatus, { label: string; className: string }> = {

@@ -154,6 +154,23 @@ export const FACTORIES: Record<string, FactoryConfig> = {
 
 export type FactoryId = keyof typeof FACTORIES;
 
+/**
+ * Returns all factories that are available and shown on dashboard.
+ * Renders from FACTORIES only — FACTORY_ORDER is optional (used for display order).
+ * Any new factory added to FACTORIES with available + showOnDashboard will appear automatically.
+ */
+export function getDashboardFactories(): FactoryConfig[] {
+  const factories = Object.values(FACTORIES).filter(
+    (f) => f.available && f.showOnDashboard !== false
+  );
+  const orderMap = new Map(FACTORY_ORDER.map((id, i) => [id, i]));
+  return factories.sort((a, b) => {
+    const ai = orderMap.get(a.id as FactoryId) ?? 9999;
+    const bi = orderMap.get(b.id as FactoryId) ?? 9999;
+    return ai - bi;
+  });
+}
+
 export const FACTORY_ORDER: FactoryId[] = [
   "businessFinder",
   "autoOutreach",

@@ -4,13 +4,11 @@ import { motion } from "framer-motion";
 import { FactoryCore } from "@/components/factory-core";
 import { FactoryCard } from "@/components/factory-card";
 import { FactoryPerformancePanel } from "@/components/factory-performance-panel";
-import { FACTORIES, FACTORY_ORDER } from "@/lib/factories";
-
-const POPULAR_IDS = ["website", "businessFinder", "autoOutreach", "videoAds"];
+import { getDashboardFactories } from "@/lib/factories";
 
 export default function FactoriesPage() {
-  const popularFactories = POPULAR_IDS.map((id) => FACTORIES[id]).filter(Boolean);
-  const allFactories = FACTORY_ORDER.map((id) => FACTORIES[id]).filter(Boolean);
+  const allFactories = getDashboardFactories();
+  const popularFactories = allFactories.filter((f) => f.popular === true);
 
   return (
     <div className="min-h-screen">
