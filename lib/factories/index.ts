@@ -1,5 +1,6 @@
 /**
- * AI Business Factory — modular architecture.
+ * AI Business Factory — single source of truth for all factories.
+ * Categories: core | growth | tools
  */
 
 export type FactoryStatus = "ready" | "generating" | "new";
@@ -18,7 +19,6 @@ export interface FactoryConfig {
 }
 
 export const FACTORIES: Record<string, FactoryConfig> = {
-
   businessFinder: {
     id: "businessFinder",
     name: "AI Business Finder Factory",
@@ -30,7 +30,6 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "core",
   },
-
   autoOutreach: {
     id: "autoOutreach",
     name: "Auto Outreach AI",
@@ -42,7 +41,6 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "core",
   },
-
   website: {
     id: "website",
     name: "AI Website Factory",
@@ -54,7 +52,6 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "core",
   },
-
   logo: {
     id: "logo",
     name: "AI Logo Factory",
@@ -65,7 +62,6 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "growth",
   },
-
   seo: {
     id: "seo",
     name: "AI SEO Factory",
@@ -76,7 +72,6 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "growth",
   },
-
   ads: {
     id: "ads",
     name: "AI Ads Factory",
@@ -87,7 +82,6 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "growth",
   },
-
   landingPage: {
     id: "landingPage",
     name: "AI Landing Page Factory",
@@ -98,7 +92,6 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "tools",
   },
-
   mobileApps: {
     id: "mobileApps",
     name: "Mobile App Factory",
@@ -109,7 +102,6 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "core",
   },
-
   store: {
     id: "store",
     name: "AI Store Factory",
@@ -120,7 +112,6 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "core",
   },
-
   universalBuilder: {
     id: "universalBuilder",
     name: "Universal Builder Factory",
@@ -131,7 +122,6 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "core",
   },
-
   imageGenerator: {
     id: "imageGenerator",
     name: "AI Image Generator",
@@ -142,7 +132,6 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "tools",
   },
-
   viralVideoIdeas: {
     id: "viralVideoIdeas",
     name: "Viral Video Ideas Factory",
@@ -153,21 +142,19 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "growth",
   },
-
 };
 
 export type FactoryId = keyof typeof FACTORIES;
 
 /**
- * Factories shown on dashboard
+ * Returns factories to show on dashboard. Only includes entries with
+ * available === true and showOnDashboard === true. Order follows FACTORY_ORDER.
  */
 export function getDashboardFactories(): FactoryConfig[] {
   const factories = Object.values(FACTORIES).filter(
-    (f) => f.available && f.showOnDashboard
+    (f) => f.available === true && f.showOnDashboard === true
   );
-
   const orderMap = new Map(FACTORY_ORDER.map((id, i) => [id, i]));
-
   return factories.sort((a, b) => {
     const ai = orderMap.get(a.id as FactoryId) ?? 9999;
     const bi = orderMap.get(b.id as FactoryId) ?? 9999;
@@ -188,4 +175,4 @@ export const FACTORY_ORDER: FactoryId[] = [
   "universalBuilder",
   "imageGenerator",
   "viralVideoIdeas",
-]
+];

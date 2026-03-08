@@ -40,7 +40,7 @@ function groupByCategory(
 }
 
 /* -------------------------------
-   DASHBOARD PAGE
+   DASHBOARD PAGE — factories from getDashboardFactories() only
 --------------------------------*/
 export default function DashboardPage() {
   const { user } = useAuth();
