@@ -23,6 +23,13 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning data-theme="dark">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var t=localStorage.getItem("ai-factory-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);})();`,
+          }}
+        />
+      </head>
       <body className={`${inter.className} antialiased`}>
         <LocaleInitScript />
         <LanguageProvider>

@@ -329,7 +329,7 @@ export default function EditorPage() {
           </div>
 
           <div className="flex-1 p-6 bg-slate-900/50">
-            <div className="rounded-xl border border-white/10 bg-white overflow-hidden shadow-2xl">
+            <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden shadow-2xl">
               <iframe
                 srcDoc={`
 <!DOCTYPE html>

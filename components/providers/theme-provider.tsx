@@ -35,7 +35,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!mounted || typeof document === "undefined") return;
-    document.documentElement.setAttribute("data-theme", theme);
+    const root = document.documentElement;
+    root.setAttribute("data-theme", theme);
+    (root as unknown as { dataset: { theme?: string } }).dataset.theme = theme;
     try {
       localStorage.setItem(STORAGE_KEY, theme);
     } catch {

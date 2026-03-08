@@ -58,15 +58,29 @@
   }
 }
 
-/* Theme: light mode overrides for pages that use theme-aware classes */
+/* Theme: data-theme drives dark/light. Default dark. */
+[data-theme="dark"],
+html:not([data-theme]) {
+  color-scheme: dark;
+}
+[data-theme="dark"] body,
+html:not([data-theme]) body {
+  background-color: #0a0a0f;
+  color: #f1f5f9;
+}
+
 [data-theme="light"] {
   color-scheme: light;
+}
+[data-theme="light"] body {
+  background-color: #f8fafc;
+  color: #0f172a;
 }
 [data-theme="light"] .theme-bg-page {
   background-color: #f8fafc;
 }
 [data-theme="light"] .theme-bg-card {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.9);
   border-color: rgba(0, 0, 0, 0.08);
 }
 [data-theme="light"] .theme-text-muted {
@@ -74,6 +88,29 @@
 }
 [data-theme="light"] .theme-text-primary {
   color: #0f172a;
+}
+
+/* Theme-aware page background for dashboard and app shell */
+.theme-page-bg {
+  background-color: #0a0a0f;
+}
+[data-theme="light"] .theme-page-bg {
+  background-color: #f8fafc;
+}
+.theme-header-bg {
+  background-color: rgba(10, 10, 15, 0.8);
+}
+[data-theme="light"] .theme-header-bg {
+  background-color: rgba(248, 250, 252, 0.9);
+  border-color: rgba(226, 232, 240, 0.5);
+}
+.theme-sidebar-bg {
+  background-color: rgba(10, 10, 15, 0.5);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+[data-theme="light"] .theme-sidebar-bg {
+  background-color: rgba(248, 250, 252, 0.95);
+  border-color: rgba(226, 232, 240, 0.6);
 }
 
 /* RTL Support */

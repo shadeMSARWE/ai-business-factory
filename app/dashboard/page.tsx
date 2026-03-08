@@ -55,7 +55,7 @@ export default function DashboardPage() {
   const grouped = useMemo(() => groupByMarketplace(filtered), [filtered]);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen theme-page-bg">
       {/* Search bar */}
       <motion.section
         initial={{ opacity: 0, y: -10 }}

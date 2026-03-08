@@ -121,15 +121,16 @@ export const FACTORY_PREVIEW_IMAGES: Record<string, string> = {
   businessGenerator: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&q=80",
 };
 
+/** Fallback when a factory has no image — unique placeholder. */
+export const FACTORY_PREVIEW_FALLBACK =
+  "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&q=80";
+
 export function getMarketplaceCategory(factoryId: string): MarketplaceCategoryId {
   return FACTORY_TO_MARKETPLACE[factoryId] ?? "business-creation";
 }
 
 export function getPreviewImage(factoryId: string): string {
-  return (
-    FACTORY_PREVIEW_IMAGES[factoryId] ??
-    "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&q=80"
-  );
+  return FACTORY_PREVIEW_IMAGES[factoryId] ?? FACTORY_PREVIEW_FALLBACK;
 }
 
 export type DifficultyLevel = "easy" | "medium" | "advanced";

@@ -338,7 +338,7 @@ export default function BuilderPage() {
                 </div>
                 <div className="flex-1 overflow-auto p-4">
                   <DevicePreview>
-                    <div className="rounded-xl border border-white/10 bg-white overflow-hidden shadow-2xl">
+                    <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden shadow-2xl">
                       {siteData ? (
                         <PublishedSite key={previewKey} data={siteData as Parameters<typeof PublishedSite>[0]["data"]} slug="" />
                       ) : (

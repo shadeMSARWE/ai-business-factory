@@ -37,7 +37,7 @@ export function DashboardSidebar() {
   const { billing } = useCredits();
 
   return (
-    <aside className="w-56 flex-shrink-0 border-r border-white/10 bg-[#0a0a0f]/50 p-4 flex flex-col">
+    <aside className="w-56 flex-shrink-0 border-r theme-sidebar-bg p-4 flex flex-col">
       <nav className="space-y-1 flex-1">
         {navItems.map((item) => {
           const isActive =

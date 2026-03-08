@@ -11,7 +11,7 @@ export default function FactoriesPage() {
   const popularFactories = allFactories.filter((f) => f.popular === true);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen theme-page-bg">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
