@@ -1,7 +1,7 @@
 /**
  * AI Business Factory — modular architecture.
- * Each factory is a self-contained module with path, status, and metadata.
  */
+
 export type FactoryStatus = "ready" | "generating" | "new";
 export type FactoryCategory = "core" | "growth" | "tools";
 
@@ -18,10 +18,11 @@ export interface FactoryConfig {
 }
 
 export const FACTORIES: Record<string, FactoryConfig> = {
+
   businessFinder: {
     id: "businessFinder",
     name: "AI Business Finder Factory",
-    description: "Find local businesses on Google Maps, detect those without websites and auto-generate demo sites.",
+    description: "Find local businesses on Google Maps and generate demo websites.",
     path: "/dashboard/business-finder",
     available: true,
     status: "ready",
@@ -29,21 +30,23 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "core",
   },
+
   autoOutreach: {
     id: "autoOutreach",
     name: "Auto Outreach AI",
-    description: "Find local businesses, generate demo websites and send automated offers.",
+    description: "Generate demo websites and send automated outreach.",
     path: "/dashboard/auto-outreach",
     available: true,
-    status: "new",
+    status: "ready",
     popular: true,
     showOnDashboard: true,
     category: "core",
   },
+
   website: {
     id: "website",
     name: "AI Website Factory",
-    description: "Generate full websites with SEO, booking forms, maps and WhatsApp integration.",
+    description: "Generate full websites with SEO and integrations.",
     path: "/builder",
     available: true,
     status: "ready",
@@ -51,6 +54,7 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "core",
   },
+
   logo: {
     id: "logo",
     name: "AI Logo Factory",
@@ -61,16 +65,18 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "growth",
   },
+
   seo: {
     id: "seo",
     name: "AI SEO Factory",
-    description: "Generate SEO titles, keywords, meta tags and blog articles.",
+    description: "Generate SEO titles, keywords and blog articles.",
     path: "/dashboard/seo-generator",
     available: true,
     status: "ready",
     showOnDashboard: true,
     category: "growth",
   },
+
   ads: {
     id: "ads",
     name: "AI Ads Factory",
@@ -81,15 +87,7 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "growth",
   },
-  socialMedia: {
-    id: "socialMedia",
-    name: "AI Social Media Factory",
-    description: "Generate social media posts, captions and content calendars.",
-    path: "/dashboard/social-media",
-    available: false,
-    status: "new",
-    showOnDashboard: false,
-  },
+
   landingPage: {
     id: "landingPage",
     name: "AI Landing Page Factory",
@@ -100,6 +98,7 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "tools",
   },
+
   mobileApps: {
     id: "mobileApps",
     name: "Mobile App Factory",
@@ -110,36 +109,29 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "core",
   },
+
   store: {
     id: "store",
     name: "AI Store Factory",
-    description: "Generate ecommerce stores with products and checkout.",
+    description: "Generate ecommerce stores.",
     path: "/dashboard/store",
     available: true,
     status: "ready",
     showOnDashboard: true,
     category: "core",
   },
+
   universalBuilder: {
     id: "universalBuilder",
     name: "Universal Builder Factory",
-    description: "Generate a base project: SaaS, mobile app, website or AI tool.",
+    description: "Generate SaaS, mobile apps or AI tools.",
     path: "/dashboard/universal-builder",
     available: true,
-    status: "new",
+    status: "ready",
     showOnDashboard: true,
     category: "core",
   },
-  videoAds: {
-    id: "videoAds",
-    name: "AI Video Ads Factory",
-    description: "Generate short ad videos for TikTok, Instagram and YouTube.",
-    path: "/dashboard/video-ads",
-    available: false,
-    status: "new",
-    popular: true,
-    showOnDashboard: false,
-  },
+
   imageGenerator: {
     id: "imageGenerator",
     name: "AI Image Generator",
@@ -150,31 +142,32 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "tools",
   },
+
   viralVideoIdeas: {
     id: "viralVideoIdeas",
     name: "Viral Video Ideas Factory",
-    description: "Generate viral video ideas for TikTok, YouTube Shorts, and Reels.",
+    description: "Generate viral video ideas for TikTok and YouTube Shorts.",
     path: "/dashboard/viral-video-ideas",
     available: true,
     status: "ready",
     showOnDashboard: true,
     category: "growth",
   },
+
 };
 
 export type FactoryId = keyof typeof FACTORIES;
 
 /**
- * Returns all factories that are available and shown on dashboard.
- * Renders from FACTORIES only — FACTORY_ORDER is optional (used for display order).
- * Factories appear when available === true and showOnDashboard === true.
- * Any new factory added to FACTORIES with those flags will appear automatically.
+ * Factories shown on dashboard
  */
 export function getDashboardFactories(): FactoryConfig[] {
   const factories = Object.values(FACTORIES).filter(
-    (f) => f.available === true && f.showOnDashboard === true
+    (f) => f.available && f.showOnDashboard
   );
+
   const orderMap = new Map(FACTORY_ORDER.map((id, i) => [id, i]));
+
   return factories.sort((a, b) => {
     const ai = orderMap.get(a.id as FactoryId) ?? 9999;
     const bi = orderMap.get(b.id as FactoryId) ?? 9999;
@@ -189,12 +182,10 @@ export const FACTORY_ORDER: FactoryId[] = [
   "logo",
   "seo",
   "ads",
-  "socialMedia",
   "landingPage",
   "mobileApps",
   "store",
   "universalBuilder",
-  "videoAds",
   "imageGenerator",
   "viralVideoIdeas",
-];
+]
