@@ -1,6 +1,10 @@
 /**
  * AI Business Factory — single source of truth for all factories.
  * Categories: core | growth | tools
+ *
+ * Engine system: see engine.ts, prompts.ts, generators.ts, registry.ts
+ * - Each factory is mapped to an engine (text, image, website, marketing, video_ideas)
+ * - Use runFactoryEngine(factoryId, { prompt }) from registry to run the correct generator
  */
 
 export type FactoryStatus = "ready" | "generating" | "new";
@@ -176,3 +180,15 @@ export const FACTORY_ORDER: FactoryId[] = [
   "imageGenerator",
   "viralVideoIdeas",
 ];
+
+// Re-export engine system for API routes and server usage
+export { getEngineForFactory, type EngineType, type EngineContext, type EngineResult } from "./engine";
+export { getPrompt, PROMPTS, type PromptKey } from "./prompts";
+export { generators, textGenerator, imageGenerator, websiteGenerator, marketingGenerator, videoIdeaGenerator } from "./generators";
+export {
+  runFactoryEngine,
+  getFactoryEngineConfig,
+  FACTORY_ENGINE_REGISTRY,
+  type FactoryEngineConfig,
+  type OutputType,
+} from "./registry";
