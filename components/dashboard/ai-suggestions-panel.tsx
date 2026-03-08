@@ -63,10 +63,10 @@ export function AISuggestionsPanel() {
             <li key={s.id}>
               <Link
                 href={s.href}
-                className="flex items-start gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors border border-transparent hover:border-violet-500/20"
+                className="flex items-start gap-3 p-3 rounded-lg theme-toolbar hover:border-violet-500/20 transition-colors border"
               >
                 <Icon className="h-5 w-5 text-violet-400 flex-shrink-0 mt-0.5" />
-                <span className="text-slate-300 text-sm">{s.text}</span>
+                <span className="theme-card-muted text-sm">{s.text}</span>
               </Link>
             </li>
           );

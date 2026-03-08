@@ -66,7 +66,7 @@ export function ResultToolbar({
         variant="outline"
         size="sm"
         onClick={handleCopy}
-        className="border-white/20 text-slate-300 hover:bg-white/10"
+        className="theme-btn-outline"
       >
         {copied ? <Check className="h-4 w-4 mr-1.5 text-emerald-400" /> : <Copy className="h-4 w-4 mr-1.5" />}
         {copied ? "Copied" : "Copy"}
@@ -75,7 +75,7 @@ export function ResultToolbar({
         variant="outline"
         size="sm"
         onClick={handleDownload}
-        className="border-white/20 text-slate-300 hover:bg-white/10"
+        className="theme-btn-outline"
       >
         <Download className="h-4 w-4 mr-1.5" />
         Download
@@ -95,7 +95,7 @@ export function ResultToolbar({
         variant="outline"
         size="sm"
         onClick={handleSaveToHistory}
-        className="border-white/20 text-slate-300 hover:bg-white/10"
+        className="theme-btn-outline"
       >
         {saved ? <Check className="h-4 w-4 mr-1.5 text-emerald-400" /> : <History className="h-4 w-4 mr-1.5" />}
         {saved ? "Saved" : "Save to history"}

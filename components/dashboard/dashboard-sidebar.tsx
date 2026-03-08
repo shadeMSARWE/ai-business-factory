@@ -60,8 +60,8 @@ export function DashboardSidebar() {
         })}
       </nav>
       {billing && (
-        <Link href="/dashboard/billing" className="mt-4 p-3 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-          <div className="flex items-center gap-2 text-slate-400 text-sm">
+        <Link href="/dashboard/billing" className="mt-4 p-3 rounded-lg theme-toolbar border transition-colors hover:opacity-90">
+          <div className="flex items-center gap-2 theme-card-muted text-sm">
             <Coins className="h-4 w-4 text-amber-400" />
             <span>{billing.credits} credits</span>
           </div>

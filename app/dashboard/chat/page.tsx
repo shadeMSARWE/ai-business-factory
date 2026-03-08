@@ -204,9 +204,10 @@ export default function ChatPage() {
   return (
     <div className="h-full flex flex-col -m-6">
       <div className="flex flex-1 min-h-0">
-        <aside className="w-64 border-r border-white/10 bg-white/[0.02] flex flex-col shrink-0">
-          <div className="p-3 border-b border-white/5">
-            <Link href="/dashboard" className="text-slate-400 hover:text-white text-sm flex items-center gap-2 mb-2">
+        {/* Sidebar: chat history */}
+        <aside className="w-64 border-r theme-panel flex flex-col shrink-0">
+          <div className="p-3 border-b theme-toolbar">
+            <Link href="/dashboard" className="theme-card-muted hover:opacity-100 text-sm flex items-center gap-2 mb-2">
               <ArrowLeft className="h-4 w-4" />
               Dashboard
             </Link>
@@ -228,7 +229,9 @@ export default function ChatPage() {
                 <div
                   key={s.id}
                   className={`group flex items-center gap-2 rounded-lg px-3 py-2 cursor-pointer transition-colors ${
-                    currentSession?.id === s.id ? "bg-violet-500/20 text-white" : "hover:bg-white/5 text-slate-300"
+                    currentSession?.id === s.id
+                      ? "bg-violet-500/20 text-white [data-theme=light]:bg-violet-500/15 [data-theme=light]:text-gray-900"
+                      : "theme-toolbar hover:opacity-90"
                   }`}
                   onClick={() => setCurrentSession(s)}
                 >
@@ -241,11 +244,11 @@ export default function ChatPage() {
                       onKeyDown={(e) => {
                         if (e.key === "Enter") renameSession(s.id, titleDraft || s.title);
                       }}
-                      className="h-8 text-sm bg-white/10 border-white/20 flex-1"
+                      className="h-8 text-sm theme-input flex-1 border rounded-md"
                       autoFocus
                     />
                   ) : (
-                    <span className="truncate flex-1 text-sm">{s.title}</span>
+                    <span className="truncate flex-1 text-sm theme-card">{s.title}</span>
                   )}
                   <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     {editingTitle !== s.id && (
@@ -257,7 +260,7 @@ export default function ChatPage() {
                             setTitleDraft(s.title);
                             setEditingTitle(s.id);
                           }}
-                          className="p-1 rounded hover:bg-white/10 text-slate-400"
+                          className="p-1 rounded hover:opacity-80 theme-card-muted"
                         >
                           <Pencil className="h-3.5 w-3.5" />
                         </button>
@@ -267,7 +270,7 @@ export default function ChatPage() {
                             e.stopPropagation();
                             deleteSession(s.id);
                           }}
-                          className="p-1 rounded hover:bg-red-500/20 text-slate-400 hover:text-red-400"
+                          className="p-1 rounded hover:bg-red-500/20 theme-card-muted hover:text-red-400"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
                         </button>
@@ -280,21 +283,30 @@ export default function ChatPage() {
           </div>
         </aside>
 
-        <main className="flex-1 flex flex-col min-w-0">
-          <div ref={scrollRef} className="flex-1 overflow-y-auto p-6">
+        {/* Main: header + conversation + input bar */}
+        <main className="flex-1 flex flex-col min-w-0 bg-transparent">
+          {/* Header */}
+          <header className="shrink-0 px-6 py-3 border-b theme-toolbar">
+            <h1 className="text-lg font-semibold theme-card">
+              {currentSession ? currentSession.title : "AI Chat"}
+            </h1>
+          </header>
+
+          {/* Scrollable conversation area */}
+          <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 min-h-0">
             {!currentSession ? (
-              <div className="max-w-2xl mx-auto flex flex-col items-center justify-center min-h-[60vh] text-center">
+              <div className="max-w-2xl mx-auto flex flex-col items-center justify-center min-h-[50vh] text-center">
                 <MessageCircle className="h-16 w-16 text-violet-400/60 mb-4" />
-                <h2 className="text-xl font-semibold text-white mb-2">AI Chat</h2>
-                <p className="text-slate-400 mb-6">Start a new chat or select one from the sidebar. 1 credit per message.</p>
+                <h2 className="text-xl font-semibold theme-card mb-2">AI Chat</h2>
+                <p className="theme-card-muted mb-6">Start a new chat or select one from the sidebar. 1 credit per message.</p>
                 <Button onClick={createSession} className="bg-gradient-to-r from-violet-500 to-fuchsia-500">
                   <Plus className="h-4 w-4 mr-2" />
                   New chat
                 </Button>
               </div>
             ) : (
-              <div className="max-w-3xl mx-auto space-y-6">
-                <AnimatePresence>
+              <div className="max-w-3xl mx-auto space-y-6 pb-4">
+                <AnimatePresence initial={false}>
                   {messages.map((msg) => (
                     <motion.div
                       key={msg.id}
@@ -305,8 +317,8 @@ export default function ChatPage() {
                       <div
                         className={`max-w-[85%] rounded-2xl border px-4 py-3 ${
                           msg.role === "user"
-                            ? "bg-violet-500/20 border-violet-500/30 text-white"
-                            : "bg-white/5 border-white/10 text-slate-200"
+                            ? "bg-violet-500/20 border-violet-500/30 theme-card [data-theme=light]:bg-violet-100 [data-theme=light]:border-violet-200 [data-theme=light]:text-gray-900"
+                            : "theme-panel theme-card"
                         }`}
                       >
                         <div className="flex items-start justify-between gap-2">
@@ -315,17 +327,12 @@ export default function ChatPage() {
                             <button
                               type="button"
                               onClick={() => copyMessage(msg.content, msg.id)}
-                              className="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white"
+                              className="p-1.5 rounded-lg theme-card-muted hover:opacity-100"
                             >
                               {copiedId === msg.id ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
                             </button>
                             {msg.role === "assistant" && (
-                              <button
-                                type="button"
-                                onClick={() => {}}
-                                className="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white"
-                                title="Regenerate"
-                              >
+                              <button type="button" className="p-1.5 rounded-lg theme-card-muted hover:opacity-100" title="Regenerate">
                                 <RefreshCw className="h-4 w-4" />
                               </button>
                             )}
@@ -337,7 +344,7 @@ export default function ChatPage() {
                 </AnimatePresence>
                 {sending && (
                   <div className="flex justify-start">
-                    <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                    <div className="rounded-2xl border theme-panel px-4 py-3">
                       <Loader2 className="h-5 w-5 animate-spin text-violet-400" />
                     </div>
                   </div>
@@ -348,7 +355,7 @@ export default function ChatPage() {
           </div>
 
           {error && (
-            <div className="px-6 pb-2">
+            <div className="shrink-0 px-6 py-2">
               <p className="text-red-400 text-sm text-center">{error}</p>
               {error.includes("credits") && (
                 <Link href="/dashboard/billing" className="block text-center text-violet-400 hover:underline text-sm mt-1">
@@ -358,8 +365,9 @@ export default function ChatPage() {
             </div>
           )}
 
+          {/* Input bar: fixed at bottom when session is active */}
           {currentSession && (
-            <div className="p-4 border-t border-white/10 bg-[#0a0a0f]/80">
+            <div className="shrink-0 p-4 border-t theme-toolbar">
               <div className="max-w-3xl mx-auto flex gap-3">
                 <Input
                   value={input}
@@ -372,17 +380,17 @@ export default function ChatPage() {
                   }}
                   placeholder={noCredits ? "No credits remaining. Buy credits to chat." : "Type a message..."}
                   disabled={sending || noCredits}
-                  className="flex-1 bg-white/5 border-white/20 text-white placeholder:text-slate-500"
+                  className="flex-1 theme-input border rounded-xl"
                 />
                 <Button
                   onClick={sendMessage}
                   disabled={sending || !input.trim() || noCredits}
-                  className="bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600 shrink-0"
+                  className="bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600 shrink-0 px-5"
                 >
                   {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                 </Button>
               </div>
-              <p className="text-slate-500 text-xs text-center mt-2">1 credit per message</p>
+              <p className="theme-card-muted text-xs text-center mt-2">1 credit per message</p>
             </div>
           )}
         </main>

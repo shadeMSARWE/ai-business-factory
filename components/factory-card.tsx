@@ -94,11 +94,9 @@ export function FactoryCard({ factory, index, isConnected = true }: FactoryCardP
 
       <div
         className={`
-          relative overflow-hidden rounded-2xl border backdrop-blur-xl
-          bg-white/[0.03] border-white/10
+          relative overflow-hidden rounded-2xl border theme-card backdrop-blur-xl
           transition-all duration-300
-          hover:border-violet-500/40 hover:bg-white/[0.06]
-          hover:shadow-[0_0_30px_rgba(139,92,246,0.15)]
+          hover:border-violet-500/40 hover:shadow-[0_0_30px_rgba(139,92,246,0.15)]
           ${!canOpen ? "opacity-75" : ""}
         `}
       >
@@ -123,8 +121,8 @@ export function FactoryCard({ factory, index, isConnected = true }: FactoryCardP
           </div>
 
           {/* Content */}
-          <h3 className="text-lg font-semibold text-white mb-2">{factory.name}</h3>
-          <p className="text-slate-400 text-sm mb-6 line-clamp-2">{factory.description}</p>
+          <h3 className="text-lg font-semibold theme-card mb-2">{factory.name}</h3>
+          <p className="theme-card-muted text-sm mb-6 line-clamp-2">{factory.description}</p>
 
           {/* Actions */}
           <div className="flex flex-wrap gap-2">

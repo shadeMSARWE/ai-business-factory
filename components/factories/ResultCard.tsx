@@ -26,10 +26,10 @@ export function ResultCard({ title, value, index = 0, className = "" }: ResultCa
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className={`rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-5 hover:border-violet-500/20 transition-colors ${className}`}
+      className={`rounded-2xl border theme-card backdrop-blur-xl p-5 hover:border-violet-500/20 transition-colors ${className}`}
     >
       <div className="flex justify-between items-start gap-3 mb-2">
-        <span className="text-sm font-medium text-slate-400">{title}</span>
+        <span className="text-sm font-medium theme-card-muted">{title}</span>
         <Button
           variant="ghost"
           size="sm"
@@ -43,7 +43,7 @@ export function ResultCard({ title, value, index = 0, className = "" }: ResultCa
           )}
         </Button>
       </div>
-      <p className="text-white font-medium break-words">{value}</p>
+      <p className="theme-card font-medium break-words">{value}</p>
     </motion.div>
   );
 }

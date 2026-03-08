@@ -114,7 +114,7 @@ export function DashboardFactoryCard({
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: index * 0.03 }}
         whileHover={{ scale: 1.02, y: -2 }}
-        className="group relative h-full flex flex-col rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden transition-all duration-300 hover:border-violet-500/30 hover:bg-white/[0.07] hover:shadow-lg hover:shadow-violet-500/10"
+        className="group relative h-full flex flex-col rounded-2xl border theme-card backdrop-blur-xl overflow-hidden transition-all duration-300 hover:border-violet-500/30 hover:shadow-lg hover:shadow-violet-500/10 [data-theme=light]:hover:bg-gray-50"
         style={{
           boxShadow: "0 0 0 1px rgba(139, 92, 246, 0.05)",
         }}
@@ -124,7 +124,7 @@ export function DashboardFactoryCard({
 
         {/* Preview image */}
         {previewImage && (
-          <div className="relative h-36 w-full overflow-hidden bg-white/5">
+          <div className="relative h-36 w-full overflow-hidden theme-panel">
             <Image
               src={previewImage}
               alt=""
@@ -132,7 +132,7 @@ export function DashboardFactoryCard({
               className="object-cover transition-transform duration-300 group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, 25vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f]/80 via-transparent to-transparent" />
+            <div className="absolute inset-0 theme-image-overlay" />
             <div className="absolute top-3 right-3 flex flex-wrap gap-1.5 justify-end">
               {factory.popular && (
                 <span className="text-xs font-medium px-2 py-0.5 rounded-full border backdrop-blur-sm bg-violet-500/20 text-violet-300 border-violet-500/30 flex items-center gap-1">
@@ -167,19 +167,19 @@ export function DashboardFactoryCard({
               <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 flex items-center justify-center shrink-0">
                 <Icon className="h-5 w-5 text-violet-400" />
               </div>
-              <h3 className="text-lg font-semibold text-white truncate">
+              <h3 className="text-lg font-semibold theme-card truncate">
                 {factory.name}
               </h3>
             </div>
           )}
 
           {!previewImage && (
-            <h3 className="text-xl font-semibold text-white mb-2">
+            <h3 className="text-xl font-semibold theme-card mb-2">
               {factory.name}
             </h3>
           )}
 
-          <p className="text-slate-400 text-sm flex-1 line-clamp-2 mb-3">
+          <p className="theme-card-muted text-sm flex-1 line-clamp-2 mb-3">
             {factory.description}
           </p>
 
@@ -195,7 +195,7 @@ export function DashboardFactoryCard({
               </span>
             )}
             {estimatedSec != null && (
-              <span className="text-xs text-slate-500 flex items-center gap-1">
+              <span className="text-xs theme-card-muted flex items-center gap-1">
                 <Clock className="h-3 w-3" /> ~{estimatedSec}s
               </span>
             )}

@@ -13,7 +13,7 @@ export function FactorySkeleton({ lines = 3, className = "" }: FactorySkeletonPr
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className={`rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 ${className}`}
+      className={`rounded-2xl border theme-panel backdrop-blur-xl p-8 ${className}`}
     >
       <div className="flex flex-col items-center justify-center gap-4">
         <motion.div

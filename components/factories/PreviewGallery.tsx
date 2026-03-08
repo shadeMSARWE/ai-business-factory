@@ -43,7 +43,7 @@ export function PreviewGallery({
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: i * 0.05 }}
-            className="aspect-square rounded-xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm hover:border-violet-500/20 transition-colors"
+            className="aspect-square rounded-xl overflow-hidden border theme-panel backdrop-blur-sm hover:border-violet-500/20 transition-colors"
           >
             <img
               src={img.src}

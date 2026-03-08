@@ -39,7 +39,7 @@ export function GenerationHistoryPanel() {
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6"
+        className="rounded-2xl border theme-panel backdrop-blur-xl p-6"
       >
         <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
           <History className="h-5 w-5 text-violet-400" />
@@ -54,7 +54,7 @@ export function GenerationHistoryPanel() {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6"
+      className="rounded-2xl border theme-panel backdrop-blur-xl p-6"
     >
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-white flex items-center gap-2">
@@ -76,16 +76,16 @@ export function GenerationHistoryPanel() {
           return (
             <li
               key={entry.id}
-              className="group flex items-start gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5"
+              className="group flex items-start gap-3 p-3 rounded-lg theme-toolbar border"
             >
               <div className="flex-1 min-w-0">
                 <Link href={path} className="text-sm font-medium text-violet-300 hover:text-violet-200 flex items-center gap-1">
                   {entry.factoryName}
                   <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100" />
                 </Link>
-                <p className="text-slate-500 text-xs mt-0.5 truncate">{entry.prompt}</p>
-                <p className="text-slate-600 text-xs mt-1 line-clamp-1">{entry.resultPreview}</p>
-                <p className="text-slate-600 text-xs mt-0.5">{formatTime(entry.timestamp)}</p>
+                <p className="theme-card-muted text-xs mt-0.5 truncate">{entry.prompt}</p>
+                <p className="theme-card-muted text-xs mt-1 line-clamp-1">{entry.resultPreview}</p>
+                <p className="theme-card-muted text-xs mt-0.5">{formatTime(entry.timestamp)}</p>
               </div>
               <button
                 type="button"

@@ -113,6 +113,86 @@ html:not([data-theme]) body {
   border-color: rgba(226, 232, 240, 0.6);
 }
 
+/* Theme-aware cards, panels, toolbars */
+.theme-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #f1f5f9;
+}
+[data-theme="light"] .theme-card {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  color: #111827;
+}
+.theme-card-muted {
+  color: #94a3b8;
+}
+[data-theme="light"] .theme-card-muted {
+  color: #64748b;
+}
+.theme-panel {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+[data-theme="light"] .theme-panel {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+}
+.theme-toolbar {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+[data-theme="light"] .theme-toolbar {
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+}
+.theme-input {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #f1f5f9;
+}
+.theme-input::placeholder {
+  color: #64748b;
+}
+[data-theme="light"] .theme-input {
+  background-color: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+[data-theme="light"] .theme-input::placeholder {
+  color: #94a3b8;
+}
+.theme-btn-outline {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #cbd5e1;
+}
+.theme-btn-outline:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+[data-theme="light"] .theme-btn-outline {
+  border-color: #e2e8f0;
+  color: #475569;
+}
+[data-theme="light"] .theme-btn-outline:hover {
+  background-color: #f1f5f9;
+}
+
+/* Image overlay: dark = dark gradient for light text; light = light gradient for dark text */
+.theme-image-overlay {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent 50%, transparent);
+}
+[data-theme="light"] .theme-image-overlay {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.4), transparent 50%, transparent);
+}
+.theme-image-overlay-text {
+  color: #f1f5f9;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+[data-theme="light"] .theme-image-overlay-text {
+  color: #0f172a;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
 /* RTL Support */
 [dir="rtl"] {
   text-align: right;
