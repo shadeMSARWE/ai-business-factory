@@ -21,6 +21,9 @@ import {
   Star,
   Loader2,
 } from "lucide-react";
+import { Suggestions } from "@/components/factories/Suggestions";
+import { PreviewGallery } from "@/components/factories/PreviewGallery";
+import { getSuggestionsForFactory } from "@/lib/factories";
 
 interface BusinessPlace {
   name: string;
@@ -133,12 +136,28 @@ export default function BusinessFinderPage() {
           Back to Dashboard
         </Link>
 
-        <h1 className="text-3xl font-bold text-white mb-2">AI Business Finder</h1>
-        <p className="text-slate-400 mb-10">
+        <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
+          <MapPin className="h-8 w-8 text-violet-400" />
+          AI Business Finder
+        </h1>
+        <p className="text-slate-400 mb-8">
           Find businesses without websites on Google Maps and generate websites for them automatically.
         </p>
 
-        <Card className="border-white/10 bg-white/5 max-w-2xl mb-10">
+        <PreviewGallery
+          images={[
+            { src: "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=400&q=80", alt: "Map" },
+            { src: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&q=80", alt: "Business" },
+            { src: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80", alt: "Store" },
+            { src: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&q=80", alt: "Office" },
+            { src: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80", alt: "Local" },
+            { src: "https://images.unsplash.com/photo-1558030006-4505e387e479?w=400&q=80", alt: "Card" },
+          ]}
+          columns={3}
+          className="mb-8"
+        />
+
+        <Card className="border-white/10 bg-white/5 backdrop-blur-xl max-w-2xl mb-10">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Search className="h-5 w-5" />
@@ -149,6 +168,7 @@ export default function BusinessFinderPage() {
             </p>
           </CardHeader>
           <CardContent className="space-y-4">
+            <Suggestions items={getSuggestionsForFactory("businessFinder")} onSelect={(p) => setBusinessType(p)} loading={loading} className="mb-4" />
             <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <Label className="text-slate-400">Business Type</Label>
@@ -203,7 +223,7 @@ export default function BusinessFinderPage() {
             <Button
               onClick={handleSearch}
               disabled={loading || !businessType.trim() || !city.trim() || !country.trim() || creditsExhausted}
-              className="bg-gradient-to-r from-violet-500 to-fuchsia-500 px-6"
+              className="bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600 px-6"
             >
               {loading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />

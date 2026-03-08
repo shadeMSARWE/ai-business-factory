@@ -72,7 +72,7 @@ export function DashboardFactoryCard({
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: index * 0.03 }}
         whileHover={{ scale: 1.02 }}
-        className="rounded-2xl border border-white/10 bg-white/5 p-8 hover:border-violet-500/30 transition-colors h-full flex flex-col"
+        className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 hover:border-violet-500/30 hover:bg-white/[0.07] transition-all h-full flex flex-col"
       >
         <div className="flex items-start justify-between mb-4">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 flex items-center justify-center">

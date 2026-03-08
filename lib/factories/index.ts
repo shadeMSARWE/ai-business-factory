@@ -192,3 +192,4 @@ export {
   type FactoryEngineConfig,
   type OutputType,
 } from "./registry";
+export { getSuggestionsForFactory, FACTORY_SUGGESTIONS, type SuggestionItem } from "./suggestions-config";

@@ -11,7 +11,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DashboardNav } from "@/components/dashboard/dashboard-nav";
 import { Logo } from "@/components/logo";
-import { ArrowLeft, Sparkles, Download, Check, Loader2 } from "lucide-react";
+import { ArrowLeft, Sparkles, Download, Check, Loader2, Palette } from "lucide-react";
+import { Suggestions } from "@/components/factories/Suggestions";
+import { PreviewGallery } from "@/components/factories/PreviewGallery";
+import { FactorySkeleton } from "@/components/factories/FactorySkeleton";
+import { getSuggestionsForFactory } from "@/lib/factories";
 
 const BUSINESS_TYPES = [
   "Restaurant",
@@ -172,10 +176,27 @@ export default function LogoGeneratorPage() {
           Back to Dashboard
         </Link>
 
-        <h1 className="text-3xl font-bold text-white mb-2">AI Logo Generator</h1>
-        <p className="text-slate-400 mb-10">Create professional logos for your business</p>
+        <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
+          <Palette className="h-8 w-8 text-violet-400" />
+          AI Logo Generator
+        </h1>
+        <p className="text-slate-400 mb-8">Create professional logos. Use style suggestions or enter your details.</p>
 
-        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 mb-10">
+        <PreviewGallery
+          images={[
+            { src: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&q=80", alt: "Brand" },
+            { src: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&q=80", alt: "Logo style" },
+            { src: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=400&q=80", alt: "Minimal" },
+            { src: "https://images.unsplash.com/photo-1542744094-24638eff58bb?w=400&q=80", alt: "Modern" },
+            { src: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=400&q=80", alt: "Creative" },
+            { src: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80", alt: "Style" },
+          ]}
+          columns={3}
+          className="mb-8"
+        />
+
+        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 mb-8">
+          <Suggestions items={getSuggestionsForFactory("logo")} onSelect={(p) => setColorPref(p)} loading={loading} className="mb-6" />
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <Label className="text-slate-400">Business name</Label>
@@ -211,7 +232,7 @@ export default function LogoGeneratorPage() {
           <Button
             onClick={handleGenerate}
             disabled={loading || !name.trim() || creditsExhausted}
-            className="mt-6 bg-gradient-to-r from-violet-500 to-fuchsia-500"
+            className="mt-6 bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600"
           >
             {loading ? (
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -222,7 +243,9 @@ export default function LogoGeneratorPage() {
           </Button>
         </div>
 
-        {logos.length > 0 && (
+        {loading && <FactorySkeleton lines={2} className="mb-8" />}
+
+        {!loading && logos.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

@@ -6,8 +6,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Video, Loader2, Sparkles } from "lucide-react";
+import { ArrowLeft, Video, Loader2, Sparkles, Copy, Check } from "lucide-react";
+import { Suggestions } from "@/components/factories/Suggestions";
+import { PreviewGallery } from "@/components/factories/PreviewGallery";
+import { ResultCard } from "@/components/factories/ResultCard";
+import { FactorySkeleton } from "@/components/factories/FactorySkeleton";
+import { getSuggestionsForFactory } from "@/lib/factories";
 
 const IDEA_TEMPLATES = [
   (t: string) => `5 ${t} tools that will blow your mind`,
@@ -24,7 +28,15 @@ const IDEA_TEMPLATES = [
   (t: string) => `I spent 24 hours using only ${t}`,
 ];
 
-/** Demo mode: generates mock viral video ideas. No API calls. */
+const VIDEO_PREVIEW_IMAGES = [
+  { src: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&q=80", alt: "TikTok style" },
+  { src: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=400&q=80", alt: "YouTube Shorts" },
+  { src: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=400&q=80", alt: "Social video" },
+  { src: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&q=80", alt: "Content" },
+  { src: "https://images.unsplash.com/photo-1542744094-24638eff58bb?w=400&q=80", alt: "Thumbnail" },
+  { src: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=400&q=80", alt: "Preview" },
+];
+
 function generateMockIdeas(topic: string): string[] {
   const normalized = topic.trim() || "AI";
   const cap = normalized.charAt(0).toUpperCase() + normalized.slice(1).toLowerCase();
@@ -35,6 +47,7 @@ export default function ViralVideoIdeasPage() {
   const [topic, setTopic] = useState("");
   const [ideas, setIdeas] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const suggestions = getSuggestionsForFactory("viralVideoIdeas");
 
   const handleGenerate = async () => {
     setLoading(true);
@@ -55,11 +68,8 @@ export default function ViralVideoIdeasPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 py-12 max-w-3xl">
-        <Link
-          href="/dashboard"
-          className="inline-flex items-center text-slate-400 hover:text-white mb-8"
-        >
+      <div className="container mx-auto px-6 py-12 max-w-4xl">
+        <Link href="/dashboard" className="inline-flex items-center text-slate-400 hover:text-white mb-8">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Dashboard
         </Link>
@@ -68,15 +78,16 @@ export default function ViralVideoIdeasPage() {
           <Video className="h-8 w-8 text-violet-400" />
           Viral Video Ideas Factory
         </h1>
-        <p className="text-slate-400 mb-10">
-          Generate viral video ideas for TikTok, YouTube Shorts, and Reels. Enter a topic and get instant ideas.
+        <p className="text-slate-400 mb-8">
+          Generate viral video ideas for TikTok, YouTube Shorts, and Reels. Use suggestions or enter a topic.
         </p>
 
-        <Card className="border-white/10 bg-white/5 mb-8">
-          <CardHeader>
-            <CardTitle className="text-white">Generate Ideas</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        {/* Thumbnail-style preview gallery */}
+        <PreviewGallery images={VIDEO_PREVIEW_IMAGES} columns={3} className="mb-8" />
+
+        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 mb-8">
+          <Suggestions items={suggestions} onSelect={(p) => setTopic(p)} loading={loading} className="mb-6" />
+          <div className="space-y-4">
             <div>
               <Label className="text-slate-400">Topic</Label>
               <Input
@@ -90,7 +101,7 @@ export default function ViralVideoIdeasPage() {
             <Button
               onClick={handleGenerate}
               disabled={loading}
-              className="bg-gradient-to-r from-violet-500 to-fuchsia-500"
+              className="bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600"
             >
               {loading ? (
                 <>
@@ -101,52 +112,29 @@ export default function ViralVideoIdeasPage() {
                 "Generate Ideas"
               )}
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         <AnimatePresence>
-          {loading && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="flex flex-col items-center justify-center py-16 gap-4"
-            >
-              <Loader2 className="h-12 w-12 text-violet-400 animate-spin" />
-              <p className="text-slate-400">Coming up with viral ideas...</p>
-            </motion.div>
-          )}
+          {loading && <FactorySkeleton lines={4} className="mb-8" />}
         </AnimatePresence>
 
         {!loading && ideas.length > 0 && (
-          <motion.div
+          <motion.section
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-4"
+            className="space-y-6"
           >
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+              <span className="w-1 h-5 rounded-full bg-gradient-to-b from-violet-500 to-fuchsia-500" />
               Ideas for &quot;{topic.trim() || "AI"}&quot;
             </h2>
             <div className="grid gap-3">
               {ideas.map((idea, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.03 }}
-                >
-                  <Card className="border-white/10 bg-white/5 hover:border-violet-500/20 transition-colors">
-                    <CardContent className="py-4 flex items-center gap-4">
-                      <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-violet-500/20 text-violet-400 font-semibold flex items-center justify-center text-sm">
-                        {i + 1}
-                      </span>
-                      <p className="text-white font-medium">{idea}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
+                <ResultCard key={i} title={`Idea ${i + 1}`} value={idea} index={i} />
               ))}
             </div>
-          </motion.div>
+          </motion.section>
         )}
       </div>
     </div>

@@ -5,13 +5,17 @@ import Link from "next/link";
 import { useCredits } from "@/components/providers/credits-provider";
 import { useCreditsAction } from "@/hooks/use-credits-action";
 import { CreditsExhaustedModal } from "@/components/credits-exhausted-modal";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DashboardNav } from "@/components/dashboard/dashboard-nav";
 import { Logo } from "@/components/logo";
-import { ArrowLeft, Sparkles, Copy, Check, Loader2 } from "lucide-react";
+import { ArrowLeft, Sparkles, Loader2, Search } from "lucide-react";
+import { Suggestions } from "@/components/factories/Suggestions";
+import { ResultCard } from "@/components/factories/ResultCard";
+import { FactorySkeleton } from "@/components/factories/FactorySkeleton";
+import { getSuggestionsForFactory } from "@/lib/factories";
 
 function generateSEO(name: string, type: string, city: string) {
   const typeLabel = type || "business";
@@ -36,8 +40,17 @@ export default function SEOGeneratorPage() {
   const [city, setCity] = useState("");
   const [result, setResult] = useState<ReturnType<typeof generateSEO> | null>(null);
   const [loading, setLoading] = useState(false);
-  const [copied, setCopied] = useState<string | null>(null);
   const creditsExhausted = billing?.creditsExhausted ?? false;
+  const suggestions = getSuggestionsForFactory("seo");
+
+  const handleSuggestion = (prompt: string) => {
+    const parts = prompt.split(",").map((s) => s.trim());
+    if (parts.length >= 3) {
+      setName(parts[0] ?? "");
+      setType(parts[1] ?? "");
+      setCity(parts[2] ?? "");
+    }
+  };
 
   const handleGenerate = () => {
     if (!name.trim() || !type.trim() || !city.trim()) return;
@@ -47,18 +60,13 @@ export default function SEOGeneratorPage() {
     }
     deductAndRun(async () => {
       setLoading(true);
+      setResult(null);
       setTimeout(() => {
         setResult(generateSEO(name.trim(), type.trim(), city.trim()));
         setLoading(false);
         refetch();
       }, 600);
     });
-  };
-
-  const copyField = (value: string, field: string) => {
-    navigator.clipboard.writeText(value);
-    setCopied(field);
-    setTimeout(() => setCopied(null), 2000);
   };
 
   return (
@@ -76,10 +84,31 @@ export default function SEOGeneratorPage() {
           Back to Dashboard
         </Link>
 
-        <h1 className="text-3xl font-bold text-white mb-2">AI SEO Generator</h1>
-        <p className="text-slate-400 mb-10">Generate SEO title, meta description, and keywords for your website</p>
+        <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
+          <Search className="h-8 w-8 text-violet-400" />
+          AI SEO Generator
+        </h1>
+        <p className="text-slate-400 mb-8">
+          Generate SEO title, meta description, and keywords. Use suggestions or enter your details.
+        </p>
 
-        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 mb-10">
+        {/* Search preview cards — contextual visual */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-5 mb-8"
+        >
+          <p className="text-sm font-medium text-slate-400 mb-3">Search preview</p>
+          <div className="space-y-2">
+            <div className="h-4 rounded bg-white/10 w-3/4 max-w-md" />
+            <div className="h-3 rounded bg-white/5 w-full max-w-lg" />
+            <div className="h-3 rounded bg-white/5 w-2/3 max-w-md" />
+          </div>
+          <p className="text-xs text-slate-500 mt-2">Your meta will appear like this in search results.</p>
+        </motion.div>
+
+        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 mb-8">
+          <Suggestions items={suggestions} onSelect={handleSuggestion} loading={loading} className="mb-6" />
           <div className="grid md:grid-cols-3 gap-6">
             <div>
               <Label className="text-slate-400">Business name</Label>
@@ -87,7 +116,7 @@ export default function SEOGeneratorPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Mario Pizza"
-                className="mt-2 bg-white/5 border-white/20"
+                className="mt-2 bg-white/5 border-white/20 text-white"
               />
             </div>
             <div>
@@ -96,7 +125,7 @@ export default function SEOGeneratorPage() {
                 value={type}
                 onChange={(e) => setType(e.target.value)}
                 placeholder="Pizza restaurant"
-                className="mt-2 bg-white/5 border-white/20"
+                className="mt-2 bg-white/5 border-white/20 text-white"
               />
             </div>
             <div>
@@ -105,69 +134,40 @@ export default function SEOGeneratorPage() {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 placeholder="Haifa"
-                className="mt-2 bg-white/5 border-white/20"
+                className="mt-2 bg-white/5 border-white/20 text-white"
               />
             </div>
           </div>
           <Button
             onClick={handleGenerate}
             disabled={loading || !name.trim() || !type.trim() || !city.trim() || creditsExhausted}
-            className="mt-6 bg-gradient-to-r from-violet-500 to-fuchsia-500"
+            className="mt-6 bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600"
           >
             {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Sparkles className="h-4 w-4 mr-2" />}
             Generate SEO
           </Button>
         </div>
 
-        {result && (
-          <motion.div
+        <AnimatePresence>
+          {loading && (
+            <FactorySkeleton lines={3} className="mb-8" />
+          )}
+        </AnimatePresence>
+
+        {!loading && result && (
+          <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="space-y-6"
           >
-            <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6">
-              <div className="flex justify-between items-center mb-3">
-                <Label className="text-slate-400">SEO Title</Label>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => copyField(result.title, "title")}
-                  className="text-slate-400 hover:text-white"
-                >
-                  {copied === "title" ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
-                </Button>
-              </div>
-              <p className="text-white font-medium">{result.title}</p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6">
-              <div className="flex justify-between items-center mb-3">
-                <Label className="text-slate-400">Meta Description</Label>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => copyField(result.description, "desc")}
-                  className="text-slate-400 hover:text-white"
-                >
-                  {copied === "desc" ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
-                </Button>
-              </div>
-              <p className="text-slate-300">{result.description}</p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6">
-              <div className="flex justify-between items-center mb-3">
-                <Label className="text-slate-400">Keywords</Label>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => copyField(result.keywords, "keywords")}
-                  className="text-slate-400 hover:text-white"
-                >
-                  {copied === "keywords" ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
-                </Button>
-              </div>
-              <p className="text-slate-300 text-sm">{result.keywords}</p>
-            </div>
-          </motion.div>
+            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+              <span className="w-1 h-5 rounded-full bg-gradient-to-b from-violet-500 to-fuchsia-500" />
+              Result
+            </h2>
+            <ResultCard title="SEO Title" value={result.title} index={0} />
+            <ResultCard title="Meta Description" value={result.description} index={1} />
+            <ResultCard title="Keywords" value={result.keywords} index={2} />
+          </motion.section>
         )}
       </main>
       <CreditsExhaustedModal open={showModal} onOpenChange={setShowModal} />

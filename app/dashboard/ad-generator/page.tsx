@@ -11,7 +11,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DashboardNav } from "@/components/dashboard/dashboard-nav";
 import { Logo } from "@/components/logo";
-import { ArrowLeft, Sparkles, Copy, Check, Loader2 } from "lucide-react";
+import { ArrowLeft, Sparkles, Copy, Check, Loader2, Megaphone } from "lucide-react";
+import { Suggestions } from "@/components/factories/Suggestions";
+import { PreviewGallery } from "@/components/factories/PreviewGallery";
+import { FactorySkeleton } from "@/components/factories/FactorySkeleton";
+import { getSuggestionsForFactory } from "@/lib/factories";
 
 const PLATFORMS = ["Facebook", "Instagram", "Google Ads", "TikTok"];
 
@@ -100,10 +104,27 @@ export default function AdGeneratorPage() {
           Back to Dashboard
         </Link>
 
-        <h1 className="text-3xl font-bold text-white mb-2">AI Ads Generator</h1>
-        <p className="text-slate-400 mb-10">Create marketing ads for Facebook, Instagram, Google, and TikTok</p>
+        <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
+          <Megaphone className="h-8 w-8 text-violet-400" />
+          AI Ads Generator
+        </h1>
+        <p className="text-slate-400 mb-8">Create marketing ads for Facebook, Instagram, Google, and TikTok. Use suggestions or fill the form.</p>
 
-        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 mb-10">
+        <PreviewGallery
+          images={[
+            { src: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&q=80", alt: "Social" },
+            { src: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&q=80", alt: "Ad creative" },
+            { src: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=400&q=80", alt: "Campaign" },
+            { src: "https://images.unsplash.com/photo-1542744094-24638eff58bb?w=400&q=80", alt: "Marketing" },
+            { src: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=400&q=80", alt: "Ads" },
+            { src: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80", alt: "Preview" },
+          ]}
+          columns={3}
+          className="mb-8"
+        />
+
+        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 mb-8">
+          <Suggestions items={getSuggestionsForFactory("ads")} onSelect={(p) => setType(p)} loading={loading} className="mb-6" />
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <Label className="text-slate-400">Business name</Label>
@@ -145,47 +166,57 @@ export default function AdGeneratorPage() {
           <Button
             onClick={handleGenerate}
             disabled={loading || !name.trim() || !type.trim() || !city.trim() || creditsExhausted}
-            className="mt-6 bg-gradient-to-r from-violet-500 to-fuchsia-500"
+            className="mt-6 bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600"
           >
             {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Sparkles className="h-4 w-4 mr-2" />}
             Generate Ads
           </Button>
         </div>
 
-        {ads.length > 0 && (
-          <motion.div
+        {loading && <FactorySkeleton lines={4} className="mb-8" />}
+
+        {!loading && ads.length > 0 && (
+          <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="grid md:grid-cols-2 gap-6"
+            className="space-y-6"
           >
-            {ads.map((ad) => (
-              <div
-                key={ad.platform}
-                className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 hover:border-violet-500/30 transition-colors"
-              >
-                <div className="flex justify-between items-center mb-4">
-                  <span className="text-violet-400 font-medium">{ad.platform}</span>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => copyAd(ad)}
-                    className="text-slate-400 hover:text-white"
-                  >
-                    {copied === ad.platform ? (
-                      <Check className="h-4 w-4 text-emerald-400" />
-                    ) : (
-                      <Copy className="h-4 w-4" />
-                    )}
-                  </Button>
+            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+              <span className="w-1 h-5 rounded-full bg-gradient-to-b from-violet-500 to-fuchsia-500" />
+              Ad previews
+            </h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              {ads.map((ad) => (
+                <div
+                  key={ad.platform}
+                  className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 hover:border-violet-500/30 transition-colors"
+                >
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-violet-400 font-medium">{ad.platform}</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => copyAd(ad)}
+                      className="text-slate-400 hover:text-white"
+                    >
+                      {copied === ad.platform ? (
+                        <Check className="h-4 w-4 text-emerald-400" />
+                      ) : (
+                        <Copy className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </div>
+                  <h3 className="text-sm font-medium text-slate-400 mb-1">Headline</h3>
+                  <p className="text-lg font-semibold text-white mb-3">{ad.headline}</p>
+                  <h3 className="text-sm font-medium text-slate-400 mb-1">Primary text</h3>
+                  <p className="text-slate-300 text-sm mb-4">{ad.description}</p>
+                  <span className="inline-block px-3 py-1 rounded-lg bg-violet-500/20 text-violet-300 text-sm">
+                    {ad.cta}
+                  </span>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">{ad.headline}</h3>
-                <p className="text-slate-400 text-sm mb-4">{ad.description}</p>
-                <span className="inline-block px-3 py-1 rounded-lg bg-violet-500/20 text-violet-300 text-sm">
-                  {ad.cta}
-                </span>
-              </div>
-            ))}
-          </motion.div>
+              ))}
+            </div>
+          </motion.section>
         )}
       </main>
       <CreditsExhaustedModal open={showModal} onOpenChange={setShowModal} />
