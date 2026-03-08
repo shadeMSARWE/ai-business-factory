@@ -138,6 +138,60 @@ export default function DashboardPage() {
         </div>
       </section>
 
+      {/* Featured tools */}
+      {filtered.length > 0 && (
+        <motion.section
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-14"
+        >
+          <h2 className="text-xl md:text-2xl font-semibold text-white mb-1 flex items-center gap-2">
+            <span className="w-1 h-6 rounded-full bg-gradient-to-b from-violet-500 to-fuchsia-500" />
+            Featured tools
+          </h2>
+          <p className="text-slate-400 text-sm md:text-base mb-6 max-w-2xl">
+            Start with these powerful AI tools to build your business.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-5">
+            {filtered.slice(0, 6).map((factory, index) => (
+              <DashboardFactoryCard
+                key={factory.id}
+                factory={factory}
+                index={index}
+                previewImage={getPreviewImage(factory.id)}
+              />
+            ))}
+          </div>
+        </motion.section>
+      )}
+
+      {/* Popular factories */}
+      {filtered.some((f) => f.popular) && (
+        <motion.section
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-14"
+        >
+          <h2 className="text-xl md:text-2xl font-semibold text-white mb-1 flex items-center gap-2">
+            <span className="w-1 h-6 rounded-full bg-gradient-to-b from-violet-500 to-fuchsia-500" />
+            Popular
+          </h2>
+          <p className="text-slate-400 text-sm md:text-base mb-6 max-w-2xl">
+            Most used tools by our community.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            {filtered.filter((f) => f.popular).map((factory, index) => (
+              <DashboardFactoryCard
+                key={factory.id}
+                factory={factory}
+                index={index}
+                previewImage={getPreviewImage(factory.id)}
+              />
+            ))}
+          </div>
+        </motion.section>
+      )}
+
       {/* Tool categories */}
       <section className="py-8 border-t border-white/5">
         {MARKETPLACE_CATEGORY_ORDER.map((categoryId) => {

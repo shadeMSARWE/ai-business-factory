@@ -48,6 +48,18 @@ export const ENGINE_BY_FACTORY: Record<string, EngineType> = {
   brandKit: "text",
   socialContent: "marketing",
   landingPageAI: "website",
+  saasBuilder: "text",
+  videoFactory: "text",
+  automationFactory: "text",
+  marketingStrategy: "text",
+  productGenerator: "text",
+  courseCreator: "text",
+  copywritingFactory: "marketing",
+  startupValidator: "text",
+  contentCalendar: "text",
+  businessPlan: "text",
+  brandingStudio: "text",
+  funnelBuilder: "text",
 };
 
 export function getEngineForFactory(factoryId: string): EngineType | null {

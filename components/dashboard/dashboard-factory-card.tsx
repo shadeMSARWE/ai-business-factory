@@ -23,6 +23,9 @@ import {
   Smartphone,
   Clock,
   Star,
+  BookOpen,
+  FileText,
+  Calendar,
 } from "lucide-react";
 
 import type { FactoryConfig, FactoryStatus } from "@/lib/factories";
@@ -47,6 +50,18 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   brandKit: Palette,
   socialContent: Share2,
   landingPageAI: Layout,
+  saasBuilder: Box,
+  videoFactory: Video,
+  automationFactory: Zap,
+  marketingStrategy: Megaphone,
+  productGenerator: Store,
+  courseCreator: BookOpen,
+  copywritingFactory: FileText,
+  startupValidator: Search,
+  contentCalendar: Calendar,
+  businessPlan: FileText,
+  brandingStudio: Palette,
+  funnelBuilder: Layout,
 };
 
 const STATUS_CONFIG: Record<FactoryStatus, { label: string; className: string }> = {
