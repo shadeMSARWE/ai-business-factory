@@ -335,6 +335,17 @@ export const FACTORIES: Record<string, FactoryConfig> = {
     showOnDashboard: true,
     category: "growth",
   },
+  businessGenerator: {
+    id: "businessGenerator",
+    name: "AI Business Generator",
+    description: "Generate a complete AI business kit in one click: branding, website, store, SEO, ads, content, video.",
+    path: "/dashboard/business-generator",
+    available: true,
+    status: "ready",
+    showOnDashboard: true,
+    category: "core",
+    popular: true,
+  },
 };
 
 export type FactoryId = keyof typeof FACTORIES;
@@ -386,6 +397,7 @@ export const FACTORY_ORDER: FactoryId[] = [
   "businessPlan",
   "brandingStudio",
   "funnelBuilder",
+  "businessGenerator",
 ];
 
 // Re-export engine system for API routes and server usage

@@ -65,6 +65,7 @@ export const FACTORY_TO_MARKETPLACE: Record<string, MarketplaceCategoryId> = {
   saasBuilder: "business-creation",
   businessPlan: "business-creation",
   productGenerator: "business-creation",
+  businessGenerator: "business-creation",
   logo: "branding",
   brandKit: "branding",
   brandingStudio: "branding",
@@ -117,6 +118,7 @@ export const FACTORY_PREVIEW_IMAGES: Record<string, string> = {
   businessPlan: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&q=80",
   brandingStudio: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&q=80",
   funnelBuilder: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&q=80",
+  businessGenerator: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=400&q=80",
 };
 
 export function getMarketplaceCategory(factoryId: string): MarketplaceCategoryId {
@@ -164,6 +166,7 @@ export const FACTORY_DIFFICULTY: Record<string, DifficultyLevel> = {
   businessPlan: "advanced",
   brandingStudio: "medium",
   funnelBuilder: "medium",
+  businessGenerator: "advanced",
 };
 
 /** Estimated generation time in seconds (for display). */
@@ -198,6 +201,7 @@ export const FACTORY_ESTIMATED_TIME: Record<string, number> = {
   businessPlan: 50,
   brandingStudio: 35,
   funnelBuilder: 35,
+  businessGenerator: 60,
 };
 
 export function getDifficulty(factoryId: string): DifficultyLevel | null {

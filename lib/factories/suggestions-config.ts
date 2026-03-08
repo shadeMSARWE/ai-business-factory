@@ -180,6 +180,12 @@ export const FACTORY_SUGGESTIONS: Record<string, SuggestionItem[]> = {
     { id: "fb-3", label: "Webinar", prompt: "Webinar funnel, registration, replay" },
     { id: "fb-4", label: "Product launch", prompt: "Product launch funnel, sequence" },
   ],
+  businessGenerator: [
+    { id: "bg-1", label: "Coffee shop", prompt: "coffee shop in Haifa" },
+    { id: "bg-2", label: "Restaurant", prompt: "restaurant in NYC" },
+    { id: "bg-3", label: "Fitness studio", prompt: "fitness studio in London" },
+    { id: "bg-4", label: "Beauty salon", prompt: "beauty salon in Paris" },
+  ],
 };
 
 export function getSuggestionsForFactory(factoryId: string): SuggestionItem[] {

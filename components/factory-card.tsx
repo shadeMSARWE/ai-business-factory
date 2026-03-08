@@ -24,6 +24,7 @@ import {
   BookOpen,
   FileText,
   Calendar,
+  Rocket,
 } from "lucide-react";
 import type { FactoryConfig, FactoryStatus } from "@/lib/factories";
 
@@ -58,6 +59,7 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   businessPlan: FileText,
   brandingStudio: Palette,
   funnelBuilder: Layout,
+  businessGenerator: Rocket,
 };
 
 const STATUS_CONFIG: Record<FactoryStatus, { label: string; className: string }> = {
