@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/components/providers/language-provider";
 import { ArrowLeft, Wand2 } from "lucide-react";
 import { DashboardNav } from "@/components/dashboard/dashboard-nav";
+import { getDashboardFactories } from "@/lib/factories";
 
 function getMockResult(tool: string, prompt: string) {
   const p = prompt || "business";
@@ -32,11 +33,12 @@ function AIToolsContent() {
   const [context, setContext] = useState("");
   const [result, setResult] = useState<Record<string, unknown> | null>(null);
 
-  const tools = [
-    { id: "logo", title: t("tools.logoGenerator"), desc: "Generate logo concepts" },
-    { id: "ad", title: t("tools.adGenerator"), desc: "Create ad copy" },
-    { id: "seo", title: t("tools.seoGenerator"), desc: "Generate SEO meta" },
-  ];
+  const tools = getDashboardFactories().map((f) => ({
+    id: f.id,
+    title: f.name,
+    desc: f.description,
+    path: f.path,
+  }));
 
   const handleGenerate = () => {
     if (!prompt.trim()) return;
@@ -64,7 +66,7 @@ function AIToolsContent() {
 
         <div className="grid lg:grid-cols-3 gap-6 mb-8">
           {tools.map((t) => (
-            <Link key={t.id} href={`/dashboard/tools?tool=${t.id}`}>
+            <Link key={t.id} href={t.path}>
               <Card className={`border-white/10 transition ${tool === t.id ? "ring-2 ring-violet-500" : "bg-white/5 hover:bg-white/10"}`}>
                 <CardContent className="pt-6">
                   <p className="font-medium text-white">{t.title}</p>

@@ -46,8 +46,8 @@ export default function DashboardPage() {
   const { user } = useAuth();
   const { t } = useTranslation();
 
-  const dashboardFactories = getDashboardFactories();
-  const grouped = groupByCategory(dashboardFactories);
+  const factories = getDashboardFactories();
+  const grouped = groupByCategory(factories);
 
   return (
     <div>

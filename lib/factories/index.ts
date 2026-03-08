@@ -167,11 +167,12 @@ export type FactoryId = keyof typeof FACTORIES;
 /**
  * Returns all factories that are available and shown on dashboard.
  * Renders from FACTORIES only — FACTORY_ORDER is optional (used for display order).
- * Any new factory added to FACTORIES with available + showOnDashboard will appear automatically.
+ * Factories appear when available === true and showOnDashboard === true.
+ * Any new factory added to FACTORIES with those flags will appear automatically.
  */
 export function getDashboardFactories(): FactoryConfig[] {
   const factories = Object.values(FACTORIES).filter(
-    (f) => f.available && f.showOnDashboard !== false
+    (f) => f.available === true && f.showOnDashboard === true
   );
   const orderMap = new Map(FACTORY_ORDER.map((id, i) => [id, i]));
   return factories.sort((a, b) => {
