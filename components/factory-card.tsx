@@ -19,6 +19,8 @@ import {
   Send,
   Box,
   Image,
+  Share2,
+  Smartphone,
 } from "lucide-react";
 import type { FactoryConfig, FactoryStatus } from "@/lib/factories";
 
@@ -35,6 +37,12 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   universalBuilder: Box,
   imageGenerator: Image,
   viralVideoIdeas: Video,
+  websiteTemplates: Layout,
+  storeBuilder: Store,
+  appBuilder: Smartphone,
+  brandKit: Palette,
+  socialContent: Share2,
+  landingPageAI: Layout,
 };
 
 const STATUS_CONFIG: Record<FactoryStatus, { label: string; className: string }> = {

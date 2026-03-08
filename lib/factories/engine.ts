@@ -42,6 +42,12 @@ export const ENGINE_BY_FACTORY: Record<string, EngineType> = {
   mobileApps: "text",
   store: "website",
   universalBuilder: "text",
+  websiteTemplates: "website",
+  storeBuilder: "website",
+  appBuilder: "text",
+  brandKit: "text",
+  socialContent: "marketing",
+  landingPageAI: "website",
 };
 
 export function getEngineForFactory(factoryId: string): EngineType | null {

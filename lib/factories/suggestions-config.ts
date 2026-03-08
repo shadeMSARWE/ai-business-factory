@@ -72,6 +72,42 @@ export const FACTORY_SUGGESTIONS: Record<string, SuggestionItem[]> = {
     { id: "ub-2", label: "Mobile app", prompt: "Mobile app project" },
     { id: "ub-3", label: "AI tool", prompt: "AI tool prototype" },
   ],
+  websiteTemplates: [
+    { id: "wt-1", label: "Restaurant", prompt: "Restaurant website template, hero, menu, contact" },
+    { id: "wt-2", label: "Portfolio", prompt: "Portfolio template, projects, about" },
+    { id: "wt-3", label: "Agency", prompt: "Agency template, services, testimonials" },
+    { id: "wt-4", label: "SaaS", prompt: "SaaS landing template, features, pricing" },
+  ],
+  storeBuilder: [
+    { id: "sb-1", label: "Fashion", prompt: "Fashion ecommerce store, clothing, accessories" },
+    { id: "sb-2", label: "Electronics", prompt: "Electronics store, gadgets, tech" },
+    { id: "sb-3", label: "Handmade", prompt: "Handmade crafts store" },
+    { id: "sb-4", label: "Food & Beverage", prompt: "Food and beverage online store" },
+  ],
+  appBuilder: [
+    { id: "ab-1", label: "Fitness app", prompt: "Fitness and workout app structure" },
+    { id: "ab-2", label: "Productivity", prompt: "Productivity app, tasks, calendar" },
+    { id: "ab-3", label: "Social app", prompt: "Social networking app structure" },
+    { id: "ab-4", label: "Ecommerce app", prompt: "Mobile shopping app structure" },
+  ],
+  brandKit: [
+    { id: "bk-1", label: "Tech startup", prompt: "Tech startup brand kit, modern, minimal" },
+    { id: "bk-2", label: "Luxury brand", prompt: "Luxury brand identity, premium colors" },
+    { id: "bk-3", label: "Creative agency", prompt: "Creative agency brand, bold typography" },
+    { id: "bk-4", label: "Ecommerce", prompt: "Ecommerce brand kit, product-focused" },
+  ],
+  socialContent: [
+    { id: "sc-1", label: "Instagram week", prompt: "Instagram content pack, 7 posts" },
+    { id: "sc-2", label: "TikTok ideas", prompt: "TikTok content ideas and hashtags" },
+    { id: "sc-3", label: "LinkedIn", prompt: "LinkedIn professional posts" },
+    { id: "sc-4", label: "Content calendar", prompt: "Monthly content calendar, all platforms" },
+  ],
+  landingPageAI: [
+    { id: "lpa-1", label: "Product launch", prompt: "Product launch landing page, headline, CTA" },
+    { id: "lpa-2", label: "Webinar", prompt: "Webinar signup landing page" },
+    { id: "lpa-3", label: "Lead magnet", prompt: "Lead magnet landing, ebook download" },
+    { id: "lpa-4", label: "App download", prompt: "Mobile app download landing page" },
+  ],
 };
 
 export function getSuggestionsForFactory(factoryId: string): SuggestionItem[] {

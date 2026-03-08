@@ -11,6 +11,7 @@ import { getDashboardFactories } from "@/lib/factories";
 import type { FactoryConfig } from "@/lib/factories";
 import { DashboardFactoryCard } from "@/components/dashboard/dashboard-factory-card";
 import { AISuggestionsPanel } from "@/components/dashboard/ai-suggestions-panel";
+import { GenerationHistoryPanel } from "@/components/dashboard/generation-history-panel";
 import {
   MARKETPLACE_CATEGORIES,
   MARKETPLACE_CATEGORY_ORDER,
@@ -129,12 +130,11 @@ export default function DashboardPage() {
         </div>
       </motion.section>
 
-      {/* AI Suggestions */}
+      {/* AI Suggestions + Generation History */}
       <section className="mb-12">
-        <div className="grid lg:grid-cols-4 gap-6">
-          <div className="lg:col-span-1">
-            <AISuggestionsPanel />
-          </div>
+        <div className="grid lg:grid-cols-2 gap-6">
+          <AISuggestionsPanel />
+          <GenerationHistoryPanel />
         </div>
       </section>
 

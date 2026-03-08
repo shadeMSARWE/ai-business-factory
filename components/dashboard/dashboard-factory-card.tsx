@@ -19,9 +19,14 @@ import {
   Box,
   Image as ImageIcon,
   ArrowRight,
+  Share2,
+  Smartphone,
+  Clock,
+  Star,
 } from "lucide-react";
 
 import type { FactoryConfig, FactoryStatus } from "@/lib/factories";
+import { getDifficulty, getEstimatedTime, type DifficultyLevel } from "@/lib/dashboard-marketplace";
 
 const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   businessFinder: MapPin,
@@ -36,6 +41,12 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   universalBuilder: Box,
   imageGenerator: ImageIcon,
   viralVideoIdeas: Video,
+  websiteTemplates: Layout,
+  storeBuilder: Store,
+  appBuilder: Smartphone,
+  brandKit: Palette,
+  socialContent: Share2,
+  landingPageAI: Layout,
 };
 
 const STATUS_CONFIG: Record<FactoryStatus, { label: string; className: string }> = {
@@ -51,6 +62,12 @@ const STATUS_CONFIG: Record<FactoryStatus, { label: string; className: string }>
     label: "New",
     className: "bg-violet-500/20 text-violet-400 border-violet-500/30",
   },
+};
+
+const DIFFICULTY_CONFIG: Record<DifficultyLevel, { label: string; className: string }> = {
+  easy: { label: "Easy", className: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" },
+  medium: { label: "Medium", className: "bg-amber-500/20 text-amber-400 border-amber-500/30" },
+  advanced: { label: "Advanced", className: "bg-rose-500/20 text-rose-400 border-rose-500/30" },
 };
 
 interface DashboardFactoryCardProps {
@@ -69,6 +86,9 @@ export function DashboardFactoryCard({
 
   const Icon = ICONS[factory.id] || Zap;
   const statusConfig = STATUS_CONFIG[factory.status];
+  const difficulty = getDifficulty(factory.id);
+  const estimatedSec = getEstimatedTime(factory.id);
+  const difficultyConfig = difficulty ? DIFFICULTY_CONFIG[difficulty] : null;
 
   return (
     <Link href={factory.path}>
@@ -96,7 +116,12 @@ export function DashboardFactoryCard({
               sizes="(max-width: 768px) 100vw, 25vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f]/80 via-transparent to-transparent" />
-            <div className="absolute top-3 right-3">
+            <div className="absolute top-3 right-3 flex flex-wrap gap-1.5 justify-end">
+              {factory.popular && (
+                <span className="text-xs font-medium px-2 py-0.5 rounded-full border backdrop-blur-sm bg-violet-500/20 text-violet-300 border-violet-500/30 flex items-center gap-1">
+                  <Star className="h-3 w-3" /> Popular
+                </span>
+              )}
               <span
                 className={`text-xs font-medium px-2 py-0.5 rounded-full border backdrop-blur-sm ${statusConfig.className}`}
               >
@@ -137,9 +162,27 @@ export function DashboardFactoryCard({
             </h3>
           )}
 
-          <p className="text-slate-400 text-sm flex-1 line-clamp-2 mb-4">
+          <p className="text-slate-400 text-sm flex-1 line-clamp-2 mb-3">
             {factory.description}
           </p>
+
+          <div className="flex flex-wrap items-center gap-2 mb-4">
+            {!previewImage && factory.popular && (
+              <span className="text-xs font-medium px-2 py-0.5 rounded-full border bg-violet-500/20 text-violet-300 border-violet-500/30 flex items-center gap-1">
+                <Star className="h-3 w-3" /> Popular
+              </span>
+            )}
+            {difficultyConfig && (
+              <span className={`text-xs font-medium px-2 py-0.5 rounded-full border ${difficultyConfig.className}`}>
+                {difficultyConfig.label}
+              </span>
+            )}
+            {estimatedSec != null && (
+              <span className="text-xs text-slate-500 flex items-center gap-1">
+                <Clock className="h-3 w-3" /> ~{estimatedSec}s
+              </span>
+            )}
+          </div>
 
           <span className="inline-flex items-center gap-2 text-sm font-medium text-violet-400 group-hover:text-violet-300 transition-colors">
             {t("tools.openTool")}
