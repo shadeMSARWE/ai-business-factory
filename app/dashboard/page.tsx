@@ -19,7 +19,7 @@ import {
   getPreviewImage,
   type MarketplaceCategoryId,
 } from "@/lib/dashboard-marketplace";
-import { Link2, Search, Sparkles, Globe, Palette, MapPin } from "lucide-react";
+import { Link2, Search, Sparkles, Globe, Palette, MapPin, Bot } from "lucide-react";
 
 /* Group factories by marketplace category for display. */
 function groupByMarketplace(
@@ -125,6 +125,16 @@ export default function DashboardPage() {
             >
               <MapPin className="h-4 w-4 mr-2" />
               Find Leads
+            </Button>
+          </Link>
+          <Link href="/dashboard/agents">
+            <Button
+              size="lg"
+              variant="outline"
+              className="h-11 px-6 border-violet-500/50 text-violet-300 hover:bg-violet-500/10"
+            >
+              <Bot className="h-4 w-4 mr-2" />
+              AI Agents
             </Button>
           </Link>
         </div>

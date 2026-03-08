@@ -86,7 +86,7 @@ export const FACTORY_TO_MARKETPLACE: Record<string, MarketplaceCategoryId> = {
   automationFactory: "automation",
 };
 
-/** Preview image URL per factory (Unsplash). */
+/** Preview image URL per factory (Unsplash) — unique image per factory. */
 export const FACTORY_PREVIEW_IMAGES: Record<string, string> = {
   logo: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&q=80",
   seo: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&q=80",
@@ -94,21 +94,21 @@ export const FACTORY_PREVIEW_IMAGES: Record<string, string> = {
   imageGenerator: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80",
   viralVideoIdeas: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=400&q=80",
   website: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&q=80",
-  landingPage: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&q=80",
+  landingPage: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&q=80",
   businessFinder: "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=400&q=80",
-  autoOutreach: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&q=80",
+  autoOutreach: "https://images.unsplash.com/photo-1542744094-24638eff58bb?w=400&q=80",
   mobileApps: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&q=80",
   store: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&q=80",
   universalBuilder: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=400&q=80",
-  websiteTemplates: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&q=80",
-  storeBuilder: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&q=80",
+  websiteTemplates: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&q=80",
+  storeBuilder: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&q=80",
   appBuilder: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&q=80",
-  brandKit: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&q=80",
+  brandKit: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80",
   socialContent: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=400&q=80",
-  landingPageAI: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&q=80",
+  landingPageAI: "https://images.unsplash.com/photo-1542744094-24638eff58bb?w=400&q=80",
   saasBuilder: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=400&q=80",
   videoFactory: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=400&q=80",
-  automationFactory: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&q=80",
+  automationFactory: "https://images.unsplash.com/photo-1506784365847-bbad939e9335?w=400&q=80",
   marketingStrategy: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=400&q=80",
   productGenerator: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&q=80",
   courseCreator: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=400&q=80",
@@ -117,8 +117,8 @@ export const FACTORY_PREVIEW_IMAGES: Record<string, string> = {
   contentCalendar: "https://images.unsplash.com/photo-1506784365847-bbad939e9335?w=400&q=80",
   businessPlan: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&q=80",
   brandingStudio: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&q=80",
-  funnelBuilder: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&q=80",
-  businessGenerator: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=400&q=80",
+  funnelBuilder: "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=400&q=80",
+  businessGenerator: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&q=80",
 };
 
 export function getMarketplaceCategory(factoryId: string): MarketplaceCategoryId {

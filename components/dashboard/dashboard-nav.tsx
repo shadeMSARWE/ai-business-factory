@@ -19,10 +19,12 @@ import {
   Coins,
   Smartphone,
   Store,
+  Bot,
 } from "lucide-react";
 
 const navItems = [
   { href: "/dashboard", labelKey: "dashboard", icon: LayoutDashboard },
+  { href: "/dashboard/agents", labelKey: "Agents", label: "Agents", icon: Bot },
   { href: "/dashboard/billing", labelKey: "nav.billing", icon: CreditCard },
   { href: "/dashboard/factories", labelKey: "nav.factories", icon: Factory },
   { href: "/dashboard/logo-generator", labelKey: "Logo", icon: Palette },
@@ -58,7 +60,7 @@ export function DashboardNav() {
               }`}
             >
               <item.icon className="h-4 w-4" />
-              {t(item.labelKey)}
+              {"label" in item && item.label ? item.label : t(item.labelKey)}
             </div>
           </Link>
         );

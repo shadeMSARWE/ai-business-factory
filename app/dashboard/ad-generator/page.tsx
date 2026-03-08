@@ -15,7 +15,9 @@ import { ArrowLeft, Sparkles, Copy, Check, Loader2, Megaphone } from "lucide-rea
 import { Suggestions } from "@/components/factories/Suggestions";
 import { PreviewGallery } from "@/components/factories/PreviewGallery";
 import { FactorySkeleton } from "@/components/factories/FactorySkeleton";
+import { ResultToolbar } from "@/components/factories/ResultToolbar";
 import { getSuggestionsForFactory } from "@/lib/factories";
+import { getPreviewImage } from "@/lib/dashboard-marketplace";
 
 const PLATFORMS = ["Facebook", "Instagram", "Google Ads", "TikTok"];
 
@@ -112,12 +114,12 @@ export default function AdGeneratorPage() {
 
         <PreviewGallery
           images={[
-            { src: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&q=80", alt: "Social" },
-            { src: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&q=80", alt: "Ad creative" },
+            { src: getPreviewImage("ads"), alt: "Ads" },
             { src: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=400&q=80", alt: "Campaign" },
             { src: "https://images.unsplash.com/photo-1542744094-24638eff58bb?w=400&q=80", alt: "Marketing" },
-            { src: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=400&q=80", alt: "Ads" },
-            { src: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80", alt: "Preview" },
+            { src: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=400&q=80", alt: "Creative" },
+            { src: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80", alt: "Social" },
+            { src: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&q=80", alt: "Strategy" },
           ]}
           columns={3}
           className="mb-8"
@@ -179,20 +181,34 @@ export default function AdGeneratorPage() {
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-6"
+            className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8"
           >
-            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-              <span className="w-1 h-5 rounded-full bg-gradient-to-b from-violet-500 to-fuchsia-500" />
+            <h2 className="text-xl font-semibold text-white mb-2 flex items-center gap-2">
+              <span className="w-1 h-6 rounded-full bg-gradient-to-b from-violet-500 to-fuchsia-500" />
               Ad previews
             </h2>
+            <p className="text-slate-500 text-sm mb-6">
+              Copy individual ads or use the toolbar to copy all, download, regenerate, or save to history.
+            </p>
+            <ResultToolbar
+              factoryId="ads"
+              factoryName="AI Ads Generator"
+              prompt={`${name} | ${type} | ${city}`}
+              resultData={ads}
+              resultPreview={ads[0]?.headline?.slice(0, 60) ?? ""}
+              onRegenerate={handleGenerate}
+              className="mb-6"
+            />
             <div className="grid md:grid-cols-2 gap-6">
               {ads.map((ad) => (
-                <div
+                <motion.div
                   key={ad.platform}
-                  className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 hover:border-violet-500/30 transition-colors"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-2xl border border-white/10 bg-white/[0.06] backdrop-blur-xl p-6 hover:border-violet-500/30 hover:bg-white/[0.08] transition-all"
                 >
                   <div className="flex justify-between items-center mb-4">
-                    <span className="text-violet-400 font-medium">{ad.platform}</span>
+                    <span className="text-violet-400 font-medium capitalize">{ad.platform}</span>
                     <Button
                       variant="ghost"
                       size="sm"
@@ -206,14 +222,22 @@ export default function AdGeneratorPage() {
                       )}
                     </Button>
                   </div>
-                  <h3 className="text-sm font-medium text-slate-400 mb-1">Headline</h3>
-                  <p className="text-lg font-semibold text-white mb-3">{ad.headline}</p>
-                  <h3 className="text-sm font-medium text-slate-400 mb-1">Primary text</h3>
-                  <p className="text-slate-300 text-sm mb-4">{ad.description}</p>
-                  <span className="inline-block px-3 py-1 rounded-lg bg-violet-500/20 text-violet-300 text-sm">
-                    {ad.cta}
-                  </span>
-                </div>
+                  <div className="space-y-3">
+                    <div>
+                      <h3 className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">Headline</h3>
+                      <p className="text-lg font-semibold text-white">{ad.headline}</p>
+                    </div>
+                    <div>
+                      <h3 className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">Primary text</h3>
+                      <p className="text-slate-300 text-sm leading-relaxed">{ad.description}</p>
+                    </div>
+                    <div className="pt-2">
+                      <span className="inline-block px-3 py-1.5 rounded-lg bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 text-violet-300 text-sm font-medium border border-violet-500/20">
+                        CTA: {ad.cta}
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
               ))}
             </div>
           </motion.section>

@@ -14,6 +14,7 @@ import { Logo } from "@/components/logo";
 import { ArrowLeft, Sparkles, Loader2, Search } from "lucide-react";
 import { Suggestions } from "@/components/factories/Suggestions";
 import { ResultCard } from "@/components/factories/ResultCard";
+import { ResultToolbar } from "@/components/factories/ResultToolbar";
 import { FactorySkeleton } from "@/components/factories/FactorySkeleton";
 import { getSuggestionsForFactory } from "@/lib/factories";
 
@@ -158,15 +159,26 @@ export default function SEOGeneratorPage() {
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-6"
+            className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8"
           >
-            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-              <span className="w-1 h-5 rounded-full bg-gradient-to-b from-violet-500 to-fuchsia-500" />
+            <h2 className="text-xl font-semibold text-white mb-2 flex items-center gap-2">
+              <span className="w-1 h-6 rounded-full bg-gradient-to-b from-violet-500 to-fuchsia-500" />
               Result
             </h2>
-            <ResultCard title="SEO Title" value={result.title} index={0} />
-            <ResultCard title="Meta Description" value={result.description} index={1} />
-            <ResultCard title="Keywords" value={result.keywords} index={2} />
+            <ResultToolbar
+              factoryId="seo"
+              factoryName="AI SEO Generator"
+              prompt={`${name} | ${type} | ${city}`}
+              resultData={result}
+              resultPreview={result.title?.slice(0, 60)}
+              onRegenerate={handleGenerate}
+              className="mb-6"
+            />
+            <div className="space-y-4">
+              <ResultCard title="SEO Title" value={result.title} index={0} />
+              <ResultCard title="Meta Description" value={result.description} index={1} />
+              <ResultCard title="Keywords" value={result.keywords} index={2} />
+            </div>
           </motion.section>
         )}
       </main>
