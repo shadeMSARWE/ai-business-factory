@@ -58,6 +58,24 @@
   }
 }
 
+/* Theme: light mode overrides for pages that use theme-aware classes */
+[data-theme="light"] {
+  color-scheme: light;
+}
+[data-theme="light"] .theme-bg-page {
+  background-color: #f8fafc;
+}
+[data-theme="light"] .theme-bg-card {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .theme-text-muted {
+  color: #64748b;
+}
+[data-theme="light"] .theme-text-primary {
+  color: #0f172a;
+}
+
 /* RTL Support */
 [dir="rtl"] {
   text-align: right;

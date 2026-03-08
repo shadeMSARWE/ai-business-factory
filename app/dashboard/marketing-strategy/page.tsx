@@ -13,6 +13,7 @@ import { Suggestions } from "@/components/factories/Suggestions";
 import { PreviewGallery } from "@/components/factories/PreviewGallery";
 import { FactorySkeleton } from "@/components/factories/FactorySkeleton";
 import { ResultToolbar } from "@/components/factories/ResultToolbar";
+import { ErrorFallback } from "@/components/factories/ErrorFallback";
 import { getSuggestionsForFactory } from "@/lib/factories";
 import { getPreviewImage } from "@/lib/dashboard-marketplace";
 
@@ -101,7 +102,9 @@ export default function MarketingStrategyPage() {
         </div>
 
         <AnimatePresence>{loading && <FactorySkeleton lines={4} className="mb-8" />}</AnimatePresence>
-        {error && !loading && <p className="mb-6 text-red-400 text-sm">{error}</p>}
+        {error && !loading && (
+          <ErrorFallback message={error} onRetry={handleGenerate} className="mb-8" />
+        )}
 
         {!loading && result != null && (
           <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">

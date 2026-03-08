@@ -4,6 +4,7 @@ import "./globals.css";
 import { LanguageProvider } from "@/components/providers/language-provider";
 import { AuthProviderWrapper } from "@/components/auth-provider-wrapper";
 import { ToastProvider } from "@/components/providers/toast-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { LocaleInitScript } from "@/components/locale-init-script";
 import { Analytics } from "@vercel/analytics/react";
 import { OnboardingWizard } from "@/components/onboarding-wizard";
@@ -21,16 +22,18 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" dir="ltr" suppressHydrationWarning>
+    <html lang="en" dir="ltr" suppressHydrationWarning data-theme="dark">
       <body className={`${inter.className} antialiased`}>
         <LocaleInitScript />
         <LanguageProvider>
-          <AuthProviderWrapper>
-            <ToastProvider>
-              {children}
-              <OnboardingWizard />
-            </ToastProvider>
-          </AuthProviderWrapper>
+          <ThemeProvider>
+            <AuthProviderWrapper>
+              <ToastProvider>
+                {children}
+                <OnboardingWizard />
+              </ToastProvider>
+            </AuthProviderWrapper>
+          </ThemeProvider>
         </LanguageProvider>
         <Analytics />
       </body>

@@ -27,6 +27,8 @@ export function Footer() {
             <h4 className="font-semibold text-white mb-4">{t("footer.company")}</h4>
             <ul className="space-y-3">
               <li><Link href="/contact" className="text-slate-400 hover:text-white transition">{t("nav.contact")}</Link></li>
+              <li><Link href="/privacy" className="text-slate-400 hover:text-white transition">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="text-slate-400 hover:text-white transition">Terms of Service</Link></li>
             </ul>
           </div>
           <div>

@@ -20,11 +20,13 @@ import {
   Smartphone,
   Store,
   Bot,
+  Settings,
 } from "lucide-react";
 
 const navItems = [
   { href: "/dashboard", labelKey: "dashboard", icon: LayoutDashboard },
   { href: "/dashboard/agents", labelKey: "Agents", label: "Agents", icon: Bot },
+  { href: "/dashboard/settings", labelKey: "settings", icon: Settings },
   { href: "/dashboard/billing", labelKey: "nav.billing", icon: CreditCard },
   { href: "/dashboard/factories", labelKey: "nav.factories", icon: Factory },
   { href: "/dashboard/logo-generator", labelKey: "Logo", icon: Palette },
