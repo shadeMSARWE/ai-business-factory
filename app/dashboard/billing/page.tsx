@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { CreditCard, Zap, Loader2, Check, Coins, Package } from "lucide-react";
 import { PayPalSubscribe } from "@/components/paypal-subscribe";
-import { CREDIT_PLANS } from "@/lib/credits";
+import { CREDIT_PLANS, CREDIT_PACKS, type CreditPackId } from "@/lib/credits";
+import { useCredits } from "@/components/providers/credits-provider";
 
 interface BillingData {
   planId: string;
@@ -48,31 +49,66 @@ function BillingHistorySection() {
   );
 }
 
-function CreditPacksSection() {
-  const [packs, setPacks] = useState<{ id: string; credits: number; price_usd: number }[]>([]);
-  useEffect(() => {
-    fetch("/api/credit-packs")
-      .then((r) => r.json())
-      .then((d) => setPacks(d.packs || []))
-      .catch(() => setPacks([]));
-  }, []);
-  if (packs.length === 0) return null;
+function CreditPacksSection({ onPurchased }: { onPurchased?: () => void }) {
+  const [loading, setLoading] = useState<CreditPackId | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleBuy = async (packId: CreditPackId) => {
+    setError(null);
+    setLoading(packId);
+    try {
+      const res = await fetch("/api/paypal/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ packId }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to create order");
+      if (data.orderId) {
+        try {
+          sessionStorage.setItem("paypal_order_id", data.orderId);
+        } catch {
+          // ignore
+        }
+      }
+      if (data.url) {
+        window.location.href = data.url;
+        return;
+      }
+      throw new Error("No redirect URL");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Something went wrong");
+      setLoading(null);
+    }
+  };
+
   return (
-    <div className="grid sm:grid-cols-3 gap-4 mb-10">
-      {packs.map((p) => (
-        <Card key={p.id} className="border-white/10 bg-white/5 hover:border-violet-500/30 transition-colors">
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-2 mb-2">
-              <Package className="h-5 w-5 text-violet-400" />
-              <span className="text-white font-semibold">{p.credits} credits</span>
-            </div>
-            <p className="text-2xl font-bold text-white mb-4">${Number(p.price_usd).toFixed(2)}</p>
-            <Button variant="outline" className="w-full border-white/20" disabled>
-              Coming soon
-            </Button>
-          </CardContent>
-        </Card>
-      ))}
+    <div className="grid sm:grid-cols-3 gap-6 mb-10">
+      {(Object.keys(CREDIT_PACKS) as CreditPackId[]).map((packId) => {
+        const p = CREDIT_PACKS[packId];
+        return (
+          <Card key={packId} className="border-white/10 bg-white/5 hover:border-violet-500/30 transition-colors">
+            <CardHeader>
+              <h3 className="text-lg font-semibold text-white">{p.name}</h3>
+              <div className="flex items-center gap-2 mt-2">
+                <Zap className="h-5 w-5 text-amber-400" />
+                <span className="text-xl font-bold text-white">{p.credits} credits</span>
+              </div>
+              <p className="text-2xl font-bold text-white mt-2">${p.price}</p>
+            </CardHeader>
+            <CardContent>
+              <Button
+                className="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600"
+                disabled={!!loading}
+                onClick={() => handleBuy(packId)}
+              >
+                {loading === packId ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "Buy with PayPal"}
+              </Button>
+            </CardContent>
+          </Card>
+        );
+      })}
+      {error && <p className="text-red-400 text-sm col-span-full">{error}</p>}
     </div>
   );
 }
@@ -86,9 +122,11 @@ const PLAN_PRICES: Record<string, number> = {
 
 export default function BillingPage() {
   const { t } = useTranslation();
+  const { refetch: refetchCredits } = useCredits();
   const [billing, setBilling] = useState<BillingData | null>(null);
   const [loading, setLoading] = useState(true);
   const [upgradeLoading, setUpgradeLoading] = useState<string | null>(null);
+  const [captureSuccess, setCaptureSuccess] = useState<number | null>(null);
 
   useEffect(() => {
     fetch("/api/billing")
@@ -97,6 +135,32 @@ export default function BillingPage() {
       .catch(() => setBilling(null))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    const params = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+    if (!params?.get("success")) return;
+    const orderId = typeof sessionStorage !== "undefined" ? sessionStorage.getItem("paypal_order_id") : null;
+    if (!orderId) return;
+    fetch("/api/paypal/capture-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ orderId }),
+    })
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.success && d.credits) setCaptureSuccess(d.credits);
+        refetchCredits();
+        fetch("/api/billing").then((r) => r.json()).then((x) => setBilling(x));
+      })
+      .finally(() => {
+        try {
+          sessionStorage.removeItem("paypal_order_id");
+        } catch {
+          // ignore
+        }
+        window.history.replaceState({}, "", "/dashboard/billing");
+      });
+  }, [refetchCredits]);
 
   const handleUpgrade = async (planId: string) => {
     setUpgradeLoading(planId);
@@ -177,8 +241,18 @@ export default function BillingPage() {
               </CardContent>
             </Card>
 
-            <h2 className="text-xl font-semibold text-white mb-6">Credit top-ups</h2>
-            <CreditPacksSection />
+            {captureSuccess != null && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 mb-6 text-emerald-300"
+              >
+                Payment successful. {captureSuccess} credits have been added to your account.
+              </motion.div>
+            )}
+            <h2 className="text-xl font-semibold text-white mb-6">Buy Credits (PayPal)</h2>
+            <p className="text-slate-400 text-sm mb-4">One-time purchase. Credits are added to your balance.</p>
+            <CreditPacksSection onPurchased={refetchCredits} />
 
             <h2 className="text-xl font-semibold text-white mb-6 mt-12">Available Plans</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">

@@ -13,12 +13,14 @@ import {
   Coins,
   Smartphone,
   Store,
+  MessageCircle,
 } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
 import { useCredits } from "@/components/providers/credits-provider";
 
 const navItems = [
   { href: "/dashboard", labelKey: "dashboard", icon: LayoutDashboard },
+  { href: "/dashboard/chat", labelKey: "AI Chat", label: "AI Chat", icon: MessageCircle },
   { href: "/dashboard/websites", labelKey: "my_websites", icon: Globe },
   { href: "/dashboard/templates", labelKey: "templates", icon: Layout },
   { href: "/dashboard/factories", labelKey: "nav.factories", icon: Factory },
@@ -51,7 +53,7 @@ export function DashboardSidebar() {
                 }`}
               >
                 <item.icon className="h-4 w-4 flex-shrink-0" />
-                {t(item.labelKey)}
+                {"label" in item && item.label ? item.label : t(item.labelKey)}
               </div>
             </Link>
           );

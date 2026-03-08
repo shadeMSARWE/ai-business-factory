@@ -49,3 +49,21 @@ export function getPlanCredits(planId: CreditPlanId): number {
 }
 
 export const CREDITS_LOW_THRESHOLD = 10;
+
+/** One-time credit packs for PayPal purchase (Starter $9/100, Pro $29/500, Business $79/2000) */
+export const CREDIT_PACKS = {
+  starter: { name: "Starter Plan", price: 9, credits: 100 },
+  pro: { name: "Pro Plan", price: 29, credits: 500 },
+  business: { name: "Business Plan", price: 79, credits: 2000 },
+} as const;
+
+export type CreditPackId = keyof typeof CREDIT_PACKS;
+
+export function getCreditPack(packId: CreditPackId) {
+  return CREDIT_PACKS[packId];
+}
+
+export function creditsForAmount(amountUsd: number): number {
+  const byPrice: Record<number, number> = { 9: 100, 29: 500, 79: 2000 };
+  return byPrice[amountUsd] ?? 0;
+}

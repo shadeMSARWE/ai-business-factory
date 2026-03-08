@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { getUserCreditsBalance } from "@/lib/user-credits-service";
 import { getUserCredits } from "@/lib/credits-service";
 import { CREDIT_PLANS } from "@/lib/credits";
 
@@ -9,19 +10,20 @@ export async function GET() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const credits = await getUserCredits(user.id);
-  if (!credits) return NextResponse.json({ error: "Failed to load billing" }, { status: 500 });
-
-  const planCredits = CREDIT_PLANS[credits.planId]?.credits ?? 50;
+  const balance = await getUserCreditsBalance(user.id);
+  const legacy = await getUserCredits(user.id);
+  const planId = legacy?.planId ?? "free";
+  const planName = legacy?.planName ?? "Free";
+  const planCredits = CREDIT_PLANS[planId]?.credits ?? 100;
 
   return NextResponse.json({
-    planId: credits.planId,
-    planName: credits.planName,
-    credits: credits.credits,
-    creditsUsed: credits.creditsUsed,
+    planId,
+    planName,
+    credits: balance,
+    creditsUsed: legacy?.creditsUsed ?? 0,
     creditsLimit: planCredits,
-    canUseCredits: credits.canUseCredits,
-    creditsLow: credits.credits < 10,
-    creditsExhausted: credits.credits === 0,
+    canUseCredits: balance > 0,
+    creditsLow: balance > 0 && balance < 10,
+    creditsExhausted: balance <= 0,
   });
 }
