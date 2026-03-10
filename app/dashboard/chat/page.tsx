@@ -76,6 +76,14 @@ export default function ChatPage() {
     fetchSessions();
   }, [fetchSessions]);
 
+  // Whenever sessions are loaded and no session is selected yet,
+  // automatically select the most recent one so the main chat opens.
+  useEffect(() => {
+    if (!currentSession && sessions.length > 0) {
+      setCurrentSession(sessions[0]);
+    }
+  }, [sessions, currentSession]);
+
   useEffect(() => {
     if (currentSession) fetchMessages(currentSession.id);
     else setMessages([]);
